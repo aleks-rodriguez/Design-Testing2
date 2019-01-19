@@ -1,4 +1,4 @@
-# Diseño y Pruebas
+# Diseño y Pruebas 2
 
   Desarrollo de una serie de proyectos de la empresa Acme.
   ## Fecha de entregas
@@ -27,7 +27,7 @@
   * Ezequiel Portillo Jurado
   * Alejandro Rodríguez Díaz
 
-# Design and Testing
+# Design and Testing 2
 
   This repository is intended to be for projects´ development from Acme Bussiness.
   
