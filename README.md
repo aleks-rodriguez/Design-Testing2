@@ -26,6 +26,7 @@
   * Belén Garrido López
   * Ezequiel Portillo Jurado
   * Alejandro Rodríguez Díaz
+  * María de Gracia Piñero Pastor
 
 # Design and Testing 2
 
@@ -55,3 +56,4 @@
   * Belén Garrido López
   * Ezequiel Portillo Jurado
   * Alejandro Rodríguez Díaz
+  * María de Gracia Piñero Pastor
