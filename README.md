@@ -43,9 +43,9 @@
   * D03 - Apr 25, 2019
   * D04 - May 16, 2019
   * D05 - Hackathon
-    * Ideas must be delivered before Apr 22, 2019
-    * Idea Public Presentation. May 17, 2019 (Theory Class)
-    * Delivery of. Jun 6, 2019
+    * Antes del 22 de Abril se debe de enviar una bateria de ideas
+    * El 17 de mayo se presentará la idea publicamente en clase de teoría
+    * Entregable. 6 de Junio de 2019.
   
   ## Technologies used
   
