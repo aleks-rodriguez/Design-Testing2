@@ -36,7 +36,7 @@
 
   This repository is intended to be for projects´ development from Acme Bussiness.
   
-  ## Fecha de entregas
+  ## Delivery dates
   
   * D01 - Mar 7, 2019
   * D02 - Mar 28, 2019
@@ -59,8 +59,6 @@
   * Eclipse Indigo
   
   ## Members Team
-  
-  ## Componentes del grupo
   
   * Ángel Delgado Luna (Coordinates D05)
   * Belén Garrido López (Coordinates D04)
