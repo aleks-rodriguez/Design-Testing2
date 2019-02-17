@@ -1,0 +1,292 @@
+PARA PÁRRAFO 1:
+1. Clase
+  * Relacionar con clase correspondiente (posible FixUpTask)
+2. Populate
+  * Poner las horas a 00:00 porque es lo que se muestra
+3. Repositorio
+4. Servicio - No olvidar @Autowired
+  * Asserts
+5. Vista
+  * Escribrir el botón de crear coso dónde sea, un list seguramente
+  * Añadir demás botones en master page, header
+	Resources/Spring/config
+	- converters.xml
+	- security.xml
+	- i18n-i10n.xml
+	- tiles.xml
+6. Converter
+7. Controlador - No olvidar @Autowired
+8. Clean Tomcat and Run
+9. Modelo
+
+CONSEJOS
+PARA PÁRRAFO 2:
+
+	Para trabajar con el pattern, se busca en la página web, o se copia el del Ticker de FixUpTask.
+	Para que el ticker se cree automáticamente, existe un método getTickerQuolet:
+		public static String generateTickerQuolet() {
+			SimpleDateFormat formato;
+			//Aquí habría que cambiar el pattern
+			formato = new SimpleDateFormat("yyMMdd");
+
+			String formated;
+
+			formated = formato.format(new Date());
+
+			//Adaptar pattern
+			final Character[] ch = {
+				'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+			};
+
+			String c = "";
+
+			final Random random;
+
+			random = new Random();
+
+			for (int i = 0; i < Utiles.getRandomNumberInRange(1, 3); i++)
+				c += ch[random.nextInt(ch.length)];
+
+			return formated + "#" + c;
+		}
+
+	Para que la fecha tenga un formato u otro, según el idioma (internacionalización):
+		- Añadir @CookieValue(value = "language", required = false) final String lang en el Controller, en "/list" o el método que te lleve a la lista
+		- A continuación, se usa un if, que te envía el lenguaje a la vista en una variable "lang":
+			
+			if (lang == null)
+				result.addObject("lang", "en");
+			else
+				result.addObject("lang", lang);
+		
+		- Después, en la vista, solo habría que añadir un if por cada idioma y la variable lang correspondiente a true, y poner la propiedad format con el patrón que se quiera:
+		
+			<jstl:if test="${lang eq 'en' }">
+				<display:column property="publicationMoment" titleKey="quolet.publicationMoment" format="{0,date,yy/MM/dd HH:mm}"/>
+			</jstl:if>
+			<jstl:if test="${lang eq 'es' }">
+				<display:column property="publicationMoment" titleKey="quolet.publicationMoment" format="{0,date,dd-MM-yy HH:mm}"/>
+			</jstl:if>
+	Para el tema de los colores, se siguen las instrucciones del siguiente script:
+	<script>
+  		var table = document.getElementById("row");
+ 		 var tbody = table.getElementsByTagName("tbody")[0];
+  		var row = tbody.getElementsByTagName("tr");
+ 		// Guardamos la fecha actual
+  		var actualDate = new Date();
+  
+  		// Llamamos a la variable lang del controlador
+  		var lang = '${lang}';
+
+  		for (i = 0; i < row.length; i++) {
+			// Según el idioma, parseamos una fecha u otra, pues cada una posee un patrón único
+    			if(lang == 'en') {
+      				var value = row[i].getElementsByTagName("td")[1].firstChild.nodeValue.split("/");
+      				value = new Date("20"+value[0]+"-"+value[1]+"-"+value[2].substring(0,2));
+    			}else if(lang == 'es') {
+      				var value = row[i].getElementsByTagName("td")[1].firstChild.nodeValue.split("-");
+      				value = new Date("20"+value[2].substring(0,2)+"-"+value[1]+"-"+value[0]);
+    		}
+	
+	// Creamos dos variables, una que guarde la fecha de hace un mes y otra que guarde la fecha de hace dos meses
+     		var beforeOneMonth = new Date();
+    		var beforeTwoMonths = new Date();
+     
+     		if(actualDate.getMonth()+1 == 1) {
+    	 	// Si el mes actual es enero, seteamos la fecha hace un mes, sumándole 11 meses y la fecha hace dos meses, sumándole 10 meses
+    			beforeOneMonth.setFullYear(actualDate.getFullYear()-1, actualDate.getMonth()+11, actualDate.getDate());
+    	 		beforeTwoMonths.setFullYear(actualDate.getFullYear()-1, actualDate.getMonth()+10, actualDate.getDate());
+     
+     		}else if(actualDate.getMonth()+1 == 2){
+    	 	// Si el mes actual es febrero, seteamos la fecha hace dos meses, sumándole 10 meses
+    			beforeOneMonth.setFullYear(actualDate.getFullYear(), actualDate.getMonth()-1, actualDate.getDate());
+    	 		beforeTwoMonths.setFullYear(actualDate.getFullYear()-1, actualDate.getMonth()+10, actualDate.getDate());
+     
+    	 	}else{
+    	 	// Para el resto de fechas "no especiales", tan solo hay que restar 1 mes para obtener la fecha hace un mes y 2 para obtener la fecha hace dos meses
+    	 		beforeOneMonth.setFullYear(fecha_actual.getFullYear(), fecha_actual.getMonth()-1, fecha_actual.getDate());
+    	 		beforeTwoMonths.setFullYear(fecha_actual.getFullYear(), fecha_actual.getMonth()-2, fecha_actual.getDate());
+    		}
+
+     // A continuación, colocamos las condiciones descritas utilizando las variables creadas anteriormente
+     
+     // Si la fecha de publicación tiene menos de un mes de antigüedad
+     	if(value <= actualDate && value > beforeOneMonth) {
+       		row[i].getElementsByTagName("td")[1].style.color = "#00FF80";
+     // Si la fecha de publicación tiene entre uno (incluido) y dos meses (no incluido) de antigüedad
+     	}else if (value <= beforeOneMonth && value > beforeTwoMonths) {
+       		row[i].getElementsByTagName("td")[1].style.color = "blue";
+     // Si la fecha de publicación tiene más de dos meses (incluido) de antigüedad
+     	}else{
+       		row[i].getElementsByTagName("td")[1].style.color = "#9C9C9C";
+     }
+  }
+</script>
+	
+	En caso de que no sea quolet, hay que cambiar el formato del Date correspondiente,
+	en su clase domain, con el TIMESTAP y el pattern correspondiente en un DateFormatter
+
+	**Página web con la mayoría de pattern sobre fechas: http://regexlib.com/DisplayPatterns.aspx?cattabindex=5&categoryId=5&AspxAutoDetectCookieSupport=1
+
+CONSEJOS
+PARA PÁRRAFO 3:
+
+	//Querys 1 --> Control Check
+	//a) the avg and standard deviation of published xxxx per xxxxx
+		@Query("select (select count(q)*1.0 from Quolet q where q.finalMode = true)/count(f), 'null', 'null', 
+		sqrt((sum((select count(q)*1.0 from f.quolet q where q.finalMode = true)*(select count(q)*1.0 from f.quolet 
+		q where q.finalMode = true))/count(f)) - ((select count(q)*1.0 from Quolet q where q.finalMode = true)/count(f)
+		 * (select count(q)*1.0 from Quolet q where q.finalMode = true)/count(f)))  from FixUpTask f")
+	
+	
+	PASO 1: Colocar lo de arriba en el CustomisationRepository
+	PASO 2: Añadir al metodo <dashboardStatistics> de CustomisationService tal y como estan colocados los demas
+	PASO 3: Ir a la vista de custom/dashboard.jsp y añadirlo como esta en los demas 
+
+	// b) the ratio of published xxxx vs total
+		@Query("select (count(q)*1.0/(select count(q)*1.0 from Quolet q)) from Quolet q where q.finalMode = '1'")
+		Double findRatioPublishQuoletPerQuolet();
+
+	PASO 1: Colocar lo de arriba en el CustomisationRepository
+	PASO 2: Añadir al metodo <dashboardRatioApplication> de CustomisationService tal y como estan colocados los demas
+	PASO 3: Ir a la vista de custom/dashboard.jsp y añadirlo como esta en los demas 
+
+	// c) the ratio of unpublished xxxx vs total
+		@Query("select (count(q)*1.0/(select count(q)*1.0 from Quolet q)) from Quolet q where q.finalMode = '0'")
+		Double findRatioNotPublishQuoletPerQuolet();
+
+	PASO 1: Colocar lo de arriba en el CustomisationRepository
+	PASO 2: Añadir al metodo <dashboardRatioApplication> de CustomisationService tal y como estan colocados los demas
+	PASO 3: Ir a la vista de custom/dashboard.jsp y añadirlo como esta en los demas 
+	
+
+DESPLIEGUE EN PREPRODUCTION:
+	1) Hay que hacer el IniatiliseDatabase.xml (está hecho)
+	2) Ejecutar InitialiseDatabase.java
+	3) Abrir consola y ejecutar este código:
+		a) cd C:\Program Files\MySQL\MySQL Server 5.5\bin
+		b) mysqldump -uroot -pV3rY=$tR0nG=P@$$w0rd$ Acme-HandyWork > C:\Temp\Create-Acme-HandyWork.sql
+		c) En C:\Temp está el archivito Create de sql donde hay que cambiar varias cosas:
+			- arriba del todo todo, se pone: "start transaction;"
+			- al final del todo todo, se pone: "commit;"
+			- debajo del "start transaction", hay que poner esto:
+				drop database if exists `Acme-HandyWork`;
+				create database `Acme-HandyWork`;
+				use `Acme-HandyWork`;
+				create user 'acme-user'@'%'identified by 'ACME-Us3r-P@ssw0rd';
+				create user 'acme-manager'@'%' identified by 'ACME-M@n@ger-6874';
+				grant select, insert, update, delete on `Acme-HandyWork`.* to 'acme-user'@'%';
+				grant select, insert, update, delete, create, drop, references, index, alter, create temporary tables,
+				lock tables, create view, create routine, alter routine, execute, trigger, show view on `Acme-HandyWork`.* to 'acme-manager'@'%';
+		d) El archivo sql este de create, se pasa al ordenador personal para pasarlo posteriormente a la otra MV
+		e) En eclipse, click derecho en el proyecto > Export > WAR File
+			- Se elige el escritorio y se marca "Optimize for a specific server runtime"
+			- Se crea un archivo war en el escritorio
+			- Se pasa al ordenador personal
+	4) Arrancar PRE-PRODUCTION
+		- Pasar .WAR y .sql a Preproduction
+	5) C:\ > WINDOWS > system32 > drivers > etc > archivo hosts
+		- debe salir esto: 
+			127.0.0.1       localhost
+			127.0.0.1       www.acme.com
+	6) Abrimos la consola y vamos a donde antes:
+		cd C:\Program Files\MySQL\MySQL Server 5.5\bin
+		* Mover archivo .sql a C:\ > Program Files > MySQL > MySQL Server 5.5 > bin
+		mysql -uroot -pV3rY=$tR0nG=P@$$w0rd$ < Create-Acme-HandyWork.sql
+	7) A continuación, ir a Firefox y poner: localhost/manager
+		user: admin
+		password: T0mC@t=Adm1n1$trat0R
+	8) Te sale una página con un gato, en la tabla de Applications (verde y blanca):
+		- Darle a todos los botones de "Undeploy" salvo al de /manager
+	9) Ir a la sección de "Deploy directory or WAR file located on server":
+		- Context Path : /
+		- XML Configuration:
+		- WAR or Directory URL: C:\Documents and Settings\Boss\Desktop\Acme-HandyWork.war
+		***Hay que poner el archivo .WAR en el ESCRITORIO DE LA PREPRODUCTION
+		(Tarda un ratito en cargar, eso es bueno, y deben salir las columnas con nombres y cosas)
+	10) En la URL hay que poner: www.acme.com Y LISTO!!!!!!!
+
+DESPLIEGUE EN CLEVER CLOUD:
+
+	1) Entramos en: https://console.clever-cloud.com/users/me
+	2) + Create... > an application > Create a Brand New App
+	3) Clickamos en icono de Java + WAR
+	4) Le clickamos a Next
+	5) A continuación:
+		Name: *Nombre que se quiera*
+		Description: (vacío)
+		Zone: Paris, France
+	   Y le damos a Create
+	6) Ahora buscamos el icono de MySQL y le damos a SELECT
+	7) Le damos al plan DEV, que es gratis
+	   A continuación:
+		Name: Database
+		Zone: Paris, France
+	8) En el portátil, abrir Git Bash
+		$ git config --global user.name "Belen Garrido"
+		$ git config --global user.email "belgarlop3@alum.us.es"
+		$ cd ~/
+		$ ssh-keygen -t ed25519 -C belgarlop3@alum.us.es
+	9) Ahora, ruta: C:\ > Usuarios > belen > .ssh
+		- Abrir id_ed25529.pub con Wordpad
+		- Sale un chorizo
+	10) En CleverCloud:
+		nombre corto: id_ed25519
+		nombre largo: chorizo que hemos abierto antes
+
+	    A continuación, se le da a "Add".
+	11) Creamos una carpeta Clever Cloud en el escritorio, y, a continuación, dentro, otra carpeta llamada clevercloud
+		- Dentro, se crea un archivo war.json, cuyo contenido es:
+			{
+				"deploy": {
+					"container": "TOMCAT7",
+					"war": [{
+						"file": "Acme-HandyWork.war",
+					"context": "/"
+				}]
+			}
+		}
+	12) En Clever Cloud, clickamos en Database
+	13) En eclipse, sustituir:
+		-el "user" por el User de clever cloud
+		-la "password" por la Password de clever cloud
+		-En "jdbcUrl", dejamos el value="jdbc:" y pegamos la connection URI del clever cloud
+		   ***Borramos desde las // hasta el @, que son user:password
+	14) Ahora, al proyecto le hacemos Export > WAR File
+	15) A continuación, nos pasamos el archivo war al ordenador portátil y lo metemos en la carpeta Clever Cloud, junto a la carpeta clever cloud
+	16) Ahora, vamos a la pantalla de Addon dashborad en Clever Cloud y clickamos en PHPMyAdmin (arriba)
+	17) Clickamos en la pestaña SQL de esta nueva ventana
+		- Pegamos el contenido del Create Acme Handy Work.sql 
+		- Se borran los create user y los grant
+		- Quedaría así:
+			start transaction;
+			drop database if exists `*nombre de la base de datos, aparece a la izda*`;
+			create database `*nombre de la base de datos, aparece a la izda*`;
+			use `*nombre de la base de datos, aparece a la izda*`;
+	18) En Clever Cloud, en Application > Environment variables:
+		JAVA_VERSION 	7 	
+		PORT 	80 	
+		ENABLE_METRICS 	true 	
+	19) Vamos a la carpeta de Clever Cloud, y click derecho Git Bash Here
+		$ git init
+		$ git add clevercloud/war.json Acme-HandyWork.war
+		$ git commit -m "v1.0.0"
+	20) Vamos a Clever Cloud > Application > Information
+		*Deberían salir 3 líneas (2 líneas a Zeki)
+		- Se pega en Git Bush el chorizo. Ejemplo:
+			git remote add clever git+ssh://git@push-par-clevercloud-customers.services.clever-
+			cloud.com/app_21c1256a-19a5-42f5-b746-14443729599a.git
+		$ git push clever master
+	21) Si en Clever Cloud aparece una flecha amarilla, y luego verde, clickamos en la "cadena" y si va todo bien, ya está!!!!!
+
+
+PARA EL CONTROL CHECK:
+	Solo se usan:
+		$ git add
+		$ git commit (con otro nombre)
+		$ git push clever master
+
+SI NO DESPLIEGA EN CLEVER CLOUD:
+		$ git remote -v
+		$ git remote rm clever
+	Después de esto, se ha borrado todo, entonces se vuelve a empezar a partir del git add
