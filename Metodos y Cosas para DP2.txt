@@ -1,0 +1,216 @@
+Metodos y Cosas rescatadas de DP1 necesarias para DP2
+
+- Transformación Homotetica
+=======================================================
+
+public static Double homotheticalTransformation(final Collection<Endorsement> endorsements) {
+
+		Double res = 0.0;
+
+		List<Double> good;
+		good = new ArrayList<Double>();
+		List<Double> bad;
+		bad = new ArrayList<Double>();
+
+		for (final Endorsement e : endorsements) {
+			Double p = 0.;
+			Double n = 0.;
+			final Collection<String> cleanedString = Utiles.limpiaString(e.getComments().toString());
+			for (final String s : cleanedString) {
+				if (Utiles.goodWords.contains(s))
+					p++;
+				if (Utiles.badWords.contains(s))
+					n++;
+			}
+			good.add(p / cleanedString.size());
+			bad.add(n / cleanedString.size());
+		}
+
+		if (Double.isNaN(Utiles.compute(good)) || Double.isNaN(Utiles.compute(bad)))
+			res = 0.0;
+		else
+			res = Utiles.compute(good) - Utiles.compute(bad);
+
+		return res;
+	}
+
+- Metodo de Authorities
+=======================================================
+
+public static Boolean findAuthority(final Collection<Authority> comp, final String a) {
+		Boolean res = false;
+		if (comp.size() > 1) {
+			Authority aut;
+			aut = new Authority();
+			aut.setAuthority(a);
+			res = comp.contains(aut);
+		} else
+			for (final Authority authority : comp)
+				if (authority.toString().equals(a))
+					res = true;
+
+		return res;
+	}
+
+- Metodo de Queries
+=======================================================
+public static Double[] convertToArrayDoubleFromString(final String s) {
+		final String[] partes = s.split(",");
+		final Double[] result = new Double[partes.length];
+		for (int i = 0; i < partes.length; i++) {
+			final String aux = partes[i];
+			if (aux.equals("null"))
+				result[i] = 0.0;
+			else
+				result[i] = Double.valueOf(partes[i]);
+
+		}
+		return result;
+	}
+
+- Metodo de setParameters
+=======================================================
+
+	public static void setParameters(final Integer hours, final Integer results, final Double vat, final Integer phonePrefix) {
+		Utiles.hoursFinder = hours;
+		Utiles.resultsFinder = results;
+		Utiles.vat = vat;
+		Utiles.phonePrefix = phonePrefix;
+	}
+
+- Metodo de SpamWords y Limpia String
+=======================================================
+
+	public static Collection<String> limpiaString(String s) {
+		s = s.replaceAll("[^a-zA-Z0-9$]", "#");
+
+		final List<String> textoRoto = Arrays.asList(s.split("##|#"));
+		return textoRoto;
+	}
+	public static boolean spamWord(final Collection<String> contentMessage) {
+		boolean res = false;
+
+		Map<String, Boolean> result;
+		result = new HashMap<>();
+
+		for (final String word : Utiles.spamWords)
+			result.put(word, contentMessage.contains(word.toLowerCase()));
+
+		for (final Boolean b : result.values())
+			if (b) {
+				res = true;
+				break;
+			}
+
+		return res;
+	}
+
+- Metodo de Inicialización de Cajas
+=======================================================
+public static Collection<Box> initBoxes() {
+
+		List<Box> boxesSystem;
+
+		boxesSystem = new ArrayList<Box>();
+
+		boxesSystem.add(Utiles.createBox(true, "In Box"));
+		boxesSystem.add(Utiles.createBox(true, "Out Box"));
+		boxesSystem.add(Utiles.createBox(true, "Spam Box"));
+		boxesSystem.add(Utiles.createBox(true, "Trash Box"));
+
+		return boxesSystem;
+
+	}
+public static Box createBox(final boolean fromSystem, final String name) {
+
+		Box b;
+
+		b = new Box();
+
+		b.setMessage(new ArrayList<Mesage>());
+
+		b.setFromSystem(fromSystem);
+
+		b.setName(name);
+
+		return b;
+
+	}
+
+- Metodo de HashPassword
+=======================================================
+public static String hashPassword(final String old) {
+		Md5PasswordEncoder encoder;
+		encoder = new Md5PasswordEncoder();
+		String passEncoded;
+		passEncoded = encoder.encodePassword(old, null);
+
+		return passEncoded;
+	}
+
+- Metodo de GenerarTicker
+=======================================================
+public static String generateTicker() {
+		SimpleDateFormat formato;
+		formato = new SimpleDateFormat("yyyyMMdd");
+
+		String formated;
+
+		formated = formato.format(new Date());
+
+		final Character[] ch = {
+			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+		};
+
+		String c = "";
+
+		Random random;
+
+		random = new Random();
+
+		for (int i = 0; i < 6; i++)
+			c += ch[random.nextInt(ch.length)];
+
+		return formated + "-" + c;
+	}
+
+- Metodo de Estado (Inglés y Español) --> Mejorar
+=======================================================
+public static String[] status() {
+		String[] status;
+		status = new String[3];
+
+		Arrays.fill(status, "");
+
+		status[0] = "pending";
+		status[1] = "accepted";
+		status[2] = "rejected";
+
+		return status;
+	}
+	public static Map<String, String> statusTranslation() {
+		Map<String, String> map;
+		map = new HashMap<String, String>();
+		map.put(Utiles.status()[0], "pendiente");
+		map.put(Utiles.status()[1], "aceptada");
+		map.put(Utiles.status()[2], "rechazada");
+		return map;
+	}
+
+- Metodo de Prioridad (Poner Inglés y Español) --> Mejorar
+=======================================================
+
+public static String[] priorities() {
+		String[] priorities;
+		priorities = new String[3];
+
+		Arrays.fill(priorities, "");
+
+		priorities[0] = "LOW";
+		priorities[1] = "NEUTRAL";
+		priorities[2] = "HIGH";
+
+		return priorities;
+	}
+
+
