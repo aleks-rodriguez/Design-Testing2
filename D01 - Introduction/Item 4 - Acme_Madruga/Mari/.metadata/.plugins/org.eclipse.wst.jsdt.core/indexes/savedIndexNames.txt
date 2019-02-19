@@ -1,0 +1,5 @@
+INDEX VERSION 1.122+H:\Desing-Testing2\D01 - Introduction\Item 4 - Acme_Madruga\Mari\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+2817099979.index
+2817855395.index
+1351231900.index
+2850375260.index
