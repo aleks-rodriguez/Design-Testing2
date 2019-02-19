@@ -11,8 +11,8 @@
 
 	<!-- Artifact identification and properties -->
 
-	<groupId>Acme-Madruga</groupId>
-	<artifactId>Acme-Madruga</artifactId>
+	<groupId>Design-and-Testing</groupId>
+	<artifactId>Sample-Project</artifactId>
 	<version>1.0</version>
 	<packaging>war</packaging>
 
@@ -22,9 +22,9 @@
 
 	<!-- Indexing information -->
 
-	<name>Acme-Madruga</name>
-	<url>http://www.acme-madruga.com</url>
-	<description>Users can use this web for Holly Week applications and publications</description>
+	<name>Sample Project</name>
+	<url>http://www.sample-project.com</url>
+
 	<!-- Build commands -->
 
 	<build>
@@ -223,7 +223,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.45</version>
+			<version>5.1.26</version>
 		</dependency>
 
 		<!-- Hibernate -->
@@ -315,4 +315,5 @@
 
 	</dependencies>
 
+	<description>This system allows people share their favourite Shouts.</description>
 </project> 
