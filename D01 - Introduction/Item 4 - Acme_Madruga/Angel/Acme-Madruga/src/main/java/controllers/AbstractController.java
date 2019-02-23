@@ -16,6 +16,9 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
+import utilities.Utiles;
+import domain.DomainEntity;
+
 @Controller
 public class AbstractController {
 
@@ -31,6 +34,22 @@ public class AbstractController {
 		result.addObject("stackTrace", ExceptionUtils.getStackTrace(oops));
 
 		return result;
+	}
+
+	public ModelAndView custom(final ModelAndView parameter) {
+
+		parameter.addObject("banner", Utiles.banner);
+		parameter.addObject("systemName", Utiles.systemName);
+
+		return parameter;
+	}
+
+	public <T extends DomainEntity> ModelAndView editFormsUrlId(final T o, final String s, final String parameterName, final ModelAndView parameter) {
+		if (o.getId() == 0)
+			parameter.addObject("requestURI", s);
+		else
+			parameter.addObject("requestURI", s + "?" + parameterName + "=" + o.getId());
+		return parameter;
 	}
 
 }

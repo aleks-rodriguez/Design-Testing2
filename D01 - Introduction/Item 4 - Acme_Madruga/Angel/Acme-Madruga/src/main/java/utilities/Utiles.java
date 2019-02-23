@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Random;
 
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+
 import security.Authority;
 
 public class Utiles {
@@ -20,6 +22,9 @@ public class Utiles {
 	public static Integer				hoursFinder;
 	public static Integer				resultsFinder;
 	public static Integer				phonePrefix;
+
+	public static String				systemName;
+	public static String				banner;
 
 
 	public static void main(final String[] args) {
@@ -38,6 +43,16 @@ public class Utiles {
 
 		return res;
 	}
+
+	public static String hashPassword(final String old) {
+		Md5PasswordEncoder encoder;
+		encoder = new Md5PasswordEncoder();
+		String passEncoded;
+		passEncoded = encoder.encodePassword(old, null);
+
+		return passEncoded;
+	}
+
 	public static String generateTicker() {
 		SimpleDateFormat formato;
 		formato = new SimpleDateFormat("yyMMdd");

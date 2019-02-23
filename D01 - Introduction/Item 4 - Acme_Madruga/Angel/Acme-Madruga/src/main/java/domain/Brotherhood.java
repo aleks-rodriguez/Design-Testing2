@@ -63,7 +63,7 @@ public class Brotherhood extends Actor {
 	public void setEnrolments(final Collection<Enrolment> enrolments) {
 		this.enrolments = enrolments;
 	}
-	@OneToOne(optional = false)
+	@OneToOne(optional = true)
 	public Area getArea() {
 		return this.area;
 	}

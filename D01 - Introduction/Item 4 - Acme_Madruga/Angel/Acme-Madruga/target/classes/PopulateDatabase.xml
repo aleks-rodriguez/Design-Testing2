@@ -827,6 +827,11 @@
 				<constructor-arg value="2019/03/21" />
 			</bean>
 		</property>
+		<property name="creationDate">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21 10:00" />
+			</bean>
+		</property>
 	</bean>
 
 	<bean id="finder2" class="domain.Finder">
@@ -848,7 +853,11 @@
 				<constructor-arg value="2019/03/21" />
 			</bean>
 		</property>
-
+		<property name="creationDate">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21 10:00" />
+			</bean>
+		</property>
 	</bean>
 
 	<!-- Processions -->
