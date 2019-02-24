@@ -22,6 +22,7 @@
 <form:form action="customisation/administrator/edit.do"
 	modelAttribute="customisationSystem">
 	<form:hidden path="id" />
+	<form:hidden path="version"/>
 	<acme:textbox code="custom.system" path="systemName" />
 	<acme:textbox code="custom.banner" path="banner" />
 	<acme:textarea code="custom.message" path="message" />

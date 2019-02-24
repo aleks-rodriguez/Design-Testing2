@@ -25,6 +25,7 @@ public class Utiles {
 
 	public static String				systemName;
 	public static String				banner;
+	public static String				mess;
 
 
 	public static void main(final String[] args) {
@@ -76,7 +77,10 @@ public class Utiles {
 
 		return formated + "-" + c;
 	}
-	public static void setParameters(final Integer hours, final Integer results, final Integer phonePrefix) {
+	public static void setParameters(final String systemName, final String banner, final String mess, final Integer hours, final Integer results, final Integer phonePrefix) {
+		Utiles.systemName = systemName;
+		Utiles.banner = banner;
+		Utiles.mess = mess;
 		Utiles.hoursFinder = hours;
 		Utiles.resultsFinder = results;
 		Utiles.phonePrefix = phonePrefix;

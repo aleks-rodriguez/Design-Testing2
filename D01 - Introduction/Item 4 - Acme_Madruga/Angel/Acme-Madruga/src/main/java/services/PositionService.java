@@ -29,6 +29,7 @@ public class PositionService {
 	}
 
 	public Position findOne(final int id) {
+		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
 		return this.repositoryPosition.findOne(id);
 	}
 

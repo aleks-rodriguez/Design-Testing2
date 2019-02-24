@@ -1,7 +1,7 @@
 <%--
  * action-2.jsp
  *
- * Copyright (C) 2018 Universidad de Sevilla
+ * Copyright (C) 2019 Universidad de Sevilla
  * 
  * The use of this project is hereby constrained to the conditions of the 
  * TDG Licence, a copy of which you may download from 
@@ -19,12 +19,16 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="${requestURI}" modelAttribute="profile">
-	<form:hidden path="id"/>
-	<acme:textbox code="user.nick" path="nick" />
-	<acme:textbox code="user.socialNetworkName" path="socialNetworkName" />
-	<acme:textbox code="user.link" path="link" />
-	<acme:submit name="save" code="user.save" />
+<form:form modelAttribute="position" action="${requestURI}">
+
+	<form:hidden path="id" />
+	<form:hidden path="version" />
+	<acme:textbox code="position.name" path="name" />
+	<acme:textarea code="position.otherLangs" path="otherLangs" />
+	<acme:submit name="save" code="position.save" />
+	<jstl:if test="${position.id != 0}">
+		<acme:submit name="delete" code="position.delete" />
+	</jstl:if>
 </form:form>
 
-<acme:cancel url="${requestCancel}" code="user.cancel"/>
+<acme:cancel url="${requestCancel}" code="position.cancel" />

@@ -28,6 +28,7 @@
 		<value>/views/about-us/tiles.xml</value>
 		<value>/views/custom/tiles.xml</value>
 		<value>/views/procession/tiles.xml</value>
+		<value>/views/position/tiles.xml</value>
 	</util:list>
 
 </beans>

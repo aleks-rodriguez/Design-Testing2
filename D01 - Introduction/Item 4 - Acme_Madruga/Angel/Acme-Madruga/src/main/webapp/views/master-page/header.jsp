@@ -27,7 +27,18 @@
 		<security:authorize access="hasRole('ADMIN')">
 			<li><a class="fNiv" href="customisation/administrator/custom.do"><spring:message
 						code="master.page.administrator.custom" /></a></li>
+			<li><a class="fNiv"> <spring:message
+						code="master.page.positions" />
+			</a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="position/administrator/list.do"><spring:message
+								code="master.page.position.list" /></a></li>
+					<li><a href="position/administrator/create.do"><spring:message
+								code="master.page.position.create" /> </a></li>
+				</ul></li>
 		</security:authorize>
+
 		<security:authorize access="hasRole('MEMBER')">
 
 			<li><a class="fNiv" href="procession/member/finder.do"><spring:message

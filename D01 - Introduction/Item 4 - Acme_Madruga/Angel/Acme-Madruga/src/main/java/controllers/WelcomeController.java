@@ -41,18 +41,17 @@ public class WelcomeController extends AbstractController {
 
 		final CustomisationSystem custom = this.serviceCustom.findUnique();
 
-		Utiles.systemName = custom.getSystemName();
-		Utiles.banner = custom.getBanner();
+		Utiles.setParameters(custom.getSystemName(), custom.getBanner(), custom.getMessage(), custom.getHoursFinder(), custom.getResultFinder(), custom.getPhonePrefix());
 
 		result = this.custom(new ModelAndView("welcome/index"));
 
-		result.addObject("mess", custom.getMessage());
+		result.addObject("mess", Utiles.mess);
 
 		Utiles.goodWords.addAll(custom.getGoodWords());
 		Utiles.badWords.addAll(custom.getBadWords());
 		Utiles.spamWords.addAll(custom.getSpamWords());
 		Utiles.priorities.addAll(custom.getPriorities());
-		Utiles.setParameters(custom.getHoursFinder(), custom.getResultFinder(), custom.getPhonePrefix());
+
 		return result;
 	}
 }

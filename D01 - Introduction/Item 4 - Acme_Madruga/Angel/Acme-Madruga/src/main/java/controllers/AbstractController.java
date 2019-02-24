@@ -40,15 +40,15 @@ public class AbstractController {
 
 		parameter.addObject("banner", Utiles.banner);
 		parameter.addObject("systemName", Utiles.systemName);
-
 		return parameter;
 	}
 
-	public <T extends DomainEntity> ModelAndView editFormsUrlId(final T o, final String s, final String parameterName, final ModelAndView parameter) {
+	public <T extends DomainEntity> ModelAndView editFormsUrlId(final T o, final String requestURI, final String parameterName, final String requestCancel, final ModelAndView parameter) {
 		if (o.getId() == 0)
-			parameter.addObject("requestURI", s);
+			parameter.addObject("requestURI", requestURI);
 		else
-			parameter.addObject("requestURI", s + "?" + parameterName + "=" + o.getId());
+			parameter.addObject("requestURI", requestURI + "?" + parameterName + "=" + o.getId());
+		parameter.addObject("requestCancel", requestCancel);
 		return parameter;
 	}
 

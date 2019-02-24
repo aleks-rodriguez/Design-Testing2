@@ -97,7 +97,7 @@ public class ProfileController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final Profile profile, final String message) {
 		ModelAndView result;
-		result = this.editFormsUrlId(profile, "profile/edit.do", "id", this.custom(new ModelAndView("profile/edit")));
+		result = this.editFormsUrlId(profile, "profile/edit.do", "id", "/profile/list.do", this.custom(new ModelAndView("profile/edit")));
 		result.addObject("profile", profile);
 		result.addObject("message", message);
 		return result;

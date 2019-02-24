@@ -21,9 +21,9 @@
 	<!-- Access control -->
 
 	<security:http auto-config="true" use-expressions="true">
-		
+
 		<!-- No authenticated -->
-		
+
 		<security:intercept-url pattern="/" access="permitAll" />
 		<security:intercept-url pattern="/favicon.ico"
 			access="permitAll" />
@@ -47,13 +47,14 @@
 		<!-- Administrator -->
 		<security:intercept-url pattern="/customisation/administrator/**"
 			access="hasRole('ADMIN')" />
-			
+		<security:intercept-url pattern="/position/administrator/**"
+			access="hasRole('ADMIN')" />
 		<!-- Brotherhood -->
-		
+
 		<!-- Member -->
 		<security:intercept-url pattern="/procession/member/finder.do"
 			access="hasRole('MEMBER')" />
-			
+
 		<!-- Authenticated -->
 		<security:intercept-url pattern="/profile/**"
 			access="isAuthenticated()" />

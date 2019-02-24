@@ -28,6 +28,7 @@
 		<value>/views/about-us/messages</value>
 		<value>/views/custom/messages</value>
 		<value>/views/procession/messages</value>
+		<value>/views/position/messages</value>
 	</util:list>
 
 </beans>
