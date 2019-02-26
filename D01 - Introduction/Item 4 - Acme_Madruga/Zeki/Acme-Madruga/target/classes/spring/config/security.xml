@@ -50,8 +50,14 @@
 
 		<security:intercept-url pattern="/profile/action-1.do" access="isAuthenticated()" /> 
 		<security:intercept-url pattern="/profile/action-2.do" access="isAuthenticated()" /> 
-		<security:intercept-url pattern="/profile/action-3.do" access="isAuthenticated()" /> 
-	
+		<security:intercept-url pattern="/profile/action-3.do" access="isAuthenticated()" />
+		
+		<security:intercept-url pattern="/box/edit.do" access="isAuthenticated()" /> 
+		<security:intercept-url pattern="/box/create.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/box/list.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/box/delete.do" access="isAuthenticated()" />
+		<security:intercept-url pattern="/box/update.do" access="isAuthenticated()" />
+		
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
 
 		<security:form-login 

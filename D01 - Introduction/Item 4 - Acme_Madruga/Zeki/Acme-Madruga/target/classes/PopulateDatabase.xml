@@ -15,7 +15,6 @@
 		<constructor-arg value="yyyy/MM/dd" />
 	</bean>
 
-
 	<!-- User accounts -->
 
 	<bean id="userAccount1" class="security.UserAccount">
