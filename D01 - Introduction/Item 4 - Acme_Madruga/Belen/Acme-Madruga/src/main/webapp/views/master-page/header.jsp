@@ -50,6 +50,8 @@
 						code="master.page.login" /></a></li>
 			<li><a class="fNiv" href="about-us/terms.do"><spring:message
 						code="master.page.terms" /></a></li>
+			<li><a class="fNiv" href="procession/list.do"><spring:message
+						code="master.page.procession.list" /></a></li>
 		</security:authorize>
 
 		<!-- Authenticated -->
@@ -65,6 +67,9 @@
 					<li><a href="j_spring_security_logout"><spring:message
 								code="master.page.logout" /> </a></li>
 				</ul></li>
+			<li><a class="fNiv" href="procession/list.do"><spring:message
+						code="master.page.procession.list" /></a></li>
+				
 		</security:authorize>
 	</ul>
 </div>

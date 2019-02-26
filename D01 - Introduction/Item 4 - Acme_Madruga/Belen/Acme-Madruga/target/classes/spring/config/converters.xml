@@ -22,6 +22,10 @@
 		<!-- Profile -->
 		<bean class="converters.ProfileToStringConverter" />
 		<bean class="converters.StringToProfileConverter" />
+		<!-- Procession -->
+		<bean class="converters.ProcessionToStringConverter" />
+		<bean class="converters.StringToProcessionConverter" />
+		
 	</util:list>
 
 </beans>

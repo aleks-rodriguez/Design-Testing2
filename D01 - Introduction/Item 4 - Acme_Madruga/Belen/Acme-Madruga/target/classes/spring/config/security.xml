@@ -43,6 +43,12 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/welcome/index.do"
 			access="permitAll" />
+		<security:intercept-url pattern="/procession/list.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/procession/show.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/float/list.do"
+			access="permitAll" />
 
 		<!-- Administrator -->
 		<security:intercept-url pattern="/customisation/administrator/**"
@@ -50,7 +56,9 @@
 		<security:intercept-url pattern="/position/administrator/**"
 			access="hasRole('ADMIN')" />
 		<!-- Brotherhood -->
-
+		<security:intercept-url pattern="/procession/brotherhood/**"
+			access="hasRole('BROTHERHOOD')" />
+			
 		<!-- Member -->
 		<security:intercept-url pattern="/procession/member/finder.do"
 			access="hasRole('MEMBER')" />
