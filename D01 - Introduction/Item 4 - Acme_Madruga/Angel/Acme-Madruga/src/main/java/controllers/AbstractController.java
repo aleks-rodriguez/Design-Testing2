@@ -45,11 +45,12 @@ public class AbstractController {
 		return parameter;
 	}
 
-	public <T extends DomainEntity> ModelAndView editFormsUrlId(final T o, final String requestURI, final Map<String, String> requestParams, final String requestCancel, final ModelAndView parameter) {
+	public <T extends DomainEntity> ModelAndView editFormsUrlId(final String nameEntity, final T o, final String requestURI, final Map<String, String> requestParams, final String requestCancel, final ModelAndView parameter) {
 		if (o.getId() == 0)
 			parameter.addObject("requestURI", requestURI);
-		else
+		else if (requestParams.size() > 0 && o.getId() != 0)
 			parameter.addObject("requestURI", requestURI + "?" + Utiles.buildUrl(requestParams));
+		parameter.addObject(nameEntity, o);
 		parameter.addObject("requestCancel", requestCancel);
 		return parameter;
 	}

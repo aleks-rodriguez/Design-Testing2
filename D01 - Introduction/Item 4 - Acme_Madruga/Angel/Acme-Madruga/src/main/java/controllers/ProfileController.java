@@ -105,7 +105,7 @@ public class ProfileController extends AbstractController {
 		map = new HashMap<String, String>();
 		map.put("id", String.valueOf(profile.getId()));
 
-		result = this.editFormsUrlId(profile, "profile/edit.do", map, "/profile/list.do", this.custom(new ModelAndView("profile/edit")));
+		result = this.editFormsUrlId("profile", profile, "profile/edit.do", map, "/profile/list.do", this.custom(new ModelAndView("profile/edit")));
 		result.addObject("message", message);
 		return result;
 	}

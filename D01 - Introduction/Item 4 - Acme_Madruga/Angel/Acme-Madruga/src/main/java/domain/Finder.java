@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -47,7 +48,7 @@ public class Finder extends DomainEntity {
 	public void setProcessions(final Collection<Procession> processions) {
 		this.processions = processions;
 	}
-
+	@SafeHtml
 	public String getSingleWord() {
 		return this.singleWord;
 	}

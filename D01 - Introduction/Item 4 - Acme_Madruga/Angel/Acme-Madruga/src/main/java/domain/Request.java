@@ -15,8 +15,8 @@ import javax.validation.constraints.NotNull;
 public class Request extends DomainEntity {
 
 	private String	status;
-	private int		marchRow;
-	private int		marchColumn;
+	private Integer	marchRow;
+	private Integer	marchColumn;
 	private String	reasonWhyRejected;
 
 
@@ -30,20 +30,20 @@ public class Request extends DomainEntity {
 	}
 	@NotNull
 	@Min(value = 1)
-	public int getMarchRow() {
+	public Integer getMarchRow() {
 		return this.marchRow;
 	}
 
-	public void setMarchRow(final int marchRow) {
+	public void setMarchRow(final Integer marchRow) {
 		this.marchRow = marchRow;
 	}
 	@NotNull
 	@Min(value = 1)
-	public int getMarchColumn() {
+	public Integer getMarchColumn() {
 		return this.marchColumn;
 	}
 
-	public void setMarchColumn(final int marchColumn) {
+	public void setMarchColumn(final Integer marchColumn) {
 		this.marchColumn = marchColumn;
 	}
 

@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
 
 import security.UserAccount;
@@ -39,13 +40,14 @@ public abstract class Actor extends DomainEntity {
 
 
 	@NotBlank
+	@SafeHtml
 	public String getName() {
 		return this.name;
 	}
 	public void setName(final String name) {
 		this.name = name;
 	}
-
+	@SafeHtml
 	public String getMiddleName() {
 		return this.middleName;
 	}
@@ -54,6 +56,7 @@ public abstract class Actor extends DomainEntity {
 	}
 
 	@NotBlank
+	@SafeHtml
 	public String getSurname() {
 		return this.surname;
 	}
@@ -70,6 +73,7 @@ public abstract class Actor extends DomainEntity {
 	}
 
 	@NotBlank
+	@SafeHtml
 	@Pattern(regexp = "^([a-zA-Z0-9_!#$%&*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+)|([\\w\\s]+<[a-zA-Z0-9_!#$%&*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+>+)|([0-9a-zA-Z]([-.\\\\w]*[0-9a-zA-Z])+@+(?=\\?))|([\\w\\s]+<[a-zA-Z0-9_!#$%&*+/=?`{|}~^.-]+@+>)$")
 	public String getEmail() {
 		return this.email;
@@ -77,14 +81,14 @@ public abstract class Actor extends DomainEntity {
 	public void setEmail(final String email) {
 		this.email = email;
 	}
-
+	@SafeHtml
 	public String getPhone() {
 		return this.phone;
 	}
 	public void setPhone(final String phone) {
 		this.phone = phone;
 	}
-
+	@SafeHtml
 	public String getAdress() {
 		return this.adress;
 	}

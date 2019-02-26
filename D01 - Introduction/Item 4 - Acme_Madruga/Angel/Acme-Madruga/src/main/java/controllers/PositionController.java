@@ -86,7 +86,7 @@ public class PositionController extends AbstractController {
 		Map<String, String> map;
 		map = new HashMap<String, String>();
 		map.put("id", String.valueOf(position.getId()));
-		result = this.editFormsUrlId(position, "position/administrator/edit.do", map, "/position/administrator/list.do", this.custom(new ModelAndView("position/edit")));
+		result = this.editFormsUrlId("position", position, "position/administrator/edit.do", map, "/position/administrator/list.do", this.custom(new ModelAndView("position/edit")));
 		result.addObject("message", message);
 		return result;
 	}

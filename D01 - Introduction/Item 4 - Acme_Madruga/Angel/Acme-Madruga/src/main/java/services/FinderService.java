@@ -91,7 +91,7 @@ public class FinderService {
 	private Collection<Procession> findProcessionsByQuery(final Finder finder) {
 		StringBuilder builder;
 		builder = new StringBuilder();
-		builder.append("select distinct p from Brotherhood b join b.floats f join f.processions p where");
+		builder.append("select p from Brotherhood b join b.processions p where");
 
 		final EntityManagerFactory emFactory = Persistence.createEntityManagerFactory(DatabaseConfig.PersistenceUnit);
 		final EntityManager entityManager = emFactory.createEntityManager();

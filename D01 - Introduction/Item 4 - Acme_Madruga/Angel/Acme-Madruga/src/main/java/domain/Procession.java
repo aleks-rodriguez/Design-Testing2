@@ -18,6 +18,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -32,10 +33,18 @@ public class Procession extends DomainEntity {
 	private String				title;
 	private String				description;
 	private Date				momentOrganised;
-
+	private Boolean				finalMode;
 	private Collection<Request>	requests;
 	private Collection<Float>	floats;
 
+
+	public Boolean getFinalMode() {
+		return this.finalMode;
+	}
+
+	public void setFinalMode(final Boolean finalMode) {
+		this.finalMode = finalMode;
+	}
 
 	@OneToMany
 	public Collection<Request> getRequests() {
@@ -58,6 +67,7 @@ public class Procession extends DomainEntity {
 	}
 
 	@NotBlank
+	@SafeHtml
 	public String getTitle() {
 		return this.title;
 	}
@@ -67,6 +77,7 @@ public class Procession extends DomainEntity {
 	}
 
 	@NotBlank
+	@SafeHtml
 	public String getDescription() {
 		return this.description;
 	}

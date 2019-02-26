@@ -11,6 +11,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.SafeHtml;
+
 @Entity
 @Access(AccessType.PROPERTY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -23,6 +25,7 @@ public class Area extends DomainEntity {//le pongo el notnull porque, aunque no 
 
 
 	@NotNull
+	@SafeHtml
 	public String getName() {
 		return this.name;
 	}

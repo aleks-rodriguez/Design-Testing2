@@ -876,6 +876,7 @@
 				<ref bean="float2" />
 			</list>
 		</property>
+		<property name="finalMode" value="false" />
 	</bean>
 
 	<bean id="procession2" class="domain.Procession">
@@ -900,7 +901,7 @@
 				<ref bean="float4" />
 			</list>
 		</property>
-
+		<property name="finalMode" value="false" />
 	</bean>
 
 	<!-- Requests -->
