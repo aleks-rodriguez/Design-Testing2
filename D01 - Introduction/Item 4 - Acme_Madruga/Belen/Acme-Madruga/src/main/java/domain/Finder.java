@@ -26,7 +26,18 @@ public class Finder extends DomainEntity {
 	private Date					minimunDate;
 	private Date					maximumDate;
 	private Collection<Procession>	processions;
+	private Date					creationDate;
 
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
+	public Date getCreationDate() {
+		return this.creationDate;
+	}
+
+	public void setCreationDate(final Date creationDate) {
+		this.creationDate = creationDate;
+	}
 
 	@ManyToMany
 	public Collection<Procession> getProcessions() {

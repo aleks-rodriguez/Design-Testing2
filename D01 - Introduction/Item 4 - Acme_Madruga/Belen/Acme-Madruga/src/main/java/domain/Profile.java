@@ -8,6 +8,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
 
 @Entity
@@ -21,6 +22,7 @@ public class Profile extends DomainEntity {
 
 
 	@NotBlank
+	@SafeHtml
 	public String getNick() {
 		return this.nick;
 	}
@@ -29,6 +31,7 @@ public class Profile extends DomainEntity {
 		this.nick = nick;
 	}
 	@NotBlank
+	@SafeHtml
 	public String getSocialNetworkName() {
 		return this.socialNetworkName;
 	}

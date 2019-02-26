@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,7 +23,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Access(AccessType.PROPERTY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Table(indexes = {@Index(columnList = "ticker, title, description, momentOrganised")})
+@Table(indexes = {
+	@Index(columnList = "ticker, title, description, momentOrganised")
+})
 public class Procession extends DomainEntity {
 
 	private String				ticker;
@@ -84,7 +85,7 @@ public class Procession extends DomainEntity {
 		this.momentOrganised = momentOrganised;
 	}
 
-	@ManyToMany
+	@OneToMany
 	public Collection<Float> getFloats() {
 		return this.floats;
 	}

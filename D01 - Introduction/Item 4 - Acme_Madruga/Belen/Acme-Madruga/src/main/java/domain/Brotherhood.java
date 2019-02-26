@@ -29,8 +29,17 @@ public class Brotherhood extends Actor {
 	private Collection<Enrolment>	enrolments;
 	private Area					area;
 	private Collection<Float>		floats;
+	private Collection<Procession>	processions;
 
 
+	@OneToMany
+	public Collection<Procession> getProcessions() {
+		return this.processions;
+	}
+
+	public void setProcessions(final Collection<Procession> processions) {
+		this.processions = processions;
+	}
 	@NotBlank
 	public String getTitle() {
 		return this.title;
@@ -63,7 +72,7 @@ public class Brotherhood extends Actor {
 	public void setEnrolments(final Collection<Enrolment> enrolments) {
 		this.enrolments = enrolments;
 	}
-	@OneToOne(optional = false)
+	@OneToOne(optional = true)
 	public Area getArea() {
 		return this.area;
 	}

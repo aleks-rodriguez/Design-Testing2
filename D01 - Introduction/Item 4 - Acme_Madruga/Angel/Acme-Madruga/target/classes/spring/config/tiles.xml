@@ -29,6 +29,7 @@
 		<value>/views/custom/tiles.xml</value>
 		<value>/views/procession/tiles.xml</value>
 		<value>/views/position/tiles.xml</value>
+		<value>/views/box/tiles.xml</value>
 	</util:list>
 
 </beans>

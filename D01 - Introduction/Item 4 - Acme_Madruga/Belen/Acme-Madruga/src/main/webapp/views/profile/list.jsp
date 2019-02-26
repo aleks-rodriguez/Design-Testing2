@@ -29,6 +29,10 @@
 	<display:column property="socialNetworkName"
 		titleKey="profile.socialNetworkName" />
 	<display:column property="link" titleKey="profile.link" />
+	<display:column titleKey="profile.edit">
+		<a href="profile/edit.do?id=${row.id}"><spring:message
+				code="profile.edit" /></a>
+	</display:column>
 	<display:column titleKey="profile.delete">
 		<a href="profile/delete.do?id=${row.id}"><spring:message
 				code="profile.delete" /></a>

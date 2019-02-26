@@ -10,6 +10,9 @@
 
 package controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -97,10 +100,13 @@ public class ProfileController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final Profile profile, final String message) {
 		ModelAndView result;
-		result = this.editFormsUrlId(profile, "profile/edit.do", "id", "/profile/list.do", this.custom(new ModelAndView("profile/edit")));
-		result.addObject("profile", profile);
+
+		Map<String, String> map;
+		map = new HashMap<String, String>();
+		map.put("id", String.valueOf(profile.getId()));
+
+		result = this.editFormsUrlId(profile, "profile/edit.do", map, "/profile/list.do", this.custom(new ModelAndView("profile/edit")));
 		result.addObject("message", message);
 		return result;
 	}
-
 }

@@ -10,6 +10,8 @@
 
 package controllers;
 
+import java.util.Map;
+
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ClassUtils;
@@ -43,11 +45,11 @@ public class AbstractController {
 		return parameter;
 	}
 
-	public <T extends DomainEntity> ModelAndView editFormsUrlId(final T o, final String requestURI, final String parameterName, final String requestCancel, final ModelAndView parameter) {
+	public <T extends DomainEntity> ModelAndView editFormsUrlId(final T o, final String requestURI, final Map<String, String> requestParams, final String requestCancel, final ModelAndView parameter) {
 		if (o.getId() == 0)
 			parameter.addObject("requestURI", requestURI);
 		else
-			parameter.addObject("requestURI", requestURI + "?" + parameterName + "=" + o.getId());
+			parameter.addObject("requestURI", requestURI + "?" + Utiles.buildUrl(requestParams));
 		parameter.addObject("requestCancel", requestCancel);
 		return parameter;
 	}

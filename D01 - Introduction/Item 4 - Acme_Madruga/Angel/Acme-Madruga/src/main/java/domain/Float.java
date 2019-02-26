@@ -9,7 +9,6 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -20,11 +19,9 @@ import org.hibernate.validator.constraints.NotBlank;
 @Table(name = "`float`")
 public class Float extends DomainEntity {
 
-	private String					title;
-	private String					description;
-	private Collection<String>		pictures;
-
-	private Collection<Procession>	processions;
+	private String				title;
+	private String				description;
+	private Collection<String>	pictures;
 
 
 	@NotBlank
@@ -52,15 +49,6 @@ public class Float extends DomainEntity {
 
 	public void setPictures(final Collection<String> pictures) {
 		this.pictures = pictures;
-	}
-
-	@ManyToMany(mappedBy = "floats")
-	public Collection<Procession> getProcessions() {
-		return this.processions;
-	}
-
-	public void setProcessions(final Collection<Procession> processions) {
-		this.processions = processions;
 	}
 
 }

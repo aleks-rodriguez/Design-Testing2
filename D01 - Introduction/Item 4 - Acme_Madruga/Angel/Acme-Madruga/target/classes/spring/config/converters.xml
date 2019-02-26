@@ -12,6 +12,10 @@
 	">
 
 	<util:list id="converters">
+	
+		<!-- Box -->
+		<bean class="converters.BoxToStringConverter" />
+		<bean class="converters.StringToBoxConverter" />
 		<!-- Position -->
 		<bean class="converters.PositionToStringConverter" />
 		<bean class="converters.StringToPositionConverter" />

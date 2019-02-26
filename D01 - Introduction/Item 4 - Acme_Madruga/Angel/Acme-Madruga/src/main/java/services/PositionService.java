@@ -54,11 +54,14 @@ public class PositionService {
 		return saved;
 	}
 
-	public void delete(final int id) {
+	public boolean delete(final int id) {
+		boolean res = false;
 		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
 		Position position;
 		position = this.repositoryPosition.findOne(id);
-		Assert.isTrue(!this.repositoryPosition.getGivenPositions().contains(position) && !this.repositoryPosition.getPositionsRequested().contains(position));
-		this.repositoryPosition.delete(position);
+		res = !this.repositoryPosition.getGivenPositions().contains(position) && !this.repositoryPosition.getPositionsRequested().contains(position);
+		if (res == false)
+			this.repositoryPosition.delete(position);
+		return res;
 	}
 }

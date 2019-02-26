@@ -47,7 +47,7 @@ public class LoginController extends AbstractController {
 
 		ModelAndView result;
 
-		result = new ModelAndView("security/login");
+		result = this.custom(new ModelAndView("security/login"));
 		result.addObject("credentials", credentials);
 		result.addObject("showError", showError);
 
@@ -60,7 +60,7 @@ public class LoginController extends AbstractController {
 	public ModelAndView failure() {
 		ModelAndView result;
 
-		result = new ModelAndView("redirect:login.do?showError=true");
+		result = this.custom(new ModelAndView("redirect:login.do?showError=true"));
 
 		return result;
 	}

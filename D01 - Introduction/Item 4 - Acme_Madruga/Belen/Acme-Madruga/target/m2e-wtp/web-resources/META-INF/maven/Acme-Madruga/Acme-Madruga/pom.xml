@@ -245,7 +245,11 @@
 			<artifactId>hibernate-c3p0</artifactId>
 			<version>4.2.3.Final</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.11.2</version>
+		</dependency>
 		<!-- Javax -->
 
 		<dependency>
