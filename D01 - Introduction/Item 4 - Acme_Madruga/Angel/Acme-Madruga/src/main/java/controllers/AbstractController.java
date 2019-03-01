@@ -30,7 +30,7 @@ public class AbstractController {
 	public ModelAndView panic(final Throwable oops) {
 		ModelAndView result;
 
-		result = new ModelAndView("misc/panic");
+		result = this.custom(new ModelAndView("misc/panic"));
 		result.addObject("name", ClassUtils.getShortName(oops.getClass()));
 		result.addObject("exception", oops.getMessage());
 		result.addObject("stackTrace", ExceptionUtils.getStackTrace(oops));
@@ -45,14 +45,14 @@ public class AbstractController {
 		return parameter;
 	}
 
-	public <T extends DomainEntity> ModelAndView editFormsUrlId(final String nameEntity, final T o, final String requestURI, final Map<String, String> requestParams, final String requestCancel, final ModelAndView parameter) {
-		if (o.getId() == 0)
-			parameter.addObject("requestURI", requestURI);
-		else if (requestParams.size() > 0 && o.getId() != 0)
-			parameter.addObject("requestURI", requestURI + "?" + Utiles.buildUrl(requestParams));
-		parameter.addObject(nameEntity, o);
+	public <T extends DomainEntity> ModelAndView editFormsUrlId(final String requestURI, final Map<String, String> requestParams, final String requestCancel, final ModelAndView parameter) {
+		String req = requestURI;
+
+		if (requestParams.size() > 0)
+			req += "?" + Utiles.buildUrl(requestParams);
+
+		parameter.addObject("requestURI", req);
 		parameter.addObject("requestCancel", requestCancel);
 		return parameter;
 	}
-
 }

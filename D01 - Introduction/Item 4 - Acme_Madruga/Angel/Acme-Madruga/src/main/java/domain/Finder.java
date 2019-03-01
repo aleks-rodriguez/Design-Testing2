@@ -48,7 +48,7 @@ public class Finder extends DomainEntity {
 	public void setProcessions(final Collection<Procession> processions) {
 		this.processions = processions;
 	}
-	@SafeHtml
+	@SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
 	public String getSingleWord() {
 		return this.singleWord;
 	}

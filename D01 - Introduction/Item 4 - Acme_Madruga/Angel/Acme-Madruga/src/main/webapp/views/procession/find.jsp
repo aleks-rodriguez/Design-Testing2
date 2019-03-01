@@ -11,15 +11,23 @@
 
 
 <form:form modelAttribute="finder" action="${requestURI}">
+	<form:hidden path="id" />
 
 	<acme:textbox code="finder.singleKey" path="singleWord" />
 	<!-- Find all areas -->
-	
+	<acme:select items="${areas}" itemLabel="name" code="finder.area"
+		path="area" />
 	<acme:date code="finder.minDate" path="minimunDate" id="minDate" />
 	<acme:date code="finder.maxDate" path="maximumDate" id="maxDate" />
-	<acme:submit name="save" code="finder.save"/>
-	<a href="fixuptask/handyworker/searchList.do?id=${finder.id}"><spring:message
+	<acme:submit name="search" code="finder.save" />
+	<a href="procession/member/searchList.do?id=${finder.id}"><spring:message
 			code="finder.previous" /></a>
 </form:form>
-
-<acme:cancel url="${requestCancel}" code="finder.cancel"/>
+<jstl:out value="${oops}" />
+<jstl:forEach items="${binding}" var="i">
+	<jstl:out value="${i}" />
+</jstl:forEach>
+<jstl:forEach items="${trace}" var="i">
+	<jstl:out value="${i}" />
+</jstl:forEach>
+<acme:cancel url="${requestCancel}" code="finder.cancel" />

@@ -17,6 +17,9 @@ public interface FinderRepository extends JpaRepository<Finder, Integer> {
 	@Query("select a from Actor a where a.account.id = ?1")
 	Actor findActorByUserAccountId(int id);
 
-	@Query("select p from Procession p")
+	@Query("select m.finder from Member m where m.account.id = ?1")
+	Finder findFinderFromMemberUA(int id);
+
+	@Query("select p from Procession p where p.finalMode = true")
 	Collection<Procession> findAllProcessions();
 }

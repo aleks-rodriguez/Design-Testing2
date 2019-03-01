@@ -12,7 +12,11 @@
 	">
 
 	<util:list id="converters">
-	
+
+		<!-- Box -->
+		<bean class="converters.AreaToStringConverter" />
+		<bean class="converters.StringToAreaConverter" />
+
 		<!-- Box -->
 		<bean class="converters.BoxToStringConverter" />
 		<bean class="converters.StringToBoxConverter" />
@@ -22,6 +26,10 @@
 		<!-- Profile -->
 		<bean class="converters.ProfileToStringConverter" />
 		<bean class="converters.StringToProfileConverter" />
+		<!-- Procession -->
+		<bean class="converters.ProcessionToStringConverter" />
+		<bean class="converters.StringToProcessionConverter" />
+
 	</util:list>
 
 </beans>

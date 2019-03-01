@@ -105,8 +105,9 @@ public class ProfileService {
 			result.setLink(profile.getLink());
 			result.setNick(profile.getNick());
 			result.setSocialNetworkName(profile.getSocialNetworkName());
+
 		}
-		this.validator.validate(profile, binding);
+		this.validator.validate(result, binding);
 		return result;
 	}
 }

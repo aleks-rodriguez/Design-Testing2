@@ -13,9 +13,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
+import security.LoginService;
 import utilities.AbstractTest;
 import utilities.Utiles;
+import domain.Actor;
 import domain.Finder;
+import domain.Member;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -31,8 +34,9 @@ public class FinderServiceTest extends AbstractTest {
 	@Test
 	public void testFinder() {
 		super.authenticate("member1");
-
-		final Finder f = this.serviceFinder.memberFinder();
+		final Actor a = this.serviceFinder.findByUserAccount(LoginService.getPrincipal().getId());
+		final Member m = (Member) a;
+		final Finder f = this.serviceFinder.findOne(m.getFinder().getId());
 		final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			f.setMaximumDate(format.parse("2022-03-21"));
@@ -43,8 +47,7 @@ public class FinderServiceTest extends AbstractTest {
 		Utiles.resultsFinder = 10;
 		final Finder saved = this.serviceFinder.save(f);
 		System.out.println();
-		Assert.isTrue(saved.getProcessions().size() > 0);
+		Assert.isTrue(saved.getProcessions().size() >= 0);
 		super.unauthenticate();
 	}
-
 }

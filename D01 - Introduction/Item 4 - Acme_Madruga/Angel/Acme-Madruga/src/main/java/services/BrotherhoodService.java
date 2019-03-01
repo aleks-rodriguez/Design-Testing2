@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import repositories.BrotherhoodRepository;
 import security.Authority;
@@ -97,6 +98,14 @@ public class BrotherhoodService {
 		modify = this.brotherhoodRepository.saveAndFlush(brotherhood);
 
 		return modify;
+	}
+
+	public Collection<Brotherhood> getBrotherhoodsByAreaId(final int id) {
+		Assert.notNull(id);
+		Collection<Brotherhood> bhs;
+		bhs = this.brotherhoodRepository.getBrotherhoodsByAreaId(id);
+		Assert.notNull(bhs);
+		return bhs;
 	}
 
 }

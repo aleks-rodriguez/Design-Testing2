@@ -41,7 +41,7 @@
 
 		<security:authorize access="hasRole('MEMBER')">
 
-			<li><a class="fNiv" href="procession/member/finder.do"><spring:message
+			<li><a class="fNiv" href="procession/member/search.do"><spring:message
 						code="master.page.finder" /></a></li>
 		</security:authorize>
 		<!-- Anonymous -->
