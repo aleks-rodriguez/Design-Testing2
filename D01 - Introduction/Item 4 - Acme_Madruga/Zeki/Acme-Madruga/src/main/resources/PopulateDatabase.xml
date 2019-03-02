@@ -592,6 +592,7 @@
 		<property name="fromSystem" value="true" />
 		<property name="message">
 			<list>
+			<ref bean="message1"/>
 			</list>
 		</property>
 		<property name="boxes">
@@ -640,6 +641,7 @@
 		<property name="fromSystem" value="true" />
 		<property name="message">
 			<list>
+			<ref bean="message1"/>
 			</list>
 		</property>
 		<property name="boxes">
@@ -696,6 +698,38 @@
 		</property>
 	</bean>
 	<!-- Messages -->
+	
+<bean class="domain.Message" id="message1">
+<property name="sender">
+<ref bean="member1"/>
+</property>
+<property name="receiver">
+<list>
+<ref bean="member2"/>
+</list>
+</property>
+<property name="momentsent">
+<bean factory-method="parse" factory-bean="dateFormat">
+<constructor-arg value="2018/11/14"/>
+</bean>
+</property>
+<property value="subjectMessage1" name="subject"/>
+<property value="bodyMessage1" name="body"/>
+<property name="tags">
+<list>
+<value>etiqueta1</value>
+<value>etiqueta2</value>
+<value>etiqueta3</value>
+</list>
+</property>
+<property name="box">
+<list>
+<ref bean="box22"/>
+<ref bean="box26"/>
+</list>
+</property>
+<property value="LOW" name="priority"/>
+</bean>
 
 	<!-- Floats -->
 

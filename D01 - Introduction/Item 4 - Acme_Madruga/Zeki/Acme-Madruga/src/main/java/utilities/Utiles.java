@@ -80,4 +80,17 @@ public class Utiles {
 
 		return res;
 	}
+
+	public static String[] priorities() {
+		String[] priorities;
+		priorities = new String[3];
+
+		Arrays.fill(priorities, "");
+
+		priorities[0] = "LOW";
+		priorities[1] = "NEUTRAL";
+		priorities[2] = "HIGH";
+
+		return priorities;
+	}
 }

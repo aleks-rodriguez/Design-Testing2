@@ -25,10 +25,6 @@
 <%@ attribute name="path" required="true" %>
 <%@ attribute name="code" required="true" %>
 <%@ attribute name="items" required="true" type="java.util.Collection" %>
-<%@ attribute name="itemLabel" required="true" %>
-
-<%@ attribute name="id" required="false" %>
-<%@ attribute name="onchange" required="false" %>
 
 <jstl:if test="${id == null}">
 	<jstl:set var="id" value="${UUID.randomUUID().toString()}" />
@@ -40,15 +36,14 @@
 
 <%-- Definition --%>
 
-<div>
+	
 	<form:label path="${path}">
 		<spring:message code="${code}" />
-	</form:label>	
-	<form:select id="${id}" path="${path}" onchange="${onchange}">
-		<form:option value="0" label="----" />		
-		<form:options items="${items}" itemValue="id" itemLabel="${itemLabel}" />
-	</form:select>
-	<form:errors path="${path}" cssClass="error" />
-</div>
+		</form:label>
+			<form:select path="${path}">
+				<form:option value="NONE" label="--- Select ---" />
+				<form:options items="${items}" />
+			</form:select>
+
 
 

@@ -21,6 +21,12 @@
 			<!-- Profile -->
 		<bean class="converters.BoxToStringConverter"/>
 		<bean class="converters.StringToBoxConverter"/>
+			<!-- Message -->
+		<bean class="converters.MessageToStringConverter"/>
+		<bean class="converters.StringToMessageConverter"/>
+			<!-- Actor -->
+		<bean class="converters.ActorToStringConverter"/>
+		<bean class="converters.StringToActorConverter"/>
 	</util:list>
 	
 </beans>

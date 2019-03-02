@@ -27,7 +27,7 @@
 		</jstl:forEach>
 	</display:column>
 	<display:column titleKey="box.messages">
-		<a href="box/mess/list.do?boxId=${row.id}"><spring:message
+		<a href="message/list.do?boxId=${row.id}"><spring:message
 				code="box.messages" /></a>
 	</display:column>
 	<display:column titleKey="box.edit" >

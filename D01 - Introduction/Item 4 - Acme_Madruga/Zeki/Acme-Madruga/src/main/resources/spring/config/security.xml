@@ -58,6 +58,8 @@
 		<security:intercept-url pattern="/box/delete.do" access="isAuthenticated()" />
 		<security:intercept-url pattern="/box/update.do" access="isAuthenticated()" />
 		
+		<security:intercept-url pattern="/message/**" access="isAuthenticated()" />
+		
 		<security:intercept-url pattern="/**" access="hasRole('NONE')" />
 
 		<security:form-login 
