@@ -58,7 +58,9 @@
 		<!-- Brotherhood -->
 		<security:intercept-url pattern="/procession/brotherhood/**"
 			access="hasRole('BROTHERHOOD')" />
-			
+		<security:intercept-url pattern="/float/brotherhood/**"
+			access="hasRole('BROTHERHOOD')" />	
+		
 		<!-- Member -->
 		<security:intercept-url pattern="/procession/member/finder.do"
 			access="hasRole('MEMBER')" />

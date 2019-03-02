@@ -859,6 +859,7 @@
 		<property name="ticker" value="190219-AAAAAA" />
 		<property name="title" value="A esta es" />
 		<property name="description" value="A esta es la descripcion" />
+		<property name="finalMode" value="false"/>
 		<property name="momentOrganised">
 			<bean factory-bean="dateFormat" factory-method="parse">
 				<constructor-arg value="2020/03/21" />
@@ -883,6 +884,7 @@
 		<property name="ticker" value="190220-AABBAA" />
 		<property name="title" value="A esta es NO" />
 		<property name="description" value="A esta NO es la descripcion" />
+		<property name="finalMode" value="false"/>
 		<property name="momentOrganised">
 			<bean factory-bean="dateFormat" factory-method="parse">
 				<constructor-arg value="2022/03/21" />

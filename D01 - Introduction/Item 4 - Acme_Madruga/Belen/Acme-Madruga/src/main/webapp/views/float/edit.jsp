@@ -20,18 +20,19 @@
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <form:form action="${requestURI}" modelAttribute="procession">
-<form:hidden path="id"/>
+
+<form:hidden path="floats"/>
 	
 	<acme:textbox code="procession.ticker" path="ticker" readonly="true"/>
 	<acme:textbox code="procession.title" path="title"/>
 	<acme:textbox code="procession.description" path="description"/>
 	<acme:date code="procession.momentOrganised" path="momentOrganised" id="1"/>
-	<input type="checkbox" name="finalMode" value="true"><spring:message code="procession.finalMode" />
+	<input type="checkbox" name="finalMode"><spring:message code="procession.finalMode" />
 	<br>
 	<div
 		style="width: 500px; height: 100px; overflow-y: scroll; border-style: solid; border-color: initial;">
- <jstl:forEach items="${floats}" var="f">
-		<input type="checkbox" name="floats" value="${f.id}" />
+	<jstl:forEach items="${floats}" var="f">
+		<input type="checkbox" name="title" value="${f.id}" />
 		<jstl:out value="${f.title}" />
 		<br>
 	</jstl:forEach>

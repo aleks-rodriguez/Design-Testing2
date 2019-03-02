@@ -25,6 +25,10 @@
 		<!-- Procession -->
 		<bean class="converters.ProcessionToStringConverter" />
 		<bean class="converters.StringToProcessionConverter" />
+		<!-- Float -->
+		<bean class="converters.FloatToStringConverter" />
+		<bean class="converters.StringToFloatConverter" />
+		
 		
 	</util:list>
 

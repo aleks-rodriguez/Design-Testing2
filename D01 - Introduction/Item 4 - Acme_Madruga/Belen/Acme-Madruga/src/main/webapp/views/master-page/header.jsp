@@ -38,11 +38,16 @@
 								code="master.page.position.create" /> </a></li>
 				</ul></li>
 		</security:authorize>
-
+		<!-- Member -->
 		<security:authorize access="hasRole('MEMBER')">
 
 			<li><a class="fNiv" href="procession/member/finder.do"><spring:message
 						code="master.page.finder" /></a></li>
+		</security:authorize>
+		<!-- Brotherhood -->
+		<security:authorize access="hasRole('BROTHERHOOD')">
+			<li><a class="fNiv" href="procession/brotherhood/create.do"><spring:message
+						code="master.page.procession.create" /></a></li>
 		</security:authorize>
 		<!-- Anonymous -->
 		<security:authorize access="isAnonymous()">
@@ -52,6 +57,8 @@
 						code="master.page.terms" /></a></li>
 			<li><a class="fNiv" href="procession/list.do"><spring:message
 						code="master.page.procession.list" /></a></li>
+			<li><a class="fNiv" href="float/list.do"><spring:message
+						code="master.page.float.list" /></a></li>
 		</security:authorize>
 
 		<!-- Authenticated -->

@@ -19,32 +19,27 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <p>
-	<spring:message code="procession.list" />
+	<spring:message code="float.list" />
 </p>
 
-<display:table name="processions" id="row" requestURI="${requestURI}"
+<display:table name="floats" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
-	<display:column titleKey="procession.show">
-		<a href="procession/brotherhood/show.do?id=${row.id}"><spring:message
-				code="procession.show" /></a>
+	<display:column titleKey="float.show">
+		<a href="float/brotherhood/show.do?id=${row.id}"><spring:message
+				code="float.show" /></a>
 	</display:column>
-	<display:column property="ticker" titleKey="procession.ticker" />
-	<display:column property="title" titleKey="procession.title" />
-	<display:column property="description"
-		titleKey="procession.description" />
+	<display:column property="title" titleKey="float.title" />
+	<display:column property="description" titleKey="float.description" />
+	<display:column property="pictures" titleKey="float.pictures"></display:column>
 
-	<display:column titleKey="procession.float">
-		<a href="float/brotherhood/list.do?id=${row.id}"><spring:message
-				code="procession.float" /></a>
-	</display:column>
 	<security:authorize access="hasRole('BROTHERHOOD')">
-	<display:column titleKey="procession.edit">
-		<a href="procession/brotherhood/edit.do?id=${row.id}"><spring:message
-				code="procession.edit" /></a>
+	<display:column titleKey="float.edit">
+		<a href="float/brotherhood/edit.do?id=${row.id}"><spring:message
+				code="float.edit" /></a>
 	</display:column>
-	<display:column titleKey="procession.delete">
-		<a href="procession/brotherhood/delete.do?id=${row.id}"><spring:message
-				code="procession.delete" /></a>
+	<display:column titleKey="float.delete">
+		<a href="float/brotherhood/delete.do?id=${row.id}"><spring:message
+				code="float.delete" /></a>
 	</display:column>
 	</security:authorize>
 	<jstl:forEach items="${errors}" var="error">

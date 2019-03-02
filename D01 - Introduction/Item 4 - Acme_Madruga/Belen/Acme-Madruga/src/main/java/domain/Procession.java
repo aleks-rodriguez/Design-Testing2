@@ -32,7 +32,7 @@ public class Procession extends DomainEntity {
 	private String				title;
 	private String				description;
 	private Date				momentOrganised;
-	private Boolean				finalMode;
+	private boolean				finalMode;
 
 	private Collection<Request>	requests;
 	private Collection<Float>	floats;
@@ -95,11 +95,11 @@ public class Procession extends DomainEntity {
 		this.floats = floats;
 	}
 
-	public Boolean getFinalMode() {
+	public boolean getFinalMode() {
 		return this.finalMode;
 	}
 
-	public void setFinalMode(final Boolean finalMode) {
+	public void setFinalMode(final boolean finalMode) {
 		this.finalMode = finalMode;
 	}
 }
