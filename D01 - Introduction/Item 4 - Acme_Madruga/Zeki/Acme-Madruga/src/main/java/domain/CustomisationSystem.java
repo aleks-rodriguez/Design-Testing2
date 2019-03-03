@@ -12,6 +12,8 @@ import javax.persistence.InheritanceType;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.URL;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -40,6 +42,7 @@ public class CustomisationSystem extends DomainEntity {
 	}
 
 	@NotBlank
+	@SafeHtml
 	public String getSystemName() {
 		return this.systemName;
 	}
@@ -47,7 +50,9 @@ public class CustomisationSystem extends DomainEntity {
 	public void setSystemName(final String systemName) {
 		this.systemName = systemName;
 	}
+	@URL
 	@NotBlank
+	@SafeHtml
 	public String getBanner() {
 		return this.banner;
 	}
@@ -56,6 +61,7 @@ public class CustomisationSystem extends DomainEntity {
 		this.banner = banner;
 	}
 	@NotBlank
+	@SafeHtml
 	public String getMessage() {
 		return this.message;
 	}

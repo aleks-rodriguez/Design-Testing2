@@ -60,6 +60,8 @@
 			</a>
 				<ul>
 					<li class="arrow"></li>
+<li><a href="box/list.do"><spring:message code="master.page.boxes" /></a></li>
+					<li><a href="message/create.do"><spring:message code="master.page.message.create" /></a></li>
 					<li><a href="profile/list.do"><spring:message
 								code="master.page.profile.list" /></a></li>
 					<li><a href="j_spring_security_logout"><spring:message

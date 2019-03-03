@@ -67,6 +67,12 @@
 		<security:intercept-url pattern="/profile/**"
 			access="isAuthenticated()" />
 
+		<security:intercept-url pattern="/box/**"
+			access="isAuthenticated()" />
+
+		<security:intercept-url pattern="/message/**"
+			access="isAuthenticated()" />
+
 		<security:intercept-url pattern="/**"
 			access="hasRole('NONE')" />
 

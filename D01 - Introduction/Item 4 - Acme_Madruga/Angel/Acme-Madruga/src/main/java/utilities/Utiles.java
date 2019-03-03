@@ -3,14 +3,19 @@ package utilities;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import security.Authority;
+import domain.Box;
+import domain.Message;
 
 public class Utiles {
 
@@ -27,6 +32,60 @@ public class Utiles {
 	public static String				banner;
 	public static String				mess;
 
+
+	public static Collection<Box> initBoxes() {
+
+		List<Box> boxesSystem;
+
+		boxesSystem = new ArrayList<Box>();
+
+		boxesSystem.add(Utiles.createBox(true, "In Box"));
+		boxesSystem.add(Utiles.createBox(true, "Out Box"));
+		boxesSystem.add(Utiles.createBox(true, "Spam Box"));
+		boxesSystem.add(Utiles.createBox(true, "Trash Box"));
+
+		return boxesSystem;
+
+	}
+	public static Box createBox(final boolean fromSystem, final String name) {
+
+		Box b;
+
+		b = new Box();
+
+		b.setMessage(new ArrayList<Message>());
+
+		b.setFromSystem(fromSystem);
+
+		b.setName(name);
+
+		return b;
+
+	}
+
+	public static Collection<String> limpiaString(String s) {
+		s = s.replaceAll("[^a-zA-Z0-9$]", "#");
+
+		final List<String> textoRoto = Arrays.asList(s.split("##|#"));
+		return textoRoto;
+	}
+	public static boolean spamWord(final Collection<String> contentMessage) {
+		boolean res = false;
+
+		Map<String, Boolean> result;
+		result = new HashMap<>();
+
+		for (final String word : Utiles.spamWords)
+			result.put(word, contentMessage.contains(word.toLowerCase()));
+
+		for (final Boolean b : result.values())
+			if (b) {
+				res = true;
+				break;
+			}
+
+		return res;
+	}
 
 	public static String buildUrl(final Map<String, String> requestParams) {
 		String s = "";

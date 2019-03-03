@@ -19,8 +19,10 @@
 
 <form:form action="box/edit.do?parent=${parent}" modelAttribute="box">
 
+	<form:hidden path="id"/>
+
 	<acme:textbox code="box.name" path="name" />
 	<acme:submit name="save" code="box.save" />
+	
 
 </form:form>
-<acme:cancel url="/box/list.do" code="box.cancel"/>

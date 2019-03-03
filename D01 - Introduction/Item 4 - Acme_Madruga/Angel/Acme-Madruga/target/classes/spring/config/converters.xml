@@ -29,6 +29,10 @@
 		<!-- Procession -->
 		<bean class="converters.ProcessionToStringConverter" />
 		<bean class="converters.StringToProcessionConverter" />
+		
+		<!-- Procession -->
+		<bean class="converters.ActorToStringConverter" />
+		<bean class="converters.StringToActorConverter" />
 
 	</util:list>
 

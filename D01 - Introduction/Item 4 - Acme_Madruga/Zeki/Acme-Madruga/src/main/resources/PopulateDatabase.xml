@@ -15,6 +15,7 @@
 		<constructor-arg value="yyyy/MM/dd" />
 	</bean>
 
+
 	<!-- User accounts -->
 
 	<bean id="userAccount1" class="security.UserAccount">
@@ -202,6 +203,11 @@
 				<ref bean="float2" />
 			</list>
 		</property>
+		<property name="processions">
+			<list>
+				<ref bean="procession1" />
+			</list>
+		</property>
 	</bean>
 
 	<bean id="brotherhood2" class="domain.Brotherhood">
@@ -254,6 +260,11 @@
 				<ref bean="float4" />
 			</list>
 		</property>
+		<property name="processions">
+			<list>
+				<ref bean="procession2" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- Members -->
@@ -293,6 +304,7 @@
 		<property name="finder">
 			<ref bean="finder1" />
 		</property>
+
 	</bean>
 	<bean id="member2" class="domain.Member">
 		<property name="name" value="Member2" />
@@ -592,7 +604,6 @@
 		<property name="fromSystem" value="true" />
 		<property name="message">
 			<list>
-			<ref bean="message1"/>
 			</list>
 		</property>
 		<property name="boxes">
@@ -641,7 +652,6 @@
 		<property name="fromSystem" value="true" />
 		<property name="message">
 			<list>
-			<ref bean="message1"/>
 			</list>
 		</property>
 		<property name="boxes">
@@ -698,38 +708,6 @@
 		</property>
 	</bean>
 	<!-- Messages -->
-	
-<bean class="domain.Message" id="message1">
-<property name="sender">
-<ref bean="member1"/>
-</property>
-<property name="receiver">
-<list>
-<ref bean="member2"/>
-</list>
-</property>
-<property name="momentsent">
-<bean factory-method="parse" factory-bean="dateFormat">
-<constructor-arg value="2018/11/14"/>
-</bean>
-</property>
-<property value="subjectMessage1" name="subject"/>
-<property value="bodyMessage1" name="body"/>
-<property name="tags">
-<list>
-<value>etiqueta1</value>
-<value>etiqueta2</value>
-<value>etiqueta3</value>
-</list>
-</property>
-<property name="box">
-<list>
-<ref bean="box22"/>
-<ref bean="box26"/>
-</list>
-</property>
-<property value="LOW" name="priority"/>
-</bean>
 
 	<!-- Floats -->
 
@@ -743,11 +721,6 @@
 				<value></value>
 			</list>
 		</property>
-		<property name="processions">
-			<list>
-				<ref bean="procession1" />
-			</list>
-		</property>
 
 	</bean>
 
@@ -759,10 +732,6 @@
 		<property name="pictures">
 			<list>
 				<value></value>
-			</list>
-		</property>
-		<property name="processions">
-			<list>
 			</list>
 		</property>
 
@@ -779,10 +748,6 @@
 				<value></value>
 			</list>
 		</property>
-		<property name="processions">
-			<list>
-			</list>
-		</property>
 
 	</bean>
 	<bean id="float4" class="domain.Float">
@@ -793,10 +758,6 @@
 		<property name="pictures">
 			<list>
 				<value></value>
-			</list>
-		</property>
-		<property name="processions">
-			<list>
 			</list>
 		</property>
 
@@ -860,6 +821,11 @@
 				<constructor-arg value="2019/03/21" />
 			</bean>
 		</property>
+		<property name="creationDate">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21 10:00" />
+			</bean>
+		</property>
 	</bean>
 
 	<bean id="finder2" class="domain.Finder">
@@ -881,7 +847,11 @@
 				<constructor-arg value="2019/03/21" />
 			</bean>
 		</property>
-
+		<property name="creationDate">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21 10:00" />
+			</bean>
+		</property>
 	</bean>
 
 	<!-- Processions -->
@@ -906,6 +876,7 @@
 				<ref bean="float2" />
 			</list>
 		</property>
+		<property name="finalMode" value="false" />
 	</bean>
 
 	<bean id="procession2" class="domain.Procession">
@@ -930,7 +901,7 @@
 				<ref bean="float4" />
 			</list>
 		</property>
-
+		<property name="finalMode" value="false" />
 	</bean>
 
 	<!-- Requests -->
@@ -975,7 +946,12 @@
 		<property name="brotherhood">
 			<ref bean="brotherhood1" />
 		</property>
-
+		<property name="exitMoment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21" />
+			</bean>
+		</property>
+		<property name="exitMember" value="false" />
 	</bean>
 	<bean id="enrolment2" class="domain.Enrolment">
 
@@ -989,7 +965,12 @@
 		<property name="brotherhood">
 			<ref bean="brotherhood1" />
 		</property>
-
+		<property name="exitMoment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21" />
+			</bean>
+		</property>
+		<property name="exitMember" value="false" />
 	</bean>
 	<bean id="enrolment3" class="domain.Enrolment">
 
@@ -1003,7 +984,12 @@
 		<property name="brotherhood">
 			<ref bean="brotherhood2" />
 		</property>
-
+		<property name="exitMoment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21" />
+			</bean>
+		</property>
+		<property name="exitMember" value="false" />
 	</bean>
 	<bean id="enrolment4" class="domain.Enrolment">
 
@@ -1017,7 +1003,12 @@
 		<property name="brotherhood">
 			<ref bean="brotherhood2" />
 		</property>
-
+		<property name="exitMoment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21" />
+			</bean>
+		</property>
+		<property name="exitMember" value="false" />
 	</bean>
 
 	<!-- Positions -->

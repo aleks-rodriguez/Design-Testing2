@@ -25,7 +25,7 @@ public class BoxController extends AbstractController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;
-		result = this.custom(new ModelAndView("box/list"));
+		result = new ModelAndView("box/list");
 		result.addObject("boxes", this.boxService.getBoxesFromUserAccount(LoginService.getPrincipal().getId()));
 		result.addObject("requestURI", "box/list.do");
 		return result;
@@ -57,7 +57,18 @@ public class BoxController extends AbstractController {
 				result = new ModelAndView("redirect:../box/list.do");
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(box, "box.commit.error");
+				result.addObject("parent", parent);
 			}
+		return result;
+	}
+	//update
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	public ModelAndView updateBox(@RequestParam final int id) {
+		ModelAndView result;
+		Box b;
+		b = this.boxService.findOne(id);
+		result = this.createEditModelAndView(b);
+		result.addObject("box", b);
 		return result;
 	}
 	//delete
@@ -85,8 +96,7 @@ public class BoxController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final Box box, final String message) {
 		ModelAndView result;
-		//No se puede usar el metodo del abstract porque depende el objeto de dos variables. Id y Parent
-		result = this.custom(new ModelAndView("box/edit"));
+		result = new ModelAndView("box/edit");
 		result.addObject("box", box);
 		result.addObject("message", message);
 		return result;

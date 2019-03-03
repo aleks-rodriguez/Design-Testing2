@@ -16,7 +16,6 @@ import security.LoginService;
 import domain.Actor;
 import domain.Box;
 import domain.Message;
-import forms.MessageForm;
 
 @Service
 @Transactional
@@ -183,22 +182,19 @@ public class MessageService {
 
 	}
 
-	public Message reconstruct(final MessageForm message, final BindingResult binding) {
+	public Message reconstruct(final Message message, final BindingResult binding) {
+
 		Message result;
 
 		if (message.getId() == 0) {
-
-			result = this.createMessage(message.getSender());
-			result.setSender(this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId()));
-
-		} else {
-			result = this.messageRepository.findOne(message.getId());
-
+			result = this.createMessage(this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId()));
+			result.setSubject(message.getSubject());
+			result.setBody(message.getBody());
 			result.setPriority(message.getPriority());
+			result.setTags(message.getTags());
 			result.setReceiver(message.getReceiver());
-			result.setSender(message.getSender());
-
-		}
+		} else
+			result = this.messageRepository.findOne(message.getId());
 
 		this.validator.validate(result, binding);
 

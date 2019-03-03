@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -26,7 +27,18 @@ public class Finder extends DomainEntity {
 	private Date					minimunDate;
 	private Date					maximumDate;
 	private Collection<Procession>	processions;
+	private Date					creationDate;
 
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
+	public Date getCreationDate() {
+		return this.creationDate;
+	}
+
+	public void setCreationDate(final Date creationDate) {
+		this.creationDate = creationDate;
+	}
 
 	@ManyToMany
 	public Collection<Procession> getProcessions() {
@@ -36,7 +48,7 @@ public class Finder extends DomainEntity {
 	public void setProcessions(final Collection<Procession> processions) {
 		this.processions = processions;
 	}
-
+	@SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
 	public String getSingleWord() {
 		return this.singleWord;
 	}

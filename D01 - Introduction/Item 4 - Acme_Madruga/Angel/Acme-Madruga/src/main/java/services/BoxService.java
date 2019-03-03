@@ -21,7 +21,7 @@ import domain.Message;
 @Transactional
 public class BoxService {
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator		validator;
 
 	@Autowired
@@ -84,16 +84,6 @@ public class BoxService {
 		b.setMessage(new ArrayList<Message>());
 		return b;
 	}
-	//update
-	//	public Box updateBox(final int id) {
-	//		UserAccount user;
-	//		user = LoginService.getPrincipal();
-	//		Actor a;
-	//		a = this.boxRepository.getActorByUserAccount(user.getId());
-	//
-	//		Box box;
-	//		box = this.boxRepository.findOne(id);
-	//	}
 	//save
 	public Box save(final Box b) {
 		Box saved;
@@ -102,8 +92,10 @@ public class BoxService {
 		a = this.boxRepository.getActorByUserAccount(LoginService.getPrincipal().getId());
 		Collection<Box> colbox;
 		colbox = a.getBoxes();
-		colbox.add(saved);
-		a.setBoxes(colbox);
+		if (!a.getBoxes().contains(saved)) {
+			colbox.add(saved);
+			a.setBoxes(colbox);
+		}
 		return saved;
 	}
 	//save subbox
@@ -145,6 +137,12 @@ public class BoxService {
 		colmes.clear();
 		b.setMessage(colmes);
 		//eliminamos la caja al actor que la tiene
+		for (final Box bo : this.boxRepository.getBoxesFromUserAccount(LoginService.getPrincipal().getId()))
+			if (bo.getBoxes().contains(b)) {
+				Collection<Box> co;
+				co = bo.getBoxes();
+				co.remove(b);
+			}
 		Collection<Box> boxesActor;
 		boxesActor = a.getBoxes();
 		boxesActor.remove(b);
@@ -165,8 +163,10 @@ public class BoxService {
 			result.setName(box.getName());
 			result.setMessage(box.getMessage());
 
-			this.validator.validate(result, binding);
 		}
+
+		this.validator.validate(result, binding);
+
 		return result;
 	}
 }

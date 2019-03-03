@@ -27,8 +27,16 @@
 		</jstl:forEach>
 	</display:column>
 	<display:column titleKey="box.messages">
-		<a href="box/mess/list.do?boxId=${row.id}"><spring:message
+		<a href="message/list.do?boxId=${row.id}"><spring:message
 				code="box.messages" /></a>
+	</display:column>
+	<display:column titleKey="box.edit" >
+		<jstl:if test="${not row.fromSystem}">
+
+			<a href="box/update.do?id=${row.id}"><spring:message
+					code="box.edit" /></a>
+
+		</jstl:if>
 	</display:column>
 	<display:column titleKey="box.delete" >
 		<jstl:if test="${not row.fromSystem}">
