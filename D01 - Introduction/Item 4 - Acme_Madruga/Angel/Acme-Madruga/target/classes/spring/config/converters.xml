@@ -13,26 +13,37 @@
 
 	<util:list id="converters">
 
-		<!-- Box -->
+		<!-- Authority -->
+		<bean class="converters.AuthorityToStringConverter" />
+		<bean class="converters.StringToAuthorityConverter" />
+
+		<!-- Area -->
 		<bean class="converters.AreaToStringConverter" />
 		<bean class="converters.StringToAreaConverter" />
 
 		<!-- Box -->
 		<bean class="converters.BoxToStringConverter" />
 		<bean class="converters.StringToBoxConverter" />
+
 		<!-- Position -->
 		<bean class="converters.PositionToStringConverter" />
 		<bean class="converters.StringToPositionConverter" />
+
 		<!-- Profile -->
 		<bean class="converters.ProfileToStringConverter" />
 		<bean class="converters.StringToProfileConverter" />
+
 		<!-- Procession -->
 		<bean class="converters.ProcessionToStringConverter" />
 		<bean class="converters.StringToProcessionConverter" />
-		
-		<!-- Procession -->
+
+		<!-- Actor -->
 		<bean class="converters.ActorToStringConverter" />
 		<bean class="converters.StringToActorConverter" />
+
+		<!-- Message -->
+		<bean class="converters.MessageToStringConverter" />
+		<bean class="converters.StringToMessageConverter" />
 
 	</util:list>
 

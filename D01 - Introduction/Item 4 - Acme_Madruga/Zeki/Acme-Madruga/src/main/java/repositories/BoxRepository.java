@@ -36,6 +36,10 @@ public interface BoxRepository extends JpaRepository<Box, Integer> {
 	@Query("select b from Actor a join a.boxes b where a.account.id = ?1 and b.fromSystem = 0")
 	Collection<Box> getBoxesFromActorNoSystem(int actorId);
 
+	//Necessary for StringToActorConverter
+	@Query("select a from Actor a where a.id = ?1")
+	Actor getActorById(int id);
+
 	// Get actor del user registrado
 	@Query("select a from Actor a where a.account.id = ?1")
 	Actor getActorByUserAccount(int id);

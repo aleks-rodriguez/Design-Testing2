@@ -91,7 +91,7 @@ public class MessageService {
 
 		//spam in message
 		//		final boolean spam = Utiles.spamWord(Utiles.limpiaString(result.getSubject())) && Utiles.spamWord(Utiles.limpiaString(result.getBody()));
-		//		this.received(result, spam);
+		this.received(saved);
 		//		sender.setSuspicious(spam);
 
 		return saved;
@@ -192,7 +192,7 @@ public class MessageService {
 			result.setBody(message.getBody());
 			result.setPriority(message.getPriority());
 			result.setTags(message.getTags());
-			result.setReceiver(message.getReceiver());
+			result.setReceiver(new ArrayList<Actor>(message.getReceiver()).subList(1, message.getReceiver().size()));
 		} else
 			result = this.messageRepository.findOne(message.getId());
 

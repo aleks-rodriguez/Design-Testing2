@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -96,7 +97,7 @@ public class Procession extends DomainEntity {
 		this.momentOrganised = momentOrganised;
 	}
 
-	@OneToMany
+	@ManyToMany
 	public Collection<Float> getFloats() {
 		return this.floats;
 	}

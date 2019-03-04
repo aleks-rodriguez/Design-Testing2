@@ -43,6 +43,8 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/welcome/index.do"
 			access="permitAll" />
+		<security:intercept-url pattern="/actor/**"
+			access="permitAll" />
 		<security:intercept-url pattern="/procession/list.do"
 			access="permitAll" />
 		<security:intercept-url pattern="/procession/show.do"

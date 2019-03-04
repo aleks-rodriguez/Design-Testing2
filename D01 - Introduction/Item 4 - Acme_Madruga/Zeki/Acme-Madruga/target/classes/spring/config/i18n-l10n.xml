@@ -23,7 +23,6 @@
 		<value>/views/security/messages</value>		
 		<value>/views/welcome/messages</value>
 		
-		<value>/views/administrator/messages</value>
 		<value>/views/profile/messages</value>
 		<value>/views/about-us/messages</value>
 		<value>/views/custom/messages</value>
@@ -31,6 +30,7 @@
 		<value>/views/position/messages</value>
 		<value>/views/box/messages</value>
 		<value>/views/message/messages</value>
+		<value>/views/actor/messages</value>
 	</util:list>
 
 </beans>

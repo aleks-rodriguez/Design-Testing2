@@ -46,13 +46,16 @@
 		<spring:message code="message.priority" />
 		<jstl:out value=" --> ${form.priority}" />
 	</jstl:if>
-	<jstl:if test="${not view}">
+	<jstl:if test="${view eq 'false'}">
 		<form:label path="priority">
 			<spring:message code="message.priority" />
 		</form:label>
 		<form:select path="priority">
 			<form:option value="NONE" label="--- Select ---" />
-			<form:options items="${priorities}" />
+			<jstl:forEach items="${priorities}" var="p">
+				<form:option value="${p}" label="${p}" />
+			</jstl:forEach>
+
 		</form:select>
 	</jstl:if>
 
@@ -63,11 +66,11 @@
 		</jstl:if>
 	</security:authorize>
 
-	<form:hidden path="receiver" />
+
 	<div
 		style="width: 500px; height: 100px; overflow-y: scroll; border-style: solid; border-color: initial;">
 		<jstl:if test="${view}">
-
+			<form:hidden path="receiver" />
 			<jstl:forEach items="${form.receiver}" var="actor">
 				<input type="checkbox" name="receiver" value="${actor.id}"
 					disabled="${view}" />

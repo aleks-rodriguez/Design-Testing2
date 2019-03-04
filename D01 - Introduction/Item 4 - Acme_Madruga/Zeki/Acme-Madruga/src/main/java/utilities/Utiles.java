@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -22,7 +23,7 @@ public class Utiles {
 	public static Collection<String>	spamWords	= new ArrayList<String>();
 	public static Collection<String>	goodWords	= new ArrayList<String>();
 	public static Collection<String>	badWords	= new ArrayList<String>();
-	public static Collection<String>	priorities	= new ArrayList<String>();
+	public static Collection<String>	priorities	= new HashSet<String>();
 
 	public static Integer				hoursFinder;
 	public static Integer				resultsFinder;
@@ -42,6 +43,7 @@ public class Utiles {
 		boxesSystem.add(Utiles.createBox(true, "In Box"));
 		boxesSystem.add(Utiles.createBox(true, "Out Box"));
 		boxesSystem.add(Utiles.createBox(true, "Spam Box"));
+		boxesSystem.add(Utiles.createBox(true, "Notification Box"));
 		boxesSystem.add(Utiles.createBox(true, "Trash Box"));
 
 		return boxesSystem;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import repositories.AdministratorRepository;
+import repositories.BoxRepository;
 import domain.Actor;
 
 @Component
@@ -15,7 +15,7 @@ import domain.Actor;
 public class StringToActorConverter implements Converter<String, Actor> {
 
 	@Autowired
-	private AdministratorRepository	repositoryAdministrator;
+	private BoxRepository	repository;
 
 
 	@Override
@@ -29,7 +29,7 @@ public class StringToActorConverter implements Converter<String, Actor> {
 			else {
 				id = Integer.valueOf(text);
 				System.out.println(id);
-				result = this.repositoryAdministrator.findOne(id);
+				result = this.repository.getActorById(id);
 			}
 			System.out.println(result);
 		} catch (final Throwable opps) {
