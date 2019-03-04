@@ -35,7 +35,7 @@
 		<a href="message/create.do?id=${row.id}"><spring:message
 				code="message.viewmore" /></a>
 	</display:column>
-	<jstl:if test="${boxName == 'Spam Box' or boxName == 'Trash Box'}">
+	<jstl:if test="${boxName == 'Trash Box'}">
 		<display:column>
 
 			<a href="message/inbox.do?id=${row.id}"><spring:message

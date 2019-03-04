@@ -13,6 +13,7 @@ import org.springframework.validation.Validator;
 
 import repositories.MessageRepository;
 import security.LoginService;
+import utilities.Utiles;
 import domain.Actor;
 import domain.Box;
 import domain.Message;
@@ -47,6 +48,19 @@ public class MessageService {
 	public Message findOne(final int id) {
 		return this.messageRepository.findOne(id);
 	}
+
+	public Collection<Actor> getReceiver(final int id) {
+		return this.messageRepository.getReceiver(id);
+	}
+
+	public void delete(final Message m) {
+		this.messageRepository.delete(m);
+	}
+
+	public Collection<Message> getMessageOutBox(final int id) {
+		return this.messageRepository.getMessagesOutBox(id);
+	}
+
 	//Create
 	public Message createMessage(final Actor a) {
 		Message message;
@@ -73,10 +87,10 @@ public class MessageService {
 
 		// to do the message of the sistem --------
 		Box outBox;
-		if (mess.getTags().contains("Application"))
-			outBox = this.boxService.getActorEntryBox(sender.getId());
-		else
-			outBox = this.boxService.getActorSendedBox(sender.getId());
+		//		if (mess.getTags().contains("Application"))
+		//			outBox = this.boxService.getActorEntryBox(sender.getId());
+		//		else
+		outBox = this.boxService.getActorSendedBox(sender.getId());
 		//-----------------------------------------
 
 		Collection<Message> collMessage;
@@ -90,15 +104,15 @@ public class MessageService {
 		saved.setBox(colBox);
 
 		//spam in message
-		//		final boolean spam = Utiles.spamWord(Utiles.limpiaString(result.getSubject())) && Utiles.spamWord(Utiles.limpiaString(result.getBody()));
-		this.received(saved);
+		final boolean spam = Utiles.spamWord(Utiles.limpiaString(saved.getSubject())) && Utiles.spamWord(Utiles.limpiaString(saved.getBody()));
+		this.received(saved, spam);
 		//		sender.setSuspicious(spam);
 
 		return saved;
 
 	}
 
-	public void received(final Message saved/* , final Boolean spam */) {
+	public void received(final Message saved, final Boolean spam) {
 
 		final Collection<Actor> recipients;
 		recipients = saved.getReceiver();
@@ -107,11 +121,12 @@ public class MessageService {
 
 		Collection<Box> boxes;
 
-		//		if (spam)
-		//			boxes = this.messageRepository.getBoxesFromActors("Spam Box", recipients, userlogged);
-		//		else
-		boxes = this.messageRepository.getBoxesFromActors("In Box", recipients, userlogged);
-
+		if (spam)
+			boxes = this.messageRepository.getBoxesFromActors("Spam Box", recipients, userlogged);
+		else if (saved.getTags().contains("Notification"))
+			boxes = this.messageRepository.getBoxesFromActors("Notification Box", recipients, userlogged);
+		else
+			boxes = this.messageRepository.getBoxesFromActors("In Box", recipients, userlogged);
 		Collection<Box> boxesMessage;
 		boxesMessage = saved.getBox();
 		boxesMessage.addAll(boxes);
@@ -180,6 +195,26 @@ public class MessageService {
 			mesage.setBox(boxesMesage);
 		}
 
+		Collection<Actor> col;
+		col = this.messageRepository.getReceiver(mesage.getId());
+
+		if (col.contains(a)) {
+			Collection<Actor> act;
+			act = col;
+			act.remove(a);
+			mesage.setReceiver(act);
+		}
+		//
+		//		if (mesage.getSender().getId() == a.getId())
+		//			if (mesage.getReceiver().equals(null))
+		//				this.messageRepository.delete(mesage);
+
+		//		if (mesage.getSender().getId() == a.getId())
+		//			mesage.setSender(Actor.this);
+		//
+		//		if (mesage.getReceiver() == null && mesage.getSender() == null)
+		//			this.messageRepository.delete(mesage);
+
 	}
 
 	public Message reconstruct(final Message message, final BindingResult binding) {
@@ -192,7 +227,14 @@ public class MessageService {
 			result.setBody(message.getBody());
 			result.setPriority(message.getPriority());
 			result.setTags(message.getTags());
-			result.setReceiver(new ArrayList<Actor>(message.getReceiver()).subList(1, message.getReceiver().size()));
+			//			result.setReceiver(message.getReceiver());
+			if (message.getReceiver() != null) {
+				if (message.getReceiver().contains(null))
+					result.setReceiver(new ArrayList<Actor>(message.getReceiver()).subList(1, message.getReceiver().size()));
+				else
+					result.setReceiver(message.getReceiver());
+			} else
+				result.setReceiver(message.getReceiver());
 		} else
 			result = this.messageRepository.findOne(message.getId());
 
@@ -201,4 +243,5 @@ public class MessageService {
 		return result;
 
 	}
+
 }

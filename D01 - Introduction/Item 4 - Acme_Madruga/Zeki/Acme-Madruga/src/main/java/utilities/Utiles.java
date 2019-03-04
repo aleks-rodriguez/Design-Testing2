@@ -167,4 +167,22 @@ public class Utiles {
 
 		return res;
 	}
+
+	public static String isSpammer(final Collection<Message> cm) {
+		String res = null;
+		int i = 0;
+		for (final Message message : cm) {
+			final boolean spam = Utiles.spamWord(Utiles.limpiaString(message.getSubject())) && Utiles.spamWord(Utiles.limpiaString(message.getBody()));
+			if (spam)
+				i++;
+		}
+		int sol;
+		sol = i / cm.size();
+		if (sol >= 0.1)
+			res = "Spammer";
+		else if (sol < 0.1)
+			res = "No Spammer";
+		return res;
+	}
+
 }

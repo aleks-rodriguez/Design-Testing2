@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -37,6 +39,7 @@ public class Message extends DomainEntity {
 
 
 	@ManyToOne(optional = false)
+	@NotFound(action = NotFoundAction.IGNORE)
 	public Actor getSender() {
 		return this.sender;
 	}
@@ -46,6 +49,7 @@ public class Message extends DomainEntity {
 	}
 
 	@ManyToMany
+	@NotFound(action = NotFoundAction.IGNORE)
 	public Collection<Actor> getReceiver() {
 		return this.receiver;
 	}

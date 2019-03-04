@@ -25,4 +25,10 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
 	@Query("select b from Actor a join a.boxes b where b.name = ?1 and a IN ?2 and a.account.id <> ?3")
 	Collection<Box> getBoxesFromActors(String name, Collection<Actor> actors, int userlogged);
 
+	@Query("select m.receiver from Message m where m.id = ?1 ")
+	Collection<Actor> getReceiver(int id);
+
+	@Query("select m from Actor a join a.boxes b join b.message m where b.name = 'Out Box' AND a.id = ?1")
+	Collection<Message> getMessagesOutBox(int id);
+
 }

@@ -56,6 +56,7 @@ public class MessageController extends AbstractController {
 			result = this.createEditModelAndView(this.messageService.findOne(id));
 			result.addObject("boxesOptional", this.boxService.getBoxesFromActorNoSystem(LoginService.getPrincipal().getId()));
 			result.addObject("view", true);
+			result.addObject("rece", this.messageService.getReceiver(id));
 			result.addObject("trash", this.boxService.getActorTrashBox(this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId()).getId()).getId());
 			result.addObject("requestURI", "message/dbox.do");
 		}
@@ -67,12 +68,13 @@ public class MessageController extends AbstractController {
 	public ModelAndView sendMessage(@ModelAttribute("`message`") Message m, final BindingResult binding) {
 		ModelAndView result;
 
+		m = this.messageService.reconstruct(m, binding);
 		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(m);
 			result.addObject("errors", binding.getAllErrors());
 		} else
 			try {
-				m = this.messageService.reconstruct(m, binding);
+				//			m = this.messageService.reconstruct(m, binding);
 				this.messageService.sendMessage(m);
 				final Box box = this.boxService.getActorSendedBox(this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId()).getId());
 				result = new ModelAndView("redirect:list.do?boxId=" + box.getId());
@@ -138,6 +140,10 @@ public class MessageController extends AbstractController {
 			final Box box = this.boxService.getActorTrashBox(this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId()).getId());
 			mesage = this.messageService.findOne(id);
 			this.messageService.deleteMessage(mesage);
+			System.out.println(this.messageService.getMessageOutBox(mesage.getSender().getId()).toString());
+			System.out.println(this.messageService.getMessageOutBox(mesage.getSender().getId()).contains(mesage));
+			if (this.messageService.getReceiver(mesage.getId()).isEmpty() && !this.messageService.getMessageOutBox(mesage.getSender().getId()).contains(mesage))
+				this.messageService.delete(mesage);
 			result = new ModelAndView("redirect:list.do?boxId=" + box.getId());
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(mesage, "message.commit.error");

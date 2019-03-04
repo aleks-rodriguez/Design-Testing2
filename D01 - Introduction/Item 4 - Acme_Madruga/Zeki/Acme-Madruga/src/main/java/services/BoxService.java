@@ -28,6 +28,10 @@ public class BoxService {
 	private BoxRepository	boxRepository;
 
 
+	public Collection<Box> save(final Collection<Box> boxes) {
+		return this.boxRepository.save(boxes);
+	}
+
 	//Queries del repo de box
 	public Box getActorEntryBox(final int id) {
 		return this.boxRepository.getActorEntryBox(id);
@@ -72,7 +76,8 @@ public class BoxService {
 	public Box findOne(final int id) {
 		final Box b;
 		b = this.boxRepository.findOne(id);
-		Assert.isTrue(this.boxRepository.getActorByUserAccount(LoginService.getPrincipal().getId()).getBoxes().contains(b));
+		//		Assert.isTrue(this.boxRepository.getActorByUserAccount(LoginService.getPrincipal().getId()).getBoxes().contains(b));
+		//		Assert.isTrue(!b.isFromSystem());
 		return b;
 	}
 	//create
@@ -169,4 +174,5 @@ public class BoxService {
 
 		return result;
 	}
+
 }

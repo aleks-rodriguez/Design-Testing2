@@ -67,7 +67,10 @@ public class BoxController extends AbstractController {
 		ModelAndView result;
 		Box b;
 		b = this.boxService.findOne(id);
-		result = this.createEditModelAndView(b);
+		if (!this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId()).getBoxes().contains(b) || b.isFromSystem())
+			result = new ModelAndView("redirect:../");
+		else
+			result = this.createEditModelAndView(b);
 		result.addObject("box", b);
 		return result;
 	}

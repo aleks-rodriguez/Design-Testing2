@@ -70,10 +70,10 @@
 	<div
 		style="width: 500px; height: 100px; overflow-y: scroll; border-style: solid; border-color: initial;">
 		<jstl:if test="${view}">
-			<form:hidden path="receiver" />
-			<jstl:forEach items="${form.receiver}" var="actor">
-				<input type="checkbox" name="receiver" value="${actor.id}"
-					disabled="${view}" />
+<%-- 			<form:hidden path="receiver" /> --%>
+			<jstl:forEach items="${rece}" var="actor">
+<%-- 				<input type="checkbox" name="receiver" onpause="checkAll(this);" value="${actor.id}"
+					disabled="${view}" /> --%>
 				<jstl:out value="${actor.name} ${actor.surname} ( ${actor.email} )" />
 				<br>
 			</jstl:forEach>
