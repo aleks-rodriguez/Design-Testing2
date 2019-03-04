@@ -45,10 +45,14 @@ public class ProcessionService {
 		return this.processionRepository.findBrotherhoodByUserAccountId(userId);
 	}
 
+	public Brotherhood findBrotherhoodByProcession(final int idProcession) {
+		return this.processionRepository.findBrotherhoodByProcessionId(idProcession);
+	}
+
 	public Procession createProcession() {
 		UserAccount user;
 		user = LoginService.getPrincipal();
-		Assert.notNull(user);
+		Assert.isTrue(Utiles.findAuthority(user.getAuthorities(), Authority.BROTHERHOOD));
 		Procession p;
 		p = new Procession();
 		p.setTicker(Utiles.generateTicker());
@@ -63,32 +67,32 @@ public class ProcessionService {
 	public Procession save(final Procession procession) {
 		UserAccount user;
 		user = LoginService.getPrincipal();
-		Assert.notNull(user);
-		Assert.isTrue(Utiles.findAuthority(user.getAuthorities(), Authority.BROTHERHOOD));
+		//		Assert.isTrue(Utiles.findAuthority(user.getAuthorities(), Authority.BROTHERHOOD));
 		Procession saved;
 		saved = this.processionRepository.save(procession);
-
-		Collection<Float> f;
-		f = procession.getFloats();
-
-		for (final Float fl : saved.getFloats())
-			if (!f.contains(fl)) {
-				Collection<Float> ff;
-				ff = saved.getFloats();
-				ff.add(fl);
-				saved.setFloats(ff);
-			}
+		Brotherhood b;
+		b = this.processionRepository.findBrotherhoodByUserAccountId(user.getId());
+		Collection<Procession> processionPerBrotherhood;
+		processionPerBrotherhood = b.getProcessions();
+		if (!processionPerBrotherhood.contains(saved)) {
+			processionPerBrotherhood.add(saved);
+			b.setProcessions(processionPerBrotherhood);
+		}
 		return saved;
 	}
 
 	public void delete(final int idProcession) {
-		Assert.notNull(idProcession);
 		UserAccount user;
 		user = LoginService.getPrincipal();
-		Assert.notNull(user);
 		Assert.isTrue(Utiles.findAuthority(user.getAuthorities(), Authority.BROTHERHOOD));
 		Procession p;
 		p = this.processionRepository.findOne(idProcession);
+		Brotherhood b;
+		b = this.processionRepository.findBrotherhoodByProcessionId(idProcession);
+		Collection<Procession> processionPerBrotherhood;
+		processionPerBrotherhood = b.getProcessions();
+		processionPerBrotherhood.remove(p);
+		b.setProcessions(processionPerBrotherhood);
 		this.processionRepository.delete(p);
 	}
 

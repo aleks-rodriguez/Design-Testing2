@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import security.LoginService;
 import security.UserAccount;
 import services.FinderService;
-import services.FloatService;
 import services.ProcessionService;
 import domain.Brotherhood;
 import domain.Procession;
@@ -29,9 +28,6 @@ public class ProcessionController extends AbstractController {
 
 	@Autowired
 	private ProcessionService	processionService;
-
-	@Autowired
-	private FloatService		floatService;
 
 	@Autowired
 	private FinderService		serviceFinder;
@@ -52,6 +48,7 @@ public class ProcessionController extends AbstractController {
 	public ModelAndView create(@RequestParam(defaultValue = "0") final int idProcession) {
 		UserAccount user;
 		user = LoginService.getPrincipal();
+
 		Brotherhood b;
 		b = this.processionService.findBrotherhoodByUser(user.getId());
 		ModelAndView result;
@@ -60,6 +57,7 @@ public class ProcessionController extends AbstractController {
 		result = this.createEditModelAndView(p);
 		result.addObject("floats", b.getFloats());
 		result.addObject("requestURI", "procession/brotherhood/edit.do?idProcession=" + idProcession);
+		result.addObject("view", false);
 		return result;
 	}
 	//Save
@@ -80,6 +78,18 @@ public class ProcessionController extends AbstractController {
 			}
 		return result;
 	}
+
+	//Update
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	public ModelAndView update(@RequestParam final int idProcession) {
+		ModelAndView result;
+		Procession p;
+		p = this.processionService.findOne(idProcession);
+		result = this.createEditModelAndView(p);
+		result.addObject("view", false);
+		return result;
+	}
+
 	//Delete
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int id) {
@@ -95,6 +105,18 @@ public class ProcessionController extends AbstractController {
 		return result;
 	}
 
+	//Show
+	@RequestMapping(value = "/show", method = RequestMethod.GET)
+	public ModelAndView show(@RequestParam final int idProcession) {
+		final ModelAndView result;
+		final Procession p;
+		p = this.processionService.findOne(idProcession);
+		result = this.createEditModelAndView(p);
+		result.addObject("requestURI", "procession/show.do?idProcession=" + p.getId());
+		result.addObject("view", true);
+		return result;
+	}
+
 	// Finder
 	@RequestMapping(value = "/finder", method = RequestMethod.GET)
 	public ModelAndView finder() {
@@ -107,12 +129,13 @@ public class ProcessionController extends AbstractController {
 	// Create edit model and view
 	protected ModelAndView createEditModelAndView(final Procession procession) {
 		ModelAndView model;
-		UserAccount user;
-		user = LoginService.getPrincipal();
+		//		UserAccount user;
+		//		user = LoginService.getPrincipal();
 
 		model = this.createEditModelAndView(procession, null);
 		Brotherhood b;
-		b = this.floatService.findBrotherhoodByUser(user.getId());
+		//		b = this.floatService.findBrotherhoodByUser(user.getId());
+		b = this.processionService.findBrotherhoodByProcession(procession.getId());
 		model.addObject("floats", b.getFloats());
 		return model;
 	}
@@ -120,8 +143,8 @@ public class ProcessionController extends AbstractController {
 	protected ModelAndView createEditModelAndView(final Procession procession, final String message) {
 		ModelAndView result;
 
-		UserAccount user;
-		user = LoginService.getPrincipal();
+		//		UserAccount user;
+		//		user = LoginService.getPrincipal();
 
 		Map<String, String> map;
 		map = new HashMap<String, String>();
@@ -130,7 +153,8 @@ public class ProcessionController extends AbstractController {
 		result = this.editFormsUrlId(procession, "procession/brotherhood/edit.do", map, "/procession/list.do", this.custom(new ModelAndView("procession/edit")));
 		result.addObject("procession", procession);
 		Brotherhood b;
-		b = this.floatService.findBrotherhoodByUser(user.getId());
+		//		b = this.floatService.findBrotherhoodByUser(user.getId());
+		b = this.processionService.findBrotherhoodByProcession(procession.getId());
 		result.addObject("floats", b.getFloats());
 		result.addObject("message", message);
 		return result;

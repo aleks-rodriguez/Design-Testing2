@@ -19,24 +19,15 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="${requestURI}" modelAttribute="procession">
+<form:form action="${requestURI}" modelAttribute="float">
 
-<form:hidden path="floats"/>
+<form:hidden path="id"/>
 	
-	<acme:textbox code="procession.ticker" path="ticker" readonly="true"/>
-	<acme:textbox code="procession.title" path="title"/>
-	<acme:textbox code="procession.description" path="description"/>
-	<acme:date code="procession.momentOrganised" path="momentOrganised" id="1"/>
-	<input type="checkbox" name="finalMode"><spring:message code="procession.finalMode" />
-	<br>
-	<div
-		style="width: 500px; height: 100px; overflow-y: scroll; border-style: solid; border-color: initial;">
-	<jstl:forEach items="${floats}" var="f">
-		<input type="checkbox" name="title" value="${f.id}" />
-		<jstl:out value="${f.title}" />
-		<br>
-	</jstl:forEach>
-	</div>
-	<acme:submit name="save" code="procession.save"/>
+	<acme:textbox code="float.title" path="title" readonly="${view}"/>
+	<acme:textbox code="float.description" path="description" readonly="${view}"/>
+	<acme:textarea code="float.pictures" path="pictures" readonly="${view}"/>
+	<jstl:if test="${not view}">
+	<acme:submit name="save" code="float.save"/>
+	</jstl:if>
 </form:form>
-<acme:cancel url="/procession/list.do" code="procession.cancel"/>
+<acme:cancel url="/float/list.do" code="float.cancel"/>

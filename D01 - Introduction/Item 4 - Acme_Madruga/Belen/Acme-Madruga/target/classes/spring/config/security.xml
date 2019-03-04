@@ -49,6 +49,10 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/float/list.do"
 			access="permitAll" />
+		<security:intercept-url pattern="/float/listProcession.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/float/show.do"
+			access="permitAll" />
 
 		<!-- Administrator -->
 		<security:intercept-url pattern="/customisation/administrator/**"
