@@ -16,19 +16,10 @@ import javax.persistence.OneToOne;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Member extends Actor {
 
-	private Collection<Enrolment>	enrolments;
-
-	private Collection<Request>		requests;
-	private Finder					finder;
+	private Collection<Request>	requests;
+	private Finder				finder;
 
 
-	@OneToMany
-	public Collection<Enrolment> getEnrolments() {
-		return this.enrolments;
-	}
-	public void setEnrolments(final Collection<Enrolment> enrolments) {
-		this.enrolments = enrolments;
-	}
 	@OneToMany
 	public Collection<Request> getRequests() {
 		return this.requests;

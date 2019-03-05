@@ -15,7 +15,6 @@ import security.Authority;
 import security.UserAccount;
 import utilities.Utiles;
 import domain.Actor;
-import domain.Enrolment;
 import domain.Member;
 import domain.Profile;
 import domain.Request;
@@ -79,7 +78,6 @@ public class MemberService {
 		member.setAdress("");
 
 		member.setRequests(new ArrayList<Request>());
-		member.setEnrolments(new ArrayList<Enrolment>());
 		return member;
 	}
 

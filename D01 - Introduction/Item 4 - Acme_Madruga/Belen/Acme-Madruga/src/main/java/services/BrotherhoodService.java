@@ -32,6 +32,10 @@ public class BrotherhoodService {
 		return this.brotherhoodRepository.findAll();
 	}
 
+	public Brotherhood findOne(final int id) {
+		return this.brotherhoodRepository.findOne(id);
+	}
+
 	public Actor findByUserAccount(final int id) {
 		return this.brotherhoodRepository.getByUserAccount(id);
 	}

@@ -291,14 +291,10 @@
 				<ref bean="box25" />
 			</list>
 		</property>
-		<property name="enrolments">
-			<list>
-				<ref bean="enrolment1" />
-			</list>
-		</property>
 		<property name="requests">
 			<list>
 				<ref bean="request1" />
+				<ref bean="request3" />
 			</list>
 		</property>
 		<property name="finder">
@@ -327,11 +323,6 @@
 				<ref bean="box28" />
 				<ref bean="box29" />
 				<ref bean="box30" />
-			</list>
-		</property>
-		<property name="enrolments">
-			<list>
-				<ref bean="enrolment3" />
 			</list>
 		</property>
 		<property name="requests">
@@ -859,7 +850,6 @@
 		<property name="ticker" value="190219-AAAAAA" />
 		<property name="title" value="A esta es" />
 		<property name="description" value="A esta es la descripcion" />
-		<property name="finalMode" value="false"/>
 		<property name="momentOrganised">
 			<bean factory-bean="dateFormat" factory-method="parse">
 				<constructor-arg value="2020/03/21" />
@@ -877,6 +867,7 @@
 				<ref bean="float2" />
 			</list>
 		</property>
+		<property name="finalMode" value="false" />
 	</bean>
 
 	<bean id="procession2" class="domain.Procession">
@@ -884,7 +875,6 @@
 		<property name="ticker" value="190220-AABBAA" />
 		<property name="title" value="A esta es NO" />
 		<property name="description" value="A esta NO es la descripcion" />
-		<property name="finalMode" value="false"/>
 		<property name="momentOrganised">
 			<bean factory-bean="dateFormat" factory-method="parse">
 				<constructor-arg value="2022/03/21" />
@@ -902,7 +892,7 @@
 				<ref bean="float4" />
 			</list>
 		</property>
-
+		<property name="finalMode" value="false" />
 	</bean>
 
 	<!-- Requests -->
@@ -937,11 +927,7 @@
 
 	<!-- Enrolments -->
 	<bean id="enrolment1" class="domain.Enrolment">
-
-		<property name="requestedPosition">
-			<ref bean="treasurer" />
-		</property>
-		<property name="assignededPosition">
+		<property name="position">
 			<ref bean="treasurer" />
 		</property>
 		<property name="brotherhood">
@@ -952,64 +938,63 @@
 				<constructor-arg value="2019/02/21" />
 			</bean>
 		</property>
-		<property name="exitMember" value="false" />
+		<property name="exitMember" value="true" />
+		<property name="moment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21" />
+			</bean>
+		</property>
+		<property name="member">
+			<ref bean="member1" />
+		</property>
 	</bean>
+	
 	<bean id="enrolment2" class="domain.Enrolment">
-
-
-		<property name="requestedPosition">
-			<ref bean="president" />
-		</property>
-		<property name="assignededPosition">
-			<ref bean="president" />
-		</property>
 		<property name="brotherhood">
 			<ref bean="brotherhood1" />
 		</property>
-		<property name="exitMoment">
+		<property name="exitMember" value="false" />
+		<property name="moment">
 			<bean factory-bean="dateFormat" factory-method="parse">
 				<constructor-arg value="2019/02/21" />
 			</bean>
 		</property>
-		<property name="exitMember" value="false" />
+		<property name="member">
+			<ref bean="member2" />
+		</property>
 	</bean>
+	
 	<bean id="enrolment3" class="domain.Enrolment">
-
-
-		<property name="requestedPosition">
-			<ref bean="president" />
-		</property>
-		<property name="assignededPosition">
-			<ref bean="vicepresident" />
-		</property>
 		<property name="brotherhood">
 			<ref bean="brotherhood2" />
 		</property>
-		<property name="exitMoment">
+		<property name="exitMember" value="false" />
+		<property name="moment">
 			<bean factory-bean="dateFormat" factory-method="parse">
 				<constructor-arg value="2019/02/21" />
 			</bean>
 		</property>
-		<property name="exitMember" value="false" />
+		<property name="member">
+			<ref bean="member1" />
+		</property>
 	</bean>
+	
 	<bean id="enrolment4" class="domain.Enrolment">
-
-
-		<property name="requestedPosition">
-			<ref bean="historian" />
-		</property>
-		<property name="assignededPosition">
+		<property name="position">
 			<ref bean="historian" />
 		</property>
 		<property name="brotherhood">
 			<ref bean="brotherhood2" />
 		</property>
-		<property name="exitMoment">
+		<property name="exitMember" value="false" />
+		<property name="moment">
 			<bean factory-bean="dateFormat" factory-method="parse">
 				<constructor-arg value="2019/02/21" />
 			</bean>
 		</property>
-		<property name="exitMember" value="false" />
+		<property name="member">
+			<ref bean="member2" />
+		</property>
 	</bean>
 
 	<!-- Positions -->

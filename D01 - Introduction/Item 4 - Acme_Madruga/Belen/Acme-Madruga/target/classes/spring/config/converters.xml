@@ -28,7 +28,12 @@
 		<!-- Float -->
 		<bean class="converters.FloatToStringConverter" />
 		<bean class="converters.StringToFloatConverter" />
-		
+		<!-- Enrolment -->
+		<bean class="converters.EnrolmentToStringConverter" />
+		<bean class="converters.StringToEnrolmentConverter" />
+		<!-- Brotherhood -->
+		<bean class="converters.BrotherhoodToStringConverter" />
+		<bean class="converters.StringToBrotherhoodConverter" />
 		
 	</util:list>
 

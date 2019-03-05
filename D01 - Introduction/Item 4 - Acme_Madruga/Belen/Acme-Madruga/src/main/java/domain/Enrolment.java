@@ -20,11 +20,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Enrolment extends DomainEntity {
 
-	private Position	requestedPosition;
-	private Position	assignededPosition;
 	private Brotherhood	brotherhood;
 	private Boolean		exitMember;
 	private Date		exitMoment;
+	private Date		moment;
+	private Position	position;
+	private Member		member;
 
 
 	public Boolean getExitMember() {
@@ -45,26 +46,39 @@ public class Enrolment extends DomainEntity {
 		this.exitMoment = exitMoment;
 	}
 
-	@OneToOne(optional = true)
-	public Position getRequestedPosition() {
-		return this.requestedPosition;
-	}
-	public void setRequestedPosition(final Position requestedPosition) {
-		this.requestedPosition = requestedPosition;
-	}
-	@OneToOne(optional = true)
-	public Position getAssignededPosition() {
-		return this.assignededPosition;
-	}
-	public void setAssignededPosition(final Position assignededPosition) {
-		this.assignededPosition = assignededPosition;
-	}
-
 	@ManyToOne(optional = false)
 	public Brotherhood getBrotherhood() {
 		return this.brotherhood;
 	}
 	public void setBrotherhood(final Brotherhood brotherhood) {
 		this.brotherhood = brotherhood;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	public Date getMoment() {
+		return this.moment;
+	}
+
+	public void setMoment(final Date moment) {
+		this.moment = moment;
+	}
+
+	@OneToOne
+	public Position getPosition() {
+		return this.position;
+	}
+
+	public void setPosition(final Position position) {
+		this.position = position;
+	}
+
+	@ManyToOne
+	public Member getMember() {
+		return this.member;
+	}
+
+	public void setMember(final Member member) {
+		this.member = member;
 	}
 }

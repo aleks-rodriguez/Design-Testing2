@@ -43,6 +43,8 @@
 
 			<li><a class="fNiv" href="procession/member/finder.do"><spring:message
 						code="master.page.finder" /></a></li>
+			<li><a class="fNiv" href="brotherhood/member/list.do"><spring:message
+						code="master.page.brotherhood.list" /></a></li>
 		</security:authorize>
 		<!-- Brotherhood -->
 		<security:authorize access="hasRole('BROTHERHOOD')">
@@ -64,6 +66,13 @@
 					<li><a href="float/brotherhood/create.do"><spring:message
 						code="master.page.float.create" /></a></li>
 					</ul></li>
+			<li><a class="fNiv"><spring:message
+						code="master.page.enrolment" /></a>
+						<ul>
+						<li><a href="enrolment/brotherhood/list.do"><spring:message
+						code="master.page.enrolment.list" /></a></li>
+						</ul>
+						</li>
 		</security:authorize>
 		<!-- Anonymous -->
 		<security:authorize access="isAnonymous()">

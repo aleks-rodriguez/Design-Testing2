@@ -129,22 +129,20 @@ public class ProcessionController extends AbstractController {
 	// Create edit model and view
 	protected ModelAndView createEditModelAndView(final Procession procession) {
 		ModelAndView model;
-		//		UserAccount user;
-		//		user = LoginService.getPrincipal();
 
 		model = this.createEditModelAndView(procession, null);
 		Brotherhood b;
-		//		b = this.floatService.findBrotherhoodByUser(user.getId());
-		b = this.processionService.findBrotherhoodByProcession(procession.getId());
+		if (procession.getId() == 0) {
+			UserAccount user;
+			user = LoginService.getPrincipal();
+			b = this.processionService.findBrotherhoodByUser(user.getId());
+		} else
+			b = this.processionService.findBrotherhoodByProcession(procession.getId());
 		model.addObject("floats", b.getFloats());
 		return model;
 	}
-
 	protected ModelAndView createEditModelAndView(final Procession procession, final String message) {
 		ModelAndView result;
-
-		//		UserAccount user;
-		//		user = LoginService.getPrincipal();
 
 		Map<String, String> map;
 		map = new HashMap<String, String>();
@@ -153,8 +151,12 @@ public class ProcessionController extends AbstractController {
 		result = this.editFormsUrlId(procession, "procession/brotherhood/edit.do", map, "/procession/list.do", this.custom(new ModelAndView("procession/edit")));
 		result.addObject("procession", procession);
 		Brotherhood b;
-		//		b = this.floatService.findBrotherhoodByUser(user.getId());
-		b = this.processionService.findBrotherhoodByProcession(procession.getId());
+		if (procession.getId() == 0) {
+			UserAccount user;
+			user = LoginService.getPrincipal();
+			b = this.processionService.findBrotherhoodByUser(user.getId());
+		} else
+			b = this.processionService.findBrotherhoodByProcession(procession.getId());
 		result.addObject("floats", b.getFloats());
 		result.addObject("message", message);
 		return result;
