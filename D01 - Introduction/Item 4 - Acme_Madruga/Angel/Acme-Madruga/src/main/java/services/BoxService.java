@@ -15,18 +15,22 @@ import repositories.BoxRepository;
 import security.LoginService;
 import domain.Actor;
 import domain.Box;
-import domain.Message;
+import domain.MessageEntity;
 
 @Service
 @Transactional
 public class BoxService {
 
-	@Autowired
+	@Autowired(required = false)
 	private Validator		validator;
 
 	@Autowired
 	private BoxRepository	boxRepository;
 
+
+	public Collection<Box> save(final Collection<Box> boxes) {
+		return this.boxRepository.save(boxes);
+	}
 
 	//Queries del repo de box
 	public Box getActorEntryBox(final int id) {
@@ -72,7 +76,8 @@ public class BoxService {
 	public Box findOne(final int id) {
 		final Box b;
 		b = this.boxRepository.findOne(id);
-		Assert.isTrue(this.boxRepository.getActorByUserAccount(LoginService.getPrincipal().getId()).getBoxes().contains(b));
+		//		Assert.isTrue(this.boxRepository.getActorByUserAccount(LoginService.getPrincipal().getId()).getBoxes().contains(b));
+		//		Assert.isTrue(!b.isFromSystem());
 		return b;
 	}
 	//create
@@ -81,7 +86,7 @@ public class BoxService {
 		b = new Box();
 		b.setFromSystem(false);
 		b.setName("");
-		b.setMessage(new ArrayList<Message>());
+		b.setMessageEntity(new ArrayList<MessageEntity>());
 		return b;
 	}
 	//save
@@ -124,10 +129,10 @@ public class BoxService {
 		final Actor a;
 		a = this.boxRepository.getActorByUserAccount(LoginService.getPrincipal().getId());
 
-		Collection<Message> colmes;
-		colmes = b.getMessage();
+		Collection<MessageEntity> colmes;
+		colmes = b.getMessageEntity();
 		//elimina las boxes que tienen los mensajes ya que es bidireccional
-		for (final Message m : colmes)
+		for (final MessageEntity m : colmes)
 			if (m.getBox().contains(b)) {
 				final Collection<Box> boxes = m.getBox();
 				boxes.remove(b);
@@ -135,7 +140,7 @@ public class BoxService {
 			}
 		//setteamos los mensajes de la box a vacío
 		colmes.clear();
-		b.setMessage(colmes);
+		b.setMessageEntity(colmes);
 		//eliminamos la caja al actor que la tiene
 		for (final Box bo : this.boxRepository.getBoxesFromUserAccount(LoginService.getPrincipal().getId()))
 			if (bo.getBoxes().contains(b)) {
@@ -161,7 +166,7 @@ public class BoxService {
 			result = this.boxRepository.findOne(box.getId());
 
 			result.setName(box.getName());
-			result.setMessage(box.getMessage());
+			result.setMessageEntity(box.getMessageEntity());
 
 		}
 
@@ -169,4 +174,5 @@ public class BoxService {
 
 		return result;
 	}
+
 }

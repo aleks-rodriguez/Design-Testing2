@@ -3,6 +3,8 @@ package forms;
 
 import java.util.Collection;
 
+import security.UserAccount;
+
 public class ActorForm {
 
 	private String				name;
@@ -17,6 +19,38 @@ public class ActorForm {
 	private String				title;
 	private Collection<String>	pictures;
 
+	private int					id;
+
+	private UserAccount			account;
+
+
+	public UserAccount getAccount() {
+		return this.account;
+	}
+
+	public void setAccount(final UserAccount account) {
+		this.account = account;
+	}
+
+
+	private String	password2;
+
+
+	public String getPassword2() {
+		return this.password2;
+	}
+
+	public void setPassword2(final String password2) {
+		this.password2 = password2;
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(final int id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return this.name;

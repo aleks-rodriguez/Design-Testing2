@@ -5,34 +5,37 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
-import repositories.MessageRepository;
+import repositories.MessageEntityRepository;
 import security.LoginService;
+import utilities.Utiles;
 import domain.Actor;
 import domain.Box;
-import domain.Message;
+import domain.MessageEntity;
 
 @Service
 @Transactional
 public class MessageService {
 
-	@Autowired
-	private Validator			validator;
+	@Autowired(required = false)
+	private Validator				validator;
 
 	@Autowired
-	private MessageRepository	messageRepository;
+	private MessageEntityRepository	messageRepository;
 
 	@Autowired
-	private BoxService			boxService;
+	private BoxService				boxService;
 
 
 	//Queries del repository
-	public Collection<Message> getMessagesByBox(final int id) {
+	public Collection<MessageEntity> getMessagesByBox(final int id) {
 		return this.messageRepository.getMessagesByBox(id);
 	}
 
@@ -44,13 +47,26 @@ public class MessageService {
 		return this.messageRepository.getBoxesFromActors(name, actors, userlogged);
 	}
 
-	public Message findOne(final int id) {
+	public MessageEntity findOne(final int id) {
 		return this.messageRepository.findOne(id);
 	}
+
+	public Collection<Actor> getReceiver(final int id) {
+		return this.messageRepository.getReceiver(id);
+	}
+
+	public void delete(final MessageEntity m) {
+		this.messageRepository.delete(m);
+	}
+
+	public Collection<MessageEntity> getMessageOutBox(final int id) {
+		return this.messageRepository.getMessagesOutBox(id);
+	}
+
 	//Create
-	public Message createMessage(final Actor a) {
-		Message message;
-		message = new Message();
+	public MessageEntity createMessage(final Actor a) {
+		MessageEntity message;
+		message = new MessageEntity();
 
 		message.setSender(a);
 		message.setBody("");
@@ -64,8 +80,8 @@ public class MessageService {
 		return message;
 	}
 	//Save
-	public Message sendMessage(final Message mess) {
-		Message saved;
+	public MessageEntity sendMessage(final MessageEntity mess) {
+		MessageEntity saved;
 		saved = this.messageRepository.save(mess);
 		//Send message
 		final Actor sender;
@@ -73,16 +89,16 @@ public class MessageService {
 
 		// to do the message of the sistem --------
 		Box outBox;
-		if (mess.getTags().contains("Application"))
-			outBox = this.boxService.getActorEntryBox(sender.getId());
-		else
-			outBox = this.boxService.getActorSendedBox(sender.getId());
+		//		if (mess.getTags().contains("Application"))
+		//			outBox = this.boxService.getActorEntryBox(sender.getId());
+		//		else
+		outBox = this.boxService.getActorSendedBox(sender.getId());
 		//-----------------------------------------
 
-		Collection<Message> collMessage;
-		collMessage = outBox.getMessage();
+		Collection<MessageEntity> collMessage;
+		collMessage = outBox.getMessageEntity();
 		collMessage.add(saved);
-		outBox.setMessage(collMessage);
+		outBox.setMessageEntity(collMessage);
 
 		Collection<Box> colBox;
 		colBox = saved.getBox();
@@ -90,15 +106,15 @@ public class MessageService {
 		saved.setBox(colBox);
 
 		//spam in message
-		//		final boolean spam = Utiles.spamWord(Utiles.limpiaString(result.getSubject())) && Utiles.spamWord(Utiles.limpiaString(result.getBody()));
-		this.received(saved);
+		final boolean spam = Utiles.spamWord(Utiles.limpiaString(saved.getSubject())) && Utiles.spamWord(Utiles.limpiaString(saved.getBody()));
+		this.received(saved, spam);
 		//		sender.setSuspicious(spam);
 
 		return saved;
 
 	}
 
-	public void received(final Message saved/* , final Boolean spam */) {
+	public void received(final MessageEntity saved, final Boolean spam) {
 
 		final Collection<Actor> recipients;
 		recipients = saved.getReceiver();
@@ -107,11 +123,12 @@ public class MessageService {
 
 		Collection<Box> boxes;
 
-		//		if (spam)
-		//			boxes = this.messageRepository.getBoxesFromActors("Spam Box", recipients, userlogged);
-		//		else
-		boxes = this.messageRepository.getBoxesFromActors("In Box", recipients, userlogged);
-
+		if (spam)
+			boxes = this.messageRepository.getBoxesFromActors("Spam Box", recipients, userlogged);
+		else if (saved.getTags().contains("Notification"))
+			boxes = this.messageRepository.getBoxesFromActors("Notification Box", recipients, userlogged);
+		else
+			boxes = this.messageRepository.getBoxesFromActors("In Box", recipients, userlogged);
 		Collection<Box> boxesMessage;
 		boxesMessage = saved.getBox();
 		boxesMessage.addAll(boxes);
@@ -119,14 +136,14 @@ public class MessageService {
 
 		for (final Box box : boxesMessage) {
 
-			Collection<Message> messagesInBox;
-			messagesInBox = box.getMessage();
+			Collection<MessageEntity> messagesInBox;
+			messagesInBox = box.getMessageEntity();
 			messagesInBox.add(saved);
-			box.setMessage(messagesInBox);
+			box.setMessageEntity(messagesInBox);
 		}
 	}
 
-	public Integer moveTo(final String boxCase, final Message mess) {
+	public Integer moveTo(final String boxCase, final MessageEntity mess) {
 
 		final Actor a = this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId());
 
@@ -146,11 +163,11 @@ public class MessageService {
 		} else
 			box = this.boxService.getActorOtherBox(a.getId(), Integer.valueOf(boxCase));
 
-		Collection<Message> messa;
-		messa = box.getMessage();
+		Collection<MessageEntity> messa;
+		messa = box.getMessageEntity();
 
 		messa.add(mess);
-		box.setMessage(messa);
+		box.setMessageEntity(messa);
 
 		mesageBoxes.add(box);
 		mess.setBox(mesageBoxes);
@@ -160,31 +177,51 @@ public class MessageService {
 		return box.getId();
 	}
 
-	public void deleteMessage(final Message mesage) {
+	public void deleteMessage(final MessageEntity mesage) {
 		final Actor a = this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId());
 
 		Box b;
 		b = this.boxService.getActorTrashBox(a.getId());
 
-		Collection<Message> mess;
-		mess = b.getMessage();
+		Collection<MessageEntity> mess;
+		mess = b.getMessageEntity();
 
 		Collection<Box> boxesMesage;
 		boxesMesage = mesage.getBox();
 
 		if (mess.contains(mesage)) {
 			mess.remove(mesage);
-			b.setMessage(mess);
+			b.setMessageEntity(mess);
 
 			boxesMesage.remove(b);
 			mesage.setBox(boxesMesage);
 		}
 
+		Collection<Actor> col;
+		col = this.messageRepository.getReceiver(mesage.getId());
+
+		if (col.contains(a)) {
+			Collection<Actor> act;
+			act = col;
+			act.remove(a);
+			mesage.setReceiver(act);
+		}
+		//
+		//		if (mesage.getSender().getId() == a.getId())
+		//			if (mesage.getReceiver().equals(null))
+		//				this.messageRepository.delete(mesage);
+
+		//		if (mesage.getSender().getId() == a.getId())
+		//			mesage.setSender(Actor.this);
+		//
+		//		if (mesage.getReceiver() == null && mesage.getSender() == null)
+		//			this.messageRepository.delete(mesage);
+
 	}
 
-	public Message reconstruct(final Message message, final BindingResult binding) {
+	public MessageEntity reconstruct(final MessageEntity message, final BindingResult binding) {
 
-		Message result;
+		MessageEntity result;
 
 		if (message.getId() == 0) {
 			result = this.createMessage(this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId()));
@@ -192,13 +229,28 @@ public class MessageService {
 			result.setBody(message.getBody());
 			result.setPriority(message.getPriority());
 			result.setTags(message.getTags());
-			result.setReceiver(new ArrayList<Actor>(message.getReceiver()).subList(1, message.getReceiver().size()));
-		} else
+			if (message.getReceiver() != null) {
+				if (message.getReceiver().contains(null))
+					result.setReceiver(new ArrayList<Actor>(message.getReceiver()).subList(1, message.getReceiver().size()));
+				else
+					result.setReceiver(message.getReceiver());
+			} else
+				result.setReceiver(message.getReceiver());
+		} else {
 			result = this.messageRepository.findOne(message.getId());
+			result.setSubject(message.getSubject());
+			result.setBody(message.getBody());
+			result.setPriority(message.getPriority());
+			result.setTags(message.getTags());
+		}
 
 		this.validator.validate(result, binding);
+
+		if (binding.hasErrors())
+			throw new ValidationException();
 
 		return result;
 
 	}
+
 }

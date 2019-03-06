@@ -57,10 +57,13 @@
 			access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/position/administrator/**"
 			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/area/administrator/**"
+			access="hasRole('ADMIN')" />
 		<!-- Brotherhood -->
 		<security:intercept-url pattern="/procession/brotherhood/**"
 			access="hasRole('BROTHERHOOD')" />
-
+		<security:intercept-url pattern="/area/brotherhood/**"
+			access="hasRole('ADMIN')" />
 		<!-- Member -->
 		<security:intercept-url pattern="/procession/member/**"
 			access="hasRole('MEMBER')" />

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.CustomisationSystemService;
@@ -47,6 +48,32 @@ public class CustomisationSystemController extends AbstractController {
 				result = this.createEditModelAndView(customisationSystem, "custom.commit.error");
 			}
 
+		return result;
+	}
+	@RequestMapping(value = "/noenabled", method = RequestMethod.GET)
+	public ModelAndView listNoEnabledActors() {
+		ModelAndView result;
+
+		result = new ModelAndView("actor/list");
+		result.addObject("actors", this.serviceCustom.findAllNoEnabledActors());
+		result.addObject("unban", true);
+		result.addObject("requestURI", "customisation/administrator/noenabled.do");
+		return result;
+	}
+
+	@RequestMapping(value = "/ban", method = RequestMethod.GET)
+	public ModelAndView banActor(@RequestParam final int id) {
+		ModelAndView result;
+		this.serviceCustom.banActor(id);
+		result = new ModelAndView("redirect:suspicious.do");
+		return result;
+	}
+
+	@RequestMapping(value = "/unban", method = RequestMethod.GET)
+	public ModelAndView unBanActor(@RequestParam final int id) {
+		ModelAndView result;
+		this.serviceCustom.unBanActor(id);
+		result = new ModelAndView("redirect:noenabled.do");
 		return result;
 	}
 	protected ModelAndView createEditModelAndView(final CustomisationSystem customisationSystem) {

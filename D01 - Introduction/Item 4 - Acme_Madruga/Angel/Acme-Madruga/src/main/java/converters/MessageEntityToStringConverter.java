@@ -3,12 +3,12 @@ package converters;
 
 import org.springframework.core.convert.converter.Converter;
 
-import domain.Message;
+import domain.MessageEntity;
 
-public class MessageToStringConverter implements Converter<Message, String> {
+public class MessageEntityToStringConverter implements Converter<MessageEntity, String> {
 
 	@Override
-	public String convert(final Message mess) {
+	public String convert(final MessageEntity mess) {
 		String result;
 
 		if (mess == null)

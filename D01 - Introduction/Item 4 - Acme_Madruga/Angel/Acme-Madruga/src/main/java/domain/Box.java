@@ -20,10 +20,10 @@ import org.hibernate.validator.constraints.SafeHtml;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Box extends DomainEntity {
 
-	private String				name;
-	private boolean				fromSystem;
-	private Collection<Message>	message;
-	private Collection<Box>		boxes;
+	private String						name;
+	private boolean						fromSystem;
+	private Collection<MessageEntity>	messageEntity;
+	private Collection<Box>				boxes;
 
 
 	@NotBlank
@@ -45,12 +45,12 @@ public class Box extends DomainEntity {
 	}
 
 	@ManyToMany(mappedBy = "box")
-	public Collection<Message> getMessage() {
-		return this.message;
+	public Collection<MessageEntity> getMessageEntity() {
+		return this.messageEntity;
 	}
 
-	public void setMessage(final Collection<Message> mesage) {
-		this.message = mesage;
+	public void setMessageEntity(final Collection<MessageEntity> mesageEntity) {
+		this.messageEntity = mesageEntity;
 	}
 
 	@OneToMany(cascade = {

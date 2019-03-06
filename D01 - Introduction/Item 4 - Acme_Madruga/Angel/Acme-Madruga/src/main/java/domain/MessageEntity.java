@@ -24,7 +24,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Access(AccessType.PROPERTY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "`message`")
-public class Message extends DomainEntity {
+public class MessageEntity extends DomainEntity {
 
 	private Actor				sender;
 	private Collection<Actor>	receiver;

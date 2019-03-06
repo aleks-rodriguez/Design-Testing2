@@ -25,7 +25,7 @@ public class BoxController extends AbstractController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;
-		result = new ModelAndView("box/list");
+		result = this.custom(new ModelAndView("box/list"));
 		result.addObject("boxes", this.boxService.getBoxesFromUserAccount(LoginService.getPrincipal().getId()));
 		result.addObject("requestURI", "box/list.do");
 		return result;
@@ -67,7 +67,10 @@ public class BoxController extends AbstractController {
 		ModelAndView result;
 		Box b;
 		b = this.boxService.findOne(id);
-		result = this.createEditModelAndView(b);
+		if (!this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId()).getBoxes().contains(b) || b.isFromSystem())
+			result = new ModelAndView("redirect:../");
+		else
+			result = this.createEditModelAndView(b);
 		result.addObject("box", b);
 		return result;
 	}
@@ -80,7 +83,7 @@ public class BoxController extends AbstractController {
 		try {
 			if (!b.isFromSystem()) {
 				this.boxService.delete(b);
-				result = new ModelAndView("redirect:list.do");
+				result = this.custom(new ModelAndView("redirect:list.do"));
 			}
 		} catch (final Throwable opps) {
 			result = this.createEditModelAndView(this.boxService.findOne(id), "box.commit.error");
@@ -96,7 +99,7 @@ public class BoxController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final Box box, final String message) {
 		ModelAndView result;
-		result = new ModelAndView("box/edit");
+		result = this.custom(new ModelAndView("box/edit"));
 		result.addObject("box", box);
 		result.addObject("message", message);
 		return result;

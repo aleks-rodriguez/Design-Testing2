@@ -18,9 +18,7 @@ import domain.Area;
 public class AreaService { //LOS ASSERT DEL PRINCIPAL
 
 	@Autowired
-	private AreaRepository		areaRepository;
-	@Autowired
-	private BrotherhoodService	brotherhoodService;
+	private AreaRepository	areaRepository;
 
 
 	public Collection<Area> findAll() {
@@ -38,7 +36,7 @@ public class AreaService { //LOS ASSERT DEL PRINCIPAL
 	}
 
 	public Area create() {
-		final Area a;
+		Area a;
 		a = new Area();
 		a.setName("");
 		a.setPictures(new ArrayList<String>());
@@ -54,7 +52,7 @@ public class AreaService { //LOS ASSERT DEL PRINCIPAL
 
 	public void delete(final Area a) {
 		Assert.notNull(a);
-		Assert.isTrue(this.brotherhoodService.getBrotherhoodsByAreaId(a.getId()).isEmpty());
+		Assert.isTrue(this.areaRepository.getBrotherhoodsByAreaId(a.getId()).isEmpty());
 		this.areaRepository.delete(a);
 	}
 }

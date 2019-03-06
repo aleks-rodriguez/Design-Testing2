@@ -7,20 +7,20 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import repositories.MessageRepository;
-import domain.Message;
+import repositories.BrotherhoodRepository;
+import domain.Brotherhood;
 
 @Component
 @Transactional
-public class StringToMessageConverter implements Converter<String, Message> {
+public class StringToBrotherhoodConverter implements Converter<String, Brotherhood> {
 
 	@Autowired
-	MessageRepository	messageRepository;
+	BrotherhoodRepository	brotherhoodRepository;
 
 
 	@Override
-	public Message convert(final String text) {
-		Message result;
+	public Brotherhood convert(final String text) {
+		Brotherhood result;
 		int id;
 
 		try {
@@ -28,10 +28,8 @@ public class StringToMessageConverter implements Converter<String, Message> {
 				result = null;
 			else {
 				id = Integer.valueOf(text);
-				System.out.println(id);
-				result = this.messageRepository.findOne(id);
+				result = this.brotherhoodRepository.findOne(id);
 			}
-			System.out.println(result);
 		} catch (final Throwable opps) {
 			throw new IllegalArgumentException(opps);
 		}

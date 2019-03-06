@@ -10,8 +10,8 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -74,7 +74,7 @@ public class Brotherhood extends Actor {
 	public void setEnrolments(final Collection<Enrolment> enrolments) {
 		this.enrolments = enrolments;
 	}
-	@OneToOne(optional = true)
+	@ManyToOne(optional = true)
 	public Area getArea() {
 		return this.area;
 	}

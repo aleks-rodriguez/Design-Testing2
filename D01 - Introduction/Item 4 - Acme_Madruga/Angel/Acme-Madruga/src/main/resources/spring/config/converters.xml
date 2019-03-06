@@ -42,8 +42,21 @@
 		<bean class="converters.StringToActorConverter" />
 
 		<!-- Message -->
-		<bean class="converters.MessageToStringConverter" />
-		<bean class="converters.StringToMessageConverter" />
+		<bean class="converters.MessageEntityToStringConverter" />
+		<bean class="converters.StringToMessageEntityConverter" />
+		
+		<!-- Enrolment -->
+		<bean class="converters.EnrolmentEntityToStringConverter" />
+		<bean class="converters.StringToEnrolmentEntityConverter" />
+		
+		<!-- Float -->
+		<bean class="converters.FloatEntityToStringConverter" />
+		<bean class="converters.StringToFloatEntityConverter" />
+
+		<!-- Brotherhood -->
+		<bean class="converters.BrotherhoodEntityToStringConverter" />
+		<bean class="converters.StringToBrotherhoodEntityConverter" />
+
 
 	</util:list>
 

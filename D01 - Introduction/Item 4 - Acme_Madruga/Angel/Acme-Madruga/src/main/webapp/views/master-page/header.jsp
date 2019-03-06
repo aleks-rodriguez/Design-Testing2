@@ -27,6 +27,8 @@
 		<security:authorize access="hasRole('ADMIN')">
 			<li><a class="fNiv" href="customisation/administrator/custom.do"><spring:message
 						code="master.page.administrator.custom" /></a></li>
+			<li><a class="fNiv" href="actor/createAdmin.do"><spring:message
+						code="master.page.actor.admin" /></a></li>
 			<li><a class="fNiv"> <spring:message
 						code="master.page.positions" />
 			</a>
@@ -48,6 +50,16 @@
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message
 						code="master.page.login" /></a></li>
+			<li><a class="fNiv"><spring:message
+						code="master.page.create" /></a>
+
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="actor/createMember.do"><spring:message
+								code="master.page.actor.member" /></a></li>
+					<li><a href="actor/createBrotherhood.do"><spring:message
+								code="master.page.actor.brotherhood" /></a></li>
+				</ul></li>
 			<li><a class="fNiv" href="about-us/terms.do"><spring:message
 						code="master.page.terms" /></a></li>
 		</security:authorize>
@@ -60,8 +72,12 @@
 			</a>
 				<ul>
 					<li class="arrow"></li>
-<li><a href="box/list.do"><spring:message code="master.page.boxes" /></a></li>
-					<li><a href="message/create.do"><spring:message code="master.page.message.create" /></a></li>
+					<li><a href="actor/personal.do"><spring:message
+								code="master.page.actor.personal" /></a></li>
+					<li><a href="box/list.do"><spring:message
+								code="master.page.boxes" /></a></li>
+					<li><a href="message/create.do"><spring:message
+								code="master.page.message.create" /></a></li>
 					<li><a href="profile/list.do"><spring:message
 								code="master.page.profile.list" /></a></li>
 					<li><a href="j_spring_security_logout"><spring:message

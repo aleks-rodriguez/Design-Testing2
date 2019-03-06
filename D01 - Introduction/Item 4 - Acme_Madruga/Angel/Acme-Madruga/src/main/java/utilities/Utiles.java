@@ -16,7 +16,7 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import security.Authority;
 import domain.Box;
-import domain.Message;
+import domain.MessageEntity;
 
 public class Utiles {
 
@@ -33,6 +33,11 @@ public class Utiles {
 	public static String				banner;
 	public static String				mess;
 
+
+	public static void main(final String[] args) {
+		final List<String> res = new ArrayList<String>(Arrays.asList("1", "2"));
+		System.out.println(res.toString().substring(1, res.toString().length() - 1));
+	}
 
 	public static Collection<Box> initBoxes() {
 
@@ -55,7 +60,7 @@ public class Utiles {
 
 		b = new Box();
 
-		b.setMessage(new ArrayList<Message>());
+		b.setMessageEntity(new ArrayList<MessageEntity>());
 
 		b.setFromSystem(fromSystem);
 
@@ -166,5 +171,14 @@ public class Utiles {
 					res = true;
 
 		return res;
+	}
+	public static boolean isSpammer(final Collection<MessageEntity> cm) {
+		int i = 0;
+		for (final MessageEntity message : cm) {
+			final boolean spam = Utiles.spamWord(Utiles.limpiaString(message.getSubject())) && Utiles.spamWord(Utiles.limpiaString(message.getBody()));
+			if (spam)
+				i++;
+		}
+		return (i / cm.size()) >= 0.1;
 	}
 }

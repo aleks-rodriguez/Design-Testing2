@@ -12,14 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import security.Authority;
 import security.LoginService;
-import services.AreaService;
+import security.UserAccount;
 import services.FinderService;
 import services.ProcessionService;
-import utilities.Utiles;
-import domain.Actor;
-import domain.Finder;
+import domain.Brotherhood;
 import domain.Member;
 import domain.Procession;
 
@@ -35,9 +32,6 @@ public class ProcessionController extends AbstractController {
 	@Autowired
 	private FinderService		serviceFinder;
 
-	@Autowired
-	private AreaService			serviceArea;
-
 
 	//List
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -49,70 +43,105 @@ public class ProcessionController extends AbstractController {
 		return result;
 	}
 
-	// Finder
-	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public ModelAndView finder() {
+	//Create
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create(@RequestParam(defaultValue = "0") final int idProcession) {
+		UserAccount user;
+		user = LoginService.getPrincipal();
+
+		Brotherhood b;
+		b = this.processionService.findBrotherhoodByUser(user.getId());
 		ModelAndView result;
-		final Member m = (Member) this.serviceFinder.findByUserAccount(LoginService.getPrincipal().getId());
-		result = this.createEditModelAndView(this.serviceFinder.findOne(m.getFinder().getId()));
+		Procession p;
+		p = this.processionService.createProcession();
+		result = this.createEditModelAndView(p);
+		result.addObject("floats", b.getFloats());
+		result.addObject("requestURI", "procession/brotherhood/edit.do?idProcession=" + idProcession);
+		result.addObject("view", false);
 		return result;
 	}
-	@RequestMapping(value = "/finder", method = RequestMethod.POST, params = "search")
-	public ModelAndView search(Finder finder, final BindingResult binding) {
-
+	//Save
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@RequestParam(defaultValue = "0") final int idProcession,/* @ModelAttribute("floats") */Procession procession, final BindingResult binding) {
 		ModelAndView result;
-		finder = this.serviceFinder.reconstruct(finder, binding);
+		System.out.println("Floats:" + procession.getFloats());
+		procession = this.processionService.reconstruct(procession, binding);
+
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(finder);
+			result = this.createEditModelAndView(procession);
 		else
 			try {
-
-				Finder aux;
-				aux = this.serviceFinder.save(finder);
-				result = this.custom(new ModelAndView("procession/list"));
-				result.addObject("requestURI", "procession/member/searchList.do?id=" + aux.getId());
-				result.addObject("processions", aux.getProcessions());
+				this.processionService.save(procession);
+				result = this.custom(new ModelAndView("redirect:../list.do"));
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(finder, "finder.commit.error");
+				result = this.createEditModelAndView(procession, "procession.commit.error");
 			}
 		return result;
 	}
-	@RequestMapping(value = "/searchList", method = RequestMethod.GET)
-	public ModelAndView searchList(@RequestParam final int id) {
+
+	//Update
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	public ModelAndView update(@RequestParam final int idProcession) {
 		ModelAndView result;
-		result = this.custom(new ModelAndView("procession/list"));
+		Procession p;
+		p = this.processionService.findOne(idProcession);
+		result = this.createEditModelAndView(p);
+		result.addObject("view", false);
+		return result;
+	}
 
-		final Actor a = this.serviceFinder.findByUserAccount(LoginService.getPrincipal().getId());
-		final Finder param = this.serviceFinder.findOne(id);
-
-		if (Utiles.findAuthority(a.getAccount().getAuthorities(), Authority.MEMBER) && ((Member) a).getFinder().getId() == id) {
-			result.addObject("processions", param.getProcessions());
-			result.addObject("requestURI", "procession/list.do?id=" + id);
+	//Delete
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final int id) {
+		ModelAndView result = null;
+		final Procession p;
+		p = this.processionService.findOne(id);
+		try {
+			this.processionService.delete(p.getId());
+			result = this.custom(new ModelAndView("redirect:list.do"));
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(this.processionService.findOne(id), "procession.commit.error");
 		}
 		return result;
 	}
-	protected ModelAndView createEditModelAndView(final Finder finder) {
-		ModelAndView model;
-		model = this.createEditModelAndView(finder, null);
-		return model;
+
+	//Show
+	@RequestMapping(value = "/show", method = RequestMethod.GET)
+	public ModelAndView show(@RequestParam final int idProcession) {
+		final ModelAndView result;
+		final Procession p;
+		p = this.processionService.findOne(idProcession);
+		result = this.createEditModelAndView(p);
+		result.addObject("requestURI", "procession/show.do?idProcession=" + p.getId());
+		result.addObject("view", true);
+		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final Finder finder, final String message) {
+	// Finder
+	@RequestMapping(value = "/finder", method = RequestMethod.GET)
+	public ModelAndView finder() {
 		ModelAndView result;
-		result = this.editFormsUrlId("procession/member/finder.do", new HashMap<String, String>(), "/procession/member/list.do", this.custom(new ModelAndView("procession/find")));
-		result.addObject("areas", this.serviceArea.findAll());
-		result.addObject("finder", finder);
-		result.addObject("message", message);
+		result = this.custom(new ModelAndView("procession/find"));
+		final Member m = (Member) this.serviceFinder.findByUserAccount(LoginService.getPrincipal().getId());
+		result.addObject("finder", this.serviceFinder.findOne(m.getFinder().getId()));
 		return result;
 	}
 
 	// Create edit model and view
 	protected ModelAndView createEditModelAndView(final Procession procession) {
 		ModelAndView model;
+
 		model = this.createEditModelAndView(procession, null);
+		Brotherhood b;
+		if (procession.getId() == 0) {
+			UserAccount user;
+			user = LoginService.getPrincipal();
+			b = this.processionService.findBrotherhoodByUser(user.getId());
+		} else
+			b = this.processionService.findBrotherhoodByProcession(procession.getId());
+		model.addObject("floats", b.getFloats());
 		return model;
 	}
-
 	protected ModelAndView createEditModelAndView(final Procession procession, final String message) {
 		ModelAndView result;
 
@@ -120,8 +149,16 @@ public class ProcessionController extends AbstractController {
 		map = new HashMap<String, String>();
 		map.put("id", String.valueOf(procession.getId()));
 
-		result = this.editFormsUrlId("procession/edit.do", map, "/procession/list.do", this.custom(new ModelAndView("procession/edit")));
+		result = this.editFormsUrlId("procession/brotherhood/edit.do", map, "/procession/list.do", this.custom(new ModelAndView("procession/edit")));
 		result.addObject("procession", procession);
+		Brotherhood b;
+		if (procession.getId() == 0) {
+			UserAccount user;
+			user = LoginService.getPrincipal();
+			b = this.processionService.findBrotherhoodByUser(user.getId());
+		} else
+			b = this.processionService.findBrotherhoodByProcession(procession.getId());
+		result.addObject("floats", b.getFloats());
 		result.addObject("message", message);
 		return result;
 	}
