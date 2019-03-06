@@ -14,15 +14,13 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Access(AccessType.PROPERTY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Area extends DomainEntity {//le pongo el notnull porque, aunque no lo diga explicitamente, no creo que puedas tener un area sin nombre ni nada
-
-	////y si mal no recuerdo junto al elementCollection no pones mas nada porque si no BUM al popular
+public class Area extends DomainEntity {
 
 	private String				name;
-	private Collection<String>	pictures;	//dice "un numero de fotos" pero yo entiendo que eso se refiere a que tenga unas cuantas fotos asociadas
+	private Collection<String>	pictures;	
 
 
-	@NotNull
+	@NotBlank
 	public String getName() {
 		return this.name;
 	}

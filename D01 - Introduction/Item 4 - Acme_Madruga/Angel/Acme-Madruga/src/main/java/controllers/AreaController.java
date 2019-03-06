@@ -1,6 +1,9 @@
 
 package controllers;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +34,24 @@ public class AreaController extends AbstractController {
 	public ModelAndView list() {
 		ModelAndView result;
 		result = this.custom(new ModelAndView("area/list"));
-		result.addObject("areas", this.areaService.findAll());
-		if (Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN))
+		Collection<Area> areas;
+		if (Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN)) {
+			areas = this.areaService.findAll();
+			result.addObject("areas", areas);
 			result.addObject("requestURI", "area/administrator/list.do");
-		else if (Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.BROTHERHOOD))
+		} else if (Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.BROTHERHOOD)) {
+			areas = new ArrayList<Area>();
+			Area a;
+			a = this.areaService.findByUserAccount().getArea();
+			if (a == null)
+				areas = this.areaService.findAll();
+			else
+				areas.add(a);
+
+			result.addObject("areas", areas);
 			result.addObject("requestURI", "area/brotherhood/list.do");
+		}
+
 		return result;
 	}
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -74,13 +90,26 @@ public class AreaController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(final int id) {
 		ModelAndView result;
-		final Area area = null;
+		Area area;
+		area = this.areaService.findOne(id);
 		try {
-			this.areaService.delete(this.areaService.findOne(id));
+			this.areaService.delete(area);
 			result = this.custom(new ModelAndView("redirect:list.do"));
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(area, "area.commit.error");
 		}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/assign", method = RequestMethod.GET)
+	public ModelAndView assign(@RequestParam final int area) {
+		ModelAndView result = null;
+		//Expected true if brotherhood´s area is null
+		final boolean nonArea = this.areaService.setAreaToBrotherhood(area);
+
+		if (nonArea)
+			result = this.custom(new ModelAndView("redirect:list.do"));
 
 		return result;
 	}

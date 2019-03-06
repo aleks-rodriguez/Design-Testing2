@@ -11,7 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.AreaRepository;
+import security.Authority;
+import security.LoginService;
+import utilities.Utiles;
 import domain.Area;
+import domain.Brotherhood;
 
 @Service
 @Transactional
@@ -20,6 +24,10 @@ public class AreaService { //LOS ASSERT DEL PRINCIPAL
 	@Autowired
 	private AreaRepository	areaRepository;
 
+
+	public Brotherhood findByUserAccount() {
+		return this.areaRepository.getBrotherhoodByUserAccountId(LoginService.getPrincipal().getId());
+	}
 
 	public Collection<Area> findAll() {
 		Collection<Area> area;
@@ -43,13 +51,23 @@ public class AreaService { //LOS ASSERT DEL PRINCIPAL
 		return a;
 	}
 	public Area save(final Area a) {
+		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
 		Area saved;
-		Assert.notNull(a);
 		saved = this.areaRepository.save(a);
-		Assert.notNull(saved);
 		return saved;
 	}
 
+	public boolean setAreaToBrotherhood(final int area) {
+		boolean res = false;
+		Brotherhood b;
+		b = this.areaRepository.getBrotherhoodByUserAccountId(LoginService.getPrincipal().getId());
+		final Area a = this.areaRepository.findOne(area);
+		if (b.getArea() == null) {
+			b.setArea(a);
+			res = true;
+		}
+		return res;
+	}
 	public void delete(final Area a) {
 		Assert.notNull(a);
 		Assert.isTrue(this.areaRepository.getBrotherhoodsByAreaId(a.getId()).isEmpty());

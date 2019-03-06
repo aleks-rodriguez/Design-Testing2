@@ -28,7 +28,7 @@ public class Request extends DomainEntity {
 	public void setStatus(final String status) {
 		this.status = status;
 	}
-	@NotNull
+
 	@Min(value = 1)
 	public Integer getMarchRow() {
 		return this.marchRow;
@@ -37,7 +37,7 @@ public class Request extends DomainEntity {
 	public void setMarchRow(final Integer marchRow) {
 		this.marchRow = marchRow;
 	}
-	@NotNull
+
 	@Min(value = 1)
 	public Integer getMarchColumn() {
 		return this.marchColumn;
