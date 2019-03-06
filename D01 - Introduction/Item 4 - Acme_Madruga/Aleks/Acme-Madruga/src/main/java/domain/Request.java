@@ -7,7 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -15,12 +16,12 @@ import javax.validation.constraints.NotNull;
 public class Request extends DomainEntity {
 
 	private String	status;
-	private int		marchRow;
-	private int		marchColumn;
-	private String	reasonWhyRejected;
+	private Integer	marchRow;
+	private Integer	marchColumn;
+	private String	record;
 
 
-	@NotNull
+	@NotBlank
 	public String getStatus() {
 		return this.status;
 	}
@@ -28,31 +29,31 @@ public class Request extends DomainEntity {
 	public void setStatus(final String status) {
 		this.status = status;
 	}
-	@NotNull
+
 	@Min(value = 1)
-	public int getMarchRow() {
+	public Integer getMarchRow() {
 		return this.marchRow;
 	}
 
-	public void setMarchRow(final int marchRow) {
+	public void setMarchRow(final Integer marchRow) {
 		this.marchRow = marchRow;
 	}
-	@NotNull
+
 	@Min(value = 1)
-	public int getMarchColumn() {
+	public Integer getMarchColumn() {
 		return this.marchColumn;
 	}
 
-	public void setMarchColumn(final int marchColumn) {
+	public void setMarchColumn(final Integer marchColumn) {
 		this.marchColumn = marchColumn;
 	}
 
-	public String getReasonWhyRejected() {
-		return this.reasonWhyRejected;
+	public String getRecord() {
+		return this.record;
 	}
 
-	public void setReasonWhyRejected(final String reasonWhyRejected) {
-		this.reasonWhyRejected = reasonWhyRejected;
+	public void setRecord(final String record) {
+		this.record = record;
 	}
 
 }

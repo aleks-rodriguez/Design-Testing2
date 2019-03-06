@@ -10,11 +10,16 @@
 
 package controllers;
 
+import java.util.Map;
+
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
+
+import utilities.Utiles;
+import domain.DomainEntity;
 
 @Controller
 public class AbstractController {
@@ -31,6 +36,22 @@ public class AbstractController {
 		result.addObject("stackTrace", ExceptionUtils.getStackTrace(oops));
 
 		return result;
+	}
+
+	public ModelAndView custom(final ModelAndView parameter) {
+
+		parameter.addObject("banner", Utiles.banner);
+		parameter.addObject("systemName", Utiles.systemName);
+		return parameter;
+	}
+
+	public <T extends DomainEntity> ModelAndView editFormsUrlId(final T o, final String requestURI, final Map<String, String> requestParams, final String requestCancel, final ModelAndView parameter) {
+		if (o.getId() == 0)
+			parameter.addObject("requestURI", requestURI);
+		else
+			parameter.addObject("requestURI", requestURI + "?" + Utiles.buildUrl(requestParams));
+		parameter.addObject("requestCancel", requestCancel);
+		return parameter;
 	}
 
 }

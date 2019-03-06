@@ -203,6 +203,11 @@
 				<ref bean="float2" />
 			</list>
 		</property>
+		<property name="processions">
+			<list>
+				<ref bean="procession1" />
+			</list>
+		</property>
 	</bean>
 
 	<bean id="brotherhood2" class="domain.Brotherhood">
@@ -255,6 +260,11 @@
 				<ref bean="float4" />
 			</list>
 		</property>
+		<property name="processions">
+			<list>
+				<ref bean="procession2" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- Members -->
@@ -294,6 +304,7 @@
 		<property name="finder">
 			<ref bean="finder1" />
 		</property>
+
 	</bean>
 	<bean id="member2" class="domain.Member">
 		<property name="name" value="Member2" />
@@ -710,11 +721,6 @@
 				<value></value>
 			</list>
 		</property>
-		<property name="processions">
-			<list>
-				<ref bean="procession1" />
-			</list>
-		</property>
 
 	</bean>
 
@@ -726,10 +732,6 @@
 		<property name="pictures">
 			<list>
 				<value></value>
-			</list>
-		</property>
-		<property name="processions">
-			<list>
 			</list>
 		</property>
 
@@ -746,10 +748,6 @@
 				<value></value>
 			</list>
 		</property>
-		<property name="processions">
-			<list>
-			</list>
-		</property>
 
 	</bean>
 	<bean id="float4" class="domain.Float">
@@ -760,10 +758,6 @@
 		<property name="pictures">
 			<list>
 				<value></value>
-			</list>
-		</property>
-		<property name="processions">
-			<list>
 			</list>
 		</property>
 
@@ -827,6 +821,11 @@
 				<constructor-arg value="2019/03/21" />
 			</bean>
 		</property>
+		<property name="creationDate">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21 10:00" />
+			</bean>
+		</property>
 	</bean>
 
 	<bean id="finder2" class="domain.Finder">
@@ -848,7 +847,11 @@
 				<constructor-arg value="2019/03/21" />
 			</bean>
 		</property>
-
+		<property name="creationDate">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21 10:00" />
+			</bean>
+		</property>
 	</bean>
 
 	<!-- Processions -->
@@ -856,6 +859,7 @@
 		<property name="ticker" value="190219-AAAAAA" />
 		<property name="title" value="A esta es" />
 		<property name="description" value="A esta es la descripcion" />
+		<property name="finalMode" value="false"/>
 		<property name="momentOrganised">
 			<bean factory-bean="dateFormat" factory-method="parse">
 				<constructor-arg value="2020/03/21" />
@@ -880,6 +884,7 @@
 		<property name="ticker" value="190220-AABBAA" />
 		<property name="title" value="A esta es NO" />
 		<property name="description" value="A esta NO es la descripcion" />
+		<property name="finalMode" value="false"/>
 		<property name="momentOrganised">
 			<bean factory-bean="dateFormat" factory-method="parse">
 				<constructor-arg value="2022/03/21" />
@@ -905,21 +910,21 @@
 		<property name="status" value="PENDING" />
 		<property name="marchRow" value="1" />
 		<property name="marchColumn" value="2" />
-		<property name="reasonWhyRejected" value="" />
+		<property name="record" value="" />
 	</bean>
 
 	<bean id="request2" class="domain.Request">
 		<property name="status" value="PENDING" />
 		<property name="marchRow" value="1" />
 		<property name="marchColumn" value="1" />
-		<property name="reasonWhyRejected" value="" />
+		<property name="record" value="" />
 	</bean>
 
 	<bean id="request3" class="domain.Request">
 		<property name="status" value="REJECTED" />
 		<property name="marchRow" value="1" />
 		<property name="marchColumn" value="1" />
-		<property name="reasonWhyRejected"
+		<property name="record"
 			value="You´re not allowed to register your data. You´re not human!" />
 	</bean>
 
@@ -927,7 +932,7 @@
 		<property name="status" value="APPROVED" />
 		<property name="marchRow" value="2" />
 		<property name="marchColumn" value="1" />
-		<property name="reasonWhyRejected" value="" />
+		<property name="record" value="" />
 	</bean>
 
 	<!-- Enrolments -->
@@ -942,7 +947,12 @@
 		<property name="brotherhood">
 			<ref bean="brotherhood1" />
 		</property>
-
+		<property name="exitMoment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21" />
+			</bean>
+		</property>
+		<property name="exitMember" value="false" />
 	</bean>
 	<bean id="enrolment2" class="domain.Enrolment">
 
@@ -956,7 +966,12 @@
 		<property name="brotherhood">
 			<ref bean="brotherhood1" />
 		</property>
-
+		<property name="exitMoment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21" />
+			</bean>
+		</property>
+		<property name="exitMember" value="false" />
 	</bean>
 	<bean id="enrolment3" class="domain.Enrolment">
 
@@ -970,7 +985,12 @@
 		<property name="brotherhood">
 			<ref bean="brotherhood2" />
 		</property>
-
+		<property name="exitMoment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21" />
+			</bean>
+		</property>
+		<property name="exitMember" value="false" />
 	</bean>
 	<bean id="enrolment4" class="domain.Enrolment">
 
@@ -984,7 +1004,12 @@
 		<property name="brotherhood">
 			<ref bean="brotherhood2" />
 		</property>
-
+		<property name="exitMoment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21" />
+			</bean>
+		</property>
+		<property name="exitMember" value="false" />
 	</bean>
 
 	<!-- Positions -->

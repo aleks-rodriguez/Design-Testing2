@@ -8,10 +8,11 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Index;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Pattern;
@@ -22,12 +23,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Access(AccessType.PROPERTY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Table(indexes = {
+	@Index(columnList = "ticker, title, description, momentOrganised")
+})
 public class Procession extends DomainEntity {
 
 	private String				ticker;
 	private String				title;
 	private String				description;
 	private Date				momentOrganised;
+	private boolean				finalMode;
 
 	private Collection<Request>	requests;
 	private Collection<Float>	floats;
@@ -81,7 +86,7 @@ public class Procession extends DomainEntity {
 		this.momentOrganised = momentOrganised;
 	}
 
-	@ManyToMany
+	@OneToMany
 	public Collection<Float> getFloats() {
 		return this.floats;
 	}
@@ -90,4 +95,11 @@ public class Procession extends DomainEntity {
 		this.floats = floats;
 	}
 
+	public boolean getFinalMode() {
+		return this.finalMode;
+	}
+
+	public void setFinalMode(final boolean finalMode) {
+		this.finalMode = finalMode;
+	}
 }

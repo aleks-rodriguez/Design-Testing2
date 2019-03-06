@@ -3,10 +3,12 @@ package utilities;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.Random;
+
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import security.Authority;
 
@@ -21,10 +23,21 @@ public class Utiles {
 	public static Integer				resultsFinder;
 	public static Integer				phonePrefix;
 
+	public static String				systemName;
+	public static String				banner;
+	public static String				mess;
 
-	public static void main(final String[] args) {
-		final Collection<String> urls = Arrays.asList("https://", "http://");
-		System.out.println(Utiles.checkURL(urls));
+
+	public static String buildUrl(final Map<String, String> requestParams) {
+		String s = "";
+		if (requestParams.size() > 1)
+			for (int i = requestParams.size() - 1; i >= 0; i--) {
+				final String key = (String) requestParams.keySet().toArray()[i];
+				s = s + key + "=" + requestParams.get(key) + "&";
+			}
+		else
+			s = s + requestParams.keySet().toArray()[0] + "=" + requestParams.values().toArray()[0] + "&";
+		return s.substring(0, s.length() - 1);
 	}
 
 	public static boolean checkURL(final Collection<String> urls) {
@@ -38,6 +51,16 @@ public class Utiles {
 
 		return res;
 	}
+
+	public static String hashPassword(final String old) {
+		Md5PasswordEncoder encoder;
+		encoder = new Md5PasswordEncoder();
+		String passEncoded;
+		passEncoded = encoder.encodePassword(old, null);
+
+		return passEncoded;
+	}
+
 	public static String generateTicker() {
 		SimpleDateFormat formato;
 		formato = new SimpleDateFormat("yyMMdd");
@@ -61,7 +84,10 @@ public class Utiles {
 
 		return formated + "-" + c;
 	}
-	public static void setParameters(final Integer hours, final Integer results, final Integer phonePrefix) {
+	public static void setParameters(final String systemName, final String banner, final String mess, final Integer hours, final Integer results, final Integer phonePrefix) {
+		Utiles.systemName = systemName;
+		Utiles.banner = banner;
+		Utiles.mess = mess;
 		Utiles.hoursFinder = hours;
 		Utiles.resultsFinder = results;
 		Utiles.phonePrefix = phonePrefix;
