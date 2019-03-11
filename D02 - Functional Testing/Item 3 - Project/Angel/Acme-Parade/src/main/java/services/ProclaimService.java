@@ -71,10 +71,8 @@ public class ProclaimService {
 		Chapter c;
 		c = (Chapter) a;
 
-		if (proclaim.getId() == 0) {
-
-		} else
-			Assert.isTrue(c.getProclaims().contains(proclaim) && proclaim.isFinalMode());
+		if (proclaim.getId() != 0)
+			Assert.isTrue(c.getProclaims().contains(proclaim));
 
 		Proclaim saved;
 		saved = this.repositoryProclaim.save(proclaim);
@@ -100,7 +98,7 @@ public class ProclaimService {
 			c = (Chapter) a;
 
 		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.CHAPTER));
-		final Proclaim pro = this.findOne(id);
+		final Proclaim pro = this.repositoryProclaim.findOne(id);
 		Assert.isTrue(c.getProclaims().contains(pro) && !pro.isFinalMode());
 
 		Collection<Proclaim> proclaims;

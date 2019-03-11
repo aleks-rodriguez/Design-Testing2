@@ -37,6 +37,9 @@ public class Parade extends DomainEntity {
 	private boolean				finalMode;
 	private Collection<Request>	requests;
 	private Collection<Float>	floats;
+	private Collection<Segment>	segments;
+	private String				status;
+	private String				whyRejected;
 
 
 	public boolean getFinalMode() {
@@ -104,6 +107,34 @@ public class Parade extends DomainEntity {
 
 	public void setFloats(final Collection<Float> floats) {
 		this.floats = floats;
+	}
+
+	@OneToMany
+	public Collection<Segment> getSegments() {
+		return this.segments;
+	}
+
+	public void setSegments(final Collection<Segment> segments) {
+		this.segments = segments;
+	}
+
+	@NotBlank
+	public String getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(final String status) {
+		this.status = status;
+	}
+
+	@NotBlank
+	@SafeHtml
+	public String getWhyRejected() {
+		return this.whyRejected;
+	}
+
+	public void setWhyRejected(final String whyRejected) {
+		this.whyRejected = whyRejected;
 	}
 
 }

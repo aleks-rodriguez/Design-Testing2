@@ -33,7 +33,7 @@
 		<bean class="converters.ProfileToStringConverter" />
 		<bean class="converters.StringToProfileConverter" />
 
-		<!-- Procession -->
+		<!-- Parade -->
 		<bean class="converters.ParadeToStringConverter" />
 		<bean class="converters.StringToParadeConverter" />
 
@@ -44,11 +44,11 @@
 		<!-- Message -->
 		<bean class="converters.MessageEntityToStringConverter" />
 		<bean class="converters.StringToMessageEntityConverter" />
-		
+
 		<!-- Enrolment -->
 		<bean class="converters.EnrolmentToStringConverter" />
 		<bean class="converters.StringToEnrolmentConverter" />
-		
+
 		<!-- Float -->
 		<bean class="converters.FloatToStringConverter" />
 		<bean class="converters.StringToFloatConverter" />
@@ -60,6 +60,10 @@
 		<!-- Request -->
 		<bean class="converters.RequestToStringConverter" />
 		<bean class="converters.StringToRequestConverter" />
+
+		<!-- Segment -->
+		<bean class="converters.SegmentToStringConverter" />
+		<bean class="converters.StringToSegmentConverter" />
 
 	</util:list>
 
