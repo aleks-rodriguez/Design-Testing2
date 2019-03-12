@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.Validator;
 
 import repositories.SegmentRepository;
 import security.LoginService;
@@ -25,12 +26,15 @@ public class SegmentService {
 	@Autowired
 	private ParadeService		serviceParade;
 
+	@Autowired(required = false)
+	private Validator			validator;
+
 
 	public Segment findOne(final int id) {
 		return this.repositorySegment.findOne(id);
 	}
 
-	public Segment create(final String contiguous) {
+	public Segment create(final Parade parade, final String contiguous) {
 		Segment segment;
 		segment = new Segment();
 
@@ -38,26 +42,15 @@ public class SegmentService {
 		segment.setDestiny("");
 		segment.setOriginTime(new Date());
 		segment.setDestinyTime(new Date());
-
+		segment.setParade(parade);
 		return segment;
 	}
 
-	public Segment save(final int parade, final Segment segment) {
-
-		Parade p;
-		p = this.serviceParade.findOne(parade);
+	public Segment save(final Segment segment) {
 
 		Segment result;
 
 		result = this.repositorySegment.save(segment);
-
-		Collection<Segment> segments;
-		segments = p.getSegments();
-
-		if (!segments.contains(result)) {
-			segments.add(segment);
-			p.setSegments(segments);
-		}
 
 		return result;
 	}
@@ -71,11 +64,6 @@ public class SegmentService {
 		if (parades.contains(parade)) {
 			Segment segment;
 			segment = this.repositorySegment.findOne(id);
-
-			Collection<Segment> segments;
-			segments = parade.getSegments();
-			segments.remove(segment);
-			parade.setSegments(segments);
 
 			this.repositorySegment.delete(segment);
 		}

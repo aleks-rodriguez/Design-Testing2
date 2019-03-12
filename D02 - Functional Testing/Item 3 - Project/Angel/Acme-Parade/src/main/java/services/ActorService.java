@@ -33,7 +33,6 @@ import domain.Enrolment;
 import domain.Finder;
 import domain.Float;
 import domain.Member;
-import domain.Proclaim;
 import domain.Profile;
 import domain.Request;
 import forms.ActorForm;
@@ -166,7 +165,6 @@ public class ActorService {
 			Chapter chapter;
 			chapter = new Chapter();
 			this.setBasicProperties(chapter, auth);
-			chapter.setProclaims(new ArrayList<Proclaim>());
 			chapter.setTitle("");
 			return chapter;
 		} else

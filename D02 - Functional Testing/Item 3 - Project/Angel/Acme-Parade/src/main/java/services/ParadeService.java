@@ -21,7 +21,6 @@ import domain.Brotherhood;
 import domain.Float;
 import domain.Parade;
 import domain.Request;
-import domain.Segment;
 
 @Service
 @Transactional
@@ -65,7 +64,6 @@ public class ParadeService {
 		p.setFloats(new ArrayList<Float>());
 		p.setStatus("");
 		p.setWhyRejected("");
-		p.setSegments(new ArrayList<Segment>());
 		return p;
 	}
 	public Parade save(final Parade parade) {
@@ -115,7 +113,6 @@ public class ParadeService {
 			result.setFinalMode(parade.getFinalMode());
 			result.setFloats(parade.getFloats());
 			result.setRequests(parade.getRequests());
-			result.setSegments(parade.getSegments());
 			result.setWhyRejected(parade.getWhyRejected());
 			result.setStatus(parade.getStatus());
 
@@ -137,7 +134,6 @@ public class ParadeService {
 		newParade.setFloats(toCopy.getFloats());
 		newParade.setMomentOrganised(toCopy.getMomentOrganised());
 		newParade.setRequests(toCopy.getRequests());
-		newParade.setSegments(toCopy.getSegments());
 		newParade.setTicker(Utiles.generateTicker());
 		newParade.setStatus("");
 		newParade.setWhyRejected("");

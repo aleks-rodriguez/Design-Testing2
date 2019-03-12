@@ -1077,12 +1077,6 @@
 			</list>
 		</property>
 		<property name="finalMode" value="false" />
-		<property name="segments">
-			<list>
-				<ref bean="segment1" />
-				<ref bean="segment2" />
-			</list>
-		</property>
 		<property name="status" value="SUBMITTED" />
 		<property name="whyRejected" value="" />
 	</bean>
@@ -1110,9 +1104,6 @@
 			</list>
 		</property>
 		<property name="finalMode" value="false" />
-		<property name="segments">
-			<list></list>
-		</property>
 		<property name="status" value="SUBMITTED" />
 		<property name="whyRejected" value="" />
 	</bean>
@@ -1319,7 +1310,9 @@
 
 		<property name="origin" value="Coordenada1" />
 		<property name="destiny" value="Coordenada2" />
-
+		<property name="parade">
+			<ref bean="parade1" />
+		</property>
 		<property name="originTime">
 
 			<bean factory-bean="hourFormat" factory-method="parse">
@@ -1341,7 +1334,9 @@
 
 		<property name="origin" value="Coordenada2" />
 		<property name="destiny" value="Coordenada3" />
-
+		<property name="parade">
+			<ref bean="parade2" />
+		</property>
 		<property name="originTime">
 
 			<bean factory-bean="hourFormat" factory-method="parse">
@@ -1358,6 +1353,48 @@
 
 		</property>
 
+	</bean>
+
+	<!-- Proclaim -->
+	<bean id="proclaim1" class="domain.Proclaim">
+		<property name="moment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21" />
+			</bean>
+		</property>
+		<property name="text" value="Proclaim1" />
+		<property name="finalMode" value = "true" />
+		<property name="chapter"><ref bean = "chapter1" /></property>
+	</bean>
+	<bean id="proclaim2" class="domain.Proclaim">
+		<property name="moment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21" />
+			</bean>
+		</property>
+		<property name="text" value="Proclaim2" />
+		<property name="finalMode" value = "false" />
+		<property name="chapter"><ref bean = "chapter2" /></property>
+	</bean>
+	<bean id="proclaim3" class="domain.Proclaim">
+		<property name="moment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21" />
+			</bean>
+		</property>
+		<property name="text" value="Proclaim3" />
+		<property name="finalMode" value = "true" />
+		<property name="chapter"><ref bean = "chapter1" /></property>
+	</bean>
+	<bean id="proclaim4" class="domain.Proclaim">
+		<property name="moment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/21" />
+			</bean>
+		</property>
+		<property name="text" value="Proclaim4" />
+		<property name="finalMode" value = "false" />
+		<property name="chapter"><ref bean = "chapter2" /></property>
 	</bean>
 	<!-- Customisation System -->
 

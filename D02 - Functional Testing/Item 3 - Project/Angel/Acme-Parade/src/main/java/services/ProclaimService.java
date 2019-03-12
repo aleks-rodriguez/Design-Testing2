@@ -5,11 +5,13 @@ import java.util.Collection;
 import java.util.Date;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.ProclaimRepository;
 import security.Authority;
@@ -27,6 +29,9 @@ public class ProclaimService {
 	@Autowired
 	private ProclaimRepository	repositoryProclaim;
 
+	@Autowired(required = false)
+	private Validator			validator;
+
 
 	public Collection<Proclaim> findProclaimsByChapter(final int id) {
 		return this.repositoryProclaim.findAllProclaimsByChapter(id);
@@ -39,7 +44,6 @@ public class ProclaimService {
 		proclaim.setText("");
 		proclaim.setMoment(new Date());
 		proclaim.setFinalMode(false);
-
 		return proclaim;
 	}
 
@@ -51,14 +55,22 @@ public class ProclaimService {
 
 		Proclaim result;
 
-		if (proclaim.getId() == 0)
+		if (proclaim.getId() == 0) {
 			result = proclaim;
-		else {
+			final Actor a = this.repositoryProclaim.findByUserAccount(LoginService.getPrincipal().getId());
+			final Chapter c = (Chapter) a;
+			result.setChapter(c);
+		} else {
 			result = this.repositoryProclaim.findOne(proclaim.getId());
 			result.setFinalMode(proclaim.isFinalMode());
 			result.setMoment(new Date());
 			result.setText(proclaim.getText());
 		}
+
+		this.validator.validate(result, binding);
+
+		if (binding.hasErrors())
+			throw new ValidationException();
 
 		return result;
 	}
@@ -71,19 +83,10 @@ public class ProclaimService {
 		Chapter c;
 		c = (Chapter) a;
 
-		if (proclaim.getId() != 0)
-			Assert.isTrue(c.getProclaims().contains(proclaim));
+		Proclaim saved = null;
 
-		Proclaim saved;
-		saved = this.repositoryProclaim.save(proclaim);
-
-		Collection<Proclaim> proclaims;
-		proclaims = c.getProclaims();
-
-		if (!proclaims.contains(saved)) {
-			proclaims.add(saved);
-			c.setProclaims(proclaims);
-		}
+		if (proclaim.getChapter().equals(c))
+			saved = this.repositoryProclaim.save(proclaim);
 
 		return saved;
 	}
@@ -92,23 +95,11 @@ public class ProclaimService {
 
 		final UserAccount ua = LoginService.getPrincipal();
 		final Actor a = this.repositoryProclaim.findByUserAccount(ua.getId());
-		Chapter c = null;
-
-		if (a != null)
-			c = (Chapter) a;
-
+		final Chapter c = (Chapter) a;
+		final Proclaim proclaim = this.repositoryProclaim.findOne(id);
 		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.CHAPTER));
-		final Proclaim pro = this.repositoryProclaim.findOne(id);
-		Assert.isTrue(c.getProclaims().contains(pro) && !pro.isFinalMode());
-
-		Collection<Proclaim> proclaims;
-		proclaims = c.getProclaims();
-
-		if (!proclaims.contains(pro)) {
-			proclaims.add(pro);
-			c.setProclaims(proclaims);
-			this.repositoryProclaim.delete(id);
-		}
+		Assert.isTrue(proclaim.getChapter().equals(c));
+		this.repositoryProclaim.delete(id);
 
 	}
 }

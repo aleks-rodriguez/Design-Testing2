@@ -11,7 +11,7 @@ import domain.Segment;
 @Repository
 public interface SegmentRepository extends JpaRepository<Segment, Integer> {
 
-	@Query("select p from Parade p join p.segments s where s.id = ?1")
+	@Query("select s.parade from Segment s where s.id = ?1")
 	Parade findParadeBySegment(int id);
 
 }

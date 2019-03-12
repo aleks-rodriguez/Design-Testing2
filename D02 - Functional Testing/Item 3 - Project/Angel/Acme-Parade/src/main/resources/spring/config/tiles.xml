@@ -31,6 +31,7 @@
 		<value>/views/member/tiles.xml</value>
 		<value>/views/brotherhood/tiles.xml</value>
 		<value>/views/request/tiles.xml</value>
+		<value>/views/proclaim/tiles.xml</value>
 	</util:list>
 
 </beans>

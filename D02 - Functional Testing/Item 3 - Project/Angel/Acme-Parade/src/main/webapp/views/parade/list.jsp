@@ -24,14 +24,12 @@
 
 <display:table name="parades" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
-	<security:authorize access="hasRole('BROTHERHOOD')">
-	<display:column titleKey="procession.show">
-		<a href="parade/show.do?idParade=${row.id}"><spring:message
-				code="procession.show" /></a>
-	</display:column>
-	</security:authorize>
+	
+	<display:column property="status" titleKey="procession.status" />
 	<display:column property="ticker" titleKey="procession.ticker" />
 	<display:column property="title" titleKey="procession.title" />
+	
+
 	<display:column property="description"
 		titleKey="procession.description" />
 
@@ -39,6 +37,12 @@
 		<a href="float/list.do?idParade=${row.id}"><spring:message
 				code="procession.float" /></a>
 	</display:column>
+	<security:authorize access="hasRole('BROTHERHOOD')">
+		<display:column titleKey="procession.show">
+			<a href="parade/show.do?idParade=${row.id}"><spring:message
+					code="procession.show" /></a>
+		</display:column>
+	</security:authorize>
 	<security:authorize access="hasRole('BROTHERHOOD')">
 		<jstl:if test="${row.finalMode eq 'false'}">
 			<display:column titleKey="procession.edit">
@@ -77,3 +81,20 @@
 	<jstl:out value="${message}" />
 
 </display:table>
+
+<script>
+	var table = document.getElementById("row");
+	var tbody = table.getElementsByTagName("tbody")[0];
+	var row = tbody.getElementsByTagName("tr");
+
+	for ( var i = 0; i < row.length; i++) {
+		var value = row[i].getElementsByTagName("td")[0].firstChild.nodeValue;
+		if (value == 'SUBMITTED') {
+			row[i].style.backgroundColor = "grey";
+		} else if (value == 'ACCEPTED') {
+			row[i].style.backgroundColor = "green";
+		} else if (value == 'REJECTED') {
+			row[i].style.backgroundColor = "red";
+		}
+	}
+</script>
