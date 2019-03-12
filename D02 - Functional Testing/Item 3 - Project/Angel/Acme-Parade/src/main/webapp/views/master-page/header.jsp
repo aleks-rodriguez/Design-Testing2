@@ -155,6 +155,10 @@
 						<li><a href="member/personal.do"><spring:message
 									code="master.page.actor.personal" /></a></li>
 					</security:authorize>
+					<security:authorize access="hasRole('CHAPTER')">
+						<li><a href="chapter/personal.do"><spring:message
+									code="master.page.actor.personal" /></a></li>
+					</security:authorize>
 					<li><a href="box/list.do"><spring:message
 								code="master.page.boxes" /></a></li>
 					<li><a href="message/create.do"><spring:message

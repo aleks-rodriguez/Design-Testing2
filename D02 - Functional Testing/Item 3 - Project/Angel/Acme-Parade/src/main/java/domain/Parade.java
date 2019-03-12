@@ -127,7 +127,6 @@ public class Parade extends DomainEntity {
 		this.status = status;
 	}
 
-	@NotBlank
 	@SafeHtml
 	public String getWhyRejected() {
 		return this.whyRejected;

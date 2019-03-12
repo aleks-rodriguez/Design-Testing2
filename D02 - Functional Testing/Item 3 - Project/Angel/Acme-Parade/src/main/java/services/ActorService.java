@@ -328,7 +328,7 @@ public class ActorService {
 			ua = result.getAccount();
 			if (actor.getAccount().getPassword().equals(actor.getPassword2()))
 				if (!ua.getUsername().equals(actor.getAccount().getUsername()))
-					result.setAccount(this.userAccountAdapted(ua.getUsername(), Utiles.hashPassword(ua.getPassword()), actor.getAuthority()));
+					result.setAccount(this.userAccountAdapted(actor.getAccount().getUsername(), Utiles.hashPassword(actor.getAccount().getPassword()), actor.getAuthority()));
 				else {
 					ua.setPassword(Utiles.hashPassword(actor.getAccount().getPassword()));
 					result.setAccount(ua);

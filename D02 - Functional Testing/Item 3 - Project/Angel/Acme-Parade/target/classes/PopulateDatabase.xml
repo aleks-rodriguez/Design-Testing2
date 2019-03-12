@@ -15,6 +15,9 @@
 		<constructor-arg value="yyyy/MM/dd" />
 	</bean>
 
+	<bean id="hourFormat" class="java.text.SimpleDateFormat">
+		<constructor-arg value="HH:mm" />
+	</bean>
 
 	<!-- User accounts -->
 
@@ -96,7 +99,88 @@
 		</property>
 	</bean>
 
+	<bean id="userAccount7" class="security.UserAccount">
+		<property name="username" value="chapter1" />
+		<property name="password" value="178494d73a41f7d68e80f685324d3662" />
+		<property name="enabled" value="true" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="CHAPTER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount8" class="security.UserAccount">
+		<property name="username" value="chapter2" />
+		<property name="password" value="07a29f2348d728fad16c5260823f93ef" />
+		<property name="enabled" value="true" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="CHAPTER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
 	<!-- Chapters -->
+	<bean id="chapter1" class="domain.Chapter">
+		<property name="name" value="Chapter1" />
+		<property name="surname" value="Chapter1 Surname" />
+		<property name="middleName" value="" />
+		<property name="photo" value="https://www.acme.com/chapter1" />
+		<property name="email" value="chapter1@acme-madruga.es" />
+		<property name="adress" value="" />
+		<property name="account">
+			<ref bean="userAccount7" />
+		</property>
+		<property name="profiles">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+				<ref bean="box31" />
+				<ref bean="box32" />
+				<ref bean="box33" />
+				<ref bean="box34" />
+				<ref bean="box35" />
+			</list>
+		</property>
+
+		<property name="title" value="Titulo del chapter1" />
+
+	</bean>
+
+	<bean id="chapter2" class="domain.Chapter">
+		<property name="name" value="Chapter2" />
+		<property name="surname" value="Chapter2 Surname" />
+		<property name="middleName" value="" />
+		<property name="photo" value="https://www.acme.com/chapter2" />
+		<property name="email" value="chapter2@acme-madruga.es" />
+		<property name="adress" value="" />
+		<property name="account">
+			<ref bean="userAccount8" />
+		</property>
+		<property name="profiles">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+				<ref bean="box36" />
+				<ref bean="box37" />
+				<ref bean="box38" />
+				<ref bean="box39" />
+				<ref bean="box40" />
+			</list>
+		</property>
+
+		<property name="title" value="Titulo del chapter2" />
+
+	</bean>
 
 	<!-- Sponsors -->
 
@@ -702,6 +786,127 @@
 			</list>
 		</property>
 	</bean>
+
+	<bean id="box31" class="domain.Box">
+		<property name="name" value="In Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box32" class="domain.Box">
+		<property name="name" value="Out Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box33" class="domain.Box">
+		<property name="name" value="Spam Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box34" class="domain.Box">
+		<property name="name" value="Trash Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box35" class="domain.Box">
+		<property name="name" value="Notification Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box36" class="domain.Box">
+		<property name="name" value="In Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box37" class="domain.Box">
+		<property name="name" value="Out Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box38" class="domain.Box">
+		<property name="name" value="Spam Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box39" class="domain.Box">
+		<property name="name" value="Trash Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box40" class="domain.Box">
+		<property name="name" value="Notification Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
 	<!-- Messages -->
 
 	<!-- Floats -->
@@ -872,6 +1077,14 @@
 			</list>
 		</property>
 		<property name="finalMode" value="false" />
+		<property name="segments">
+			<list>
+				<ref bean="segment1" />
+				<ref bean="segment2" />
+			</list>
+		</property>
+		<property name="status" value="SUBMITTED" />
+		<property name="whyRejected" value="" />
 	</bean>
 
 	<bean id="parade2" class="domain.Parade">
@@ -897,6 +1110,11 @@
 			</list>
 		</property>
 		<property name="finalMode" value="false" />
+		<property name="segments">
+			<list></list>
+		</property>
+		<property name="status" value="SUBMITTED" />
+		<property name="whyRejected" value="" />
 	</bean>
 
 	<!-- Requests -->
@@ -1096,7 +1314,51 @@
 		<property name="socialNetworkName" value="Facebook" />
 		<property name="link" value="https://www.facebook.com/DP1015" />
 	</bean>
+	<!-- Segments_They must be contiguous -->
+	<bean id="segment1" class="domain.Segment">
 
+		<property name="origin" value="Coordenada1" />
+		<property name="destiny" value="Coordenada2" />
+
+		<property name="originTime">
+
+			<bean factory-bean="hourFormat" factory-method="parse">
+				<constructor-arg value="10:00" />
+			</bean>
+
+		</property>
+
+		<property name="destinyTime">
+
+			<bean factory-bean="hourFormat" factory-method="parse">
+				<constructor-arg value="11:00" />
+			</bean>
+
+		</property>
+
+	</bean>
+	<bean id="segment2" class="domain.Segment">
+
+		<property name="origin" value="Coordenada2" />
+		<property name="destiny" value="Coordenada3" />
+
+		<property name="originTime">
+
+			<bean factory-bean="hourFormat" factory-method="parse">
+				<constructor-arg value="11:00" />
+			</bean>
+
+		</property>
+
+		<property name="destinyTime">
+
+			<bean factory-bean="hourFormat" factory-method="parse">
+				<constructor-arg value="12:00" />
+			</bean>
+
+		</property>
+
+	</bean>
 	<!-- Customisation System -->
 
 	<bean id="customisationsys1" class="domain.CustomisationSystem">
