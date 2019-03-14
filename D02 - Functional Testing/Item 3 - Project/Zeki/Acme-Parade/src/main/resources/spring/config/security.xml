@@ -79,7 +79,7 @@
 			access="hasRole('BROTHERHOOD')" />
 		<security:intercept-url pattern="/area/brotherhood/**"
 			access="hasRole('BROTHERHOOD')" />
-		<security:intercept-url pattern="/float/brotherhood/edit.do**"
+		<security:intercept-url pattern="/float/brotherhood/edit.do"
 			access="hasRole('BROTHERHOOD')" />
 		<security:intercept-url pattern="/brotherhood/personal.do"
 			access="hasRole('BROTHERHOOD')" />

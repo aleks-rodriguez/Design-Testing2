@@ -50,6 +50,19 @@ public class ParadeController extends AbstractController {
 	private AreaService		serviceArea;
 
 
+	//ListGeneral
+	@RequestMapping(value = "/listGeneral", method = RequestMethod.GET)
+	public ModelAndView listParadesGeneral(@RequestParam(defaultValue = "0") final int idBrotherhood) {
+		ModelAndView result = null;
+		Brotherhood b;
+
+		result = this.custom(new ModelAndView("parade/list"));
+		b = this.actorService.findOneBrotherhood(idBrotherhood);
+
+		result.addObject("parades", this.paradeService.findParadeByBrotherhoodId(b.getId()));
+		result.addObject("requestURI", "parade/list.do");
+		return result;
+	}
 	//List
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView listParades(@RequestParam(defaultValue = "0") final int idBrotherhood) {
@@ -62,11 +75,13 @@ public class ParadeController extends AbstractController {
 			b = this.paradeService.findBrotherhoodByUser(user.getId());
 			result = this.custom(new ModelAndView("parade/list"));
 		} else {
+
 			result = this.custom(new ModelAndView("parade/list"));
 			b = this.actorService.findOneBrotherhood(idBrotherhood);
 
 		}
 		result.addObject("parades", b.getParades());
+		result.addObject("id", idBrotherhood);
 		result.addObject("requestURI", "parade/list.do");
 		return result;
 	}

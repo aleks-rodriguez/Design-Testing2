@@ -4,6 +4,8 @@ package controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,7 +18,9 @@ import services.ProclaimService;
 import domain.Proclaim;
 
 @Controller
-@RequestMapping("/proclaim")
+@RequestMapping(value = {
+	"/proclaim", "/proclaim/chapter"
+})
 public class ProclaimController extends AbstractController {
 
 	@Autowired
@@ -42,17 +46,17 @@ public class ProclaimController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView submit(Proclaim proclaim, final BindingResult binding) {
 		ModelAndView result;
-		if (binding.hasErrors())
+
+		try {
+			proclaim = this.serviceProclaim.reconstruct(proclaim, binding);
+			System.out.println(proclaim);
+			this.serviceProclaim.save(proclaim);
+			result = new ModelAndView("redirect:../proclaim/list.do");
+		} catch (final ValidationException e) {
 			result = this.createEditModelAndView(proclaim);
-		else
-			try {
-				proclaim = this.serviceProclaim.reconstruct(proclaim, binding);
-				System.out.println(proclaim);
-				this.serviceProclaim.save(proclaim);
-				result = new ModelAndView("redirect:../Proclaim/list.do");
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(proclaim, "user.commit.error");
-			}
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(proclaim, "proclaim.commit.error");
+		}
 		return result;
 	}
 	//Listing the Proclaim of the actor
@@ -61,7 +65,7 @@ public class ProclaimController extends AbstractController {
 		ModelAndView result;
 		result = this.custom(new ModelAndView("Proclaim/list"));
 		//result.addObject("proclaims", this.serviceProclaim.getActorByUser(LoginService.getPrincipal().getId()).getProclaims());
-		result.addObject("requestURI", "Proclaim/list.do");
+		result.addObject("requestURI", "proclaim/list.do");
 		return result;
 	}
 	//Delete a Proclaim
@@ -73,7 +77,7 @@ public class ProclaimController extends AbstractController {
 			this.serviceProclaim.deleteProclaim(id);
 			result = new ModelAndView("redirect:list.do");
 		} catch (final Throwable opps) {
-			result = this.createEditModelAndView(this.serviceProclaim.findOne(id), "Proclaim.commit.error");
+			result = this.createEditModelAndView(this.serviceProclaim.findOne(id), "proclaim.commit.error");
 		}
 		return result;
 	}

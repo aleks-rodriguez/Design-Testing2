@@ -49,6 +49,10 @@ public class ParadeService {
 		return this.processionRepository.findBrotherhoodByParadesId(idParade);
 	}
 
+	public Collection<Parade> findParadeByBrotherhoodId(final int idBrotherhood) {
+		return this.processionRepository.findParadeByBrotherhoodId(idBrotherhood);
+	}
+
 	public Parade createParade() {
 		UserAccount user;
 		user = LoginService.getPrincipal();
@@ -62,6 +66,8 @@ public class ParadeService {
 		p.setFinalMode(false);
 		p.setRequests(new ArrayList<Request>());
 		p.setFloats(new ArrayList<Float>());
+		p.setStatus("");
+		p.setWhyRejected("");
 		return p;
 	}
 	public Parade save(final Parade parade) {
@@ -91,16 +97,19 @@ public class ParadeService {
 		b = this.processionRepository.findBrotherhoodByParadesId(idParade);
 		Collection<Parade> paradesPerBrotherhood;
 		paradesPerBrotherhood = b.getParades();
-		paradesPerBrotherhood.remove(p);
-		b.setParades(paradesPerBrotherhood);
-		this.processionRepository.delete(p);
+		if (paradesPerBrotherhood.contains(p)) {
+			paradesPerBrotherhood.remove(p);
+			b.setParades(paradesPerBrotherhood);
+			this.processionRepository.delete(p);
+		}
 	}
 
 	public Parade reconstruct(final Parade parade, final BindingResult binding) {
 		Parade result;
-		if (parade.getId() == 0)
+		if (parade.getId() == 0) {
 			result = parade;
-		else {
+			result.setStatus(parade.getStatus());
+		} else {
 			result = this.processionRepository.findOne(parade.getId());
 
 			result.setTicker(parade.getTicker());
@@ -109,8 +118,42 @@ public class ParadeService {
 			result.setFinalMode(parade.getFinalMode());
 			result.setFloats(parade.getFloats());
 			result.setRequests(parade.getRequests());
+			result.setWhyRejected(parade.getWhyRejected());
+			result.setStatus(parade.getStatus());
+
 		}
 		this.validator.validate(result, binding);
 		return result;
+	}
+
+	public Parade copyParade(final int id) {
+
+		Parade toCopy;
+		toCopy = this.processionRepository.findOne(id);
+
+		Parade newParade;
+		newParade = this.createParade();
+
+		newParade.setDescription(toCopy.getDescription());
+		newParade.setFinalMode(false);
+		newParade.setFloats(toCopy.getFloats());
+		newParade.setMomentOrganised(toCopy.getMomentOrganised());
+		newParade.setRequests(toCopy.getRequests());
+		newParade.setTicker(Utiles.generateTicker());
+		newParade.setStatus("");
+		newParade.setWhyRejected("");
+
+		Parade saved;
+		saved = this.processionRepository.save(newParade);
+
+		Brotherhood b;
+		b = this.findBrotherhoodByParade(toCopy.getId());
+
+		Collection<Parade> parades;
+		parades = b.getParades();
+		parades.add(saved);
+		b.setParades(parades);
+
+		return saved;
 	}
 }

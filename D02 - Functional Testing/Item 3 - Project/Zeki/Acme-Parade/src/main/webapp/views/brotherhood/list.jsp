@@ -28,7 +28,7 @@
 
 
 	<display:column titleKey="brotherhood.procession">
-		<a href="procession/list.do?idBrotherhood=${row.id}"><spring:message
+		<a href="parade/list.do?idBrotherhood=${row.id}"><spring:message
 				code="brotherhood.procession" /></a>
 	</display:column>
 	<display:column titleKey="brotherhood.member">
