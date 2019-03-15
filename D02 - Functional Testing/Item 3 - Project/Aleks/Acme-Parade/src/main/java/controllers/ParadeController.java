@@ -1,6 +1,7 @@
 
 package controllers;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +20,6 @@ import security.UserAccount;
 import services.ActorService;
 import services.AreaService;
 import services.FinderService;
-import services.MessageService;
 import services.ParadeService;
 import utilities.Utiles;
 import domain.Actor;
@@ -44,29 +44,39 @@ public class ParadeController extends AbstractController {
 	private ActorService	actorService;
 
 	@Autowired
-	private MessageService	messageService;
-
-	@Autowired
 	private AreaService		serviceArea;
 
 
 	//List
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView listParades(@RequestParam(defaultValue = "0") final int idBrotherhood) {
-		ModelAndView result = null;
+		ModelAndView result;
 		Brotherhood b;
-		if (idBrotherhood == 0) {
+		if (idBrotherhood == 0) { //b.getParade -> son las tuyas acceidendo desde el boton del header
 			UserAccount user;
 			user = LoginService.getPrincipal();
 
 			b = this.paradeService.findBrotherhoodByUser(user.getId());
 			result = this.custom(new ModelAndView("parade/list"));
-		} else {
+			result.addObject("parades", b.getParades());
+			result.addObject("general", true);
+
+		} else { //accedo desde una brotherhood -> solo final mode
 			result = this.custom(new ModelAndView("parade/list"));
-			b = this.actorService.findOneBrotherhood(idBrotherhood);
+			result.addObject("parades", this.actorService.findFinalModeParadesByBrotherhoodId(idBrotherhood));
+			result.addObject("general", false);
 
 		}
-		result.addObject("parades", b.getParades());
+		if (Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
+			final Member m = this.actorService.findMemberByUser(LoginService.getPrincipal().getId());
+			final Collection<Member> mem = this.actorService.getAllMemberByBrotherhood(idBrotherhood);
+			if (mem.contains(m))
+				result.addObject("own", true);
+			else
+				result.addObject("own", false);
+		} else
+			result.addObject("own", false);
+		result.addObject("id", idBrotherhood);
 		result.addObject("requestURI", "parade/list.do");
 		return result;
 	}

@@ -188,7 +188,7 @@ public class Utiles {
 		for (int i = 0; i < 2; i++)
 			for (int j = 0; j < queryResult.size(); j++) {
 				String f;
-				f = "" + i + "," + j;
+				f = "" + i + "." + j;
 				res.add(f);
 			}
 		res.removeAll(queryResult);

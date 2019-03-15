@@ -37,6 +37,7 @@
 		<value>/views/brotherhood/messages</value>
 		<value>/views/member/messages</value>
 		<value>/views/request/messages</value>
+		<value>/views/proclaim/messages</value>
 	</util:list>
 
 </beans>

@@ -16,6 +16,6 @@ public interface ProclaimRepository extends JpaRepository<Proclaim, Integer> {
 	@Query("select a from Actor a where a.account.id = ?1")
 	Actor findByUserAccount(int id);
 
-	@Query("select p from Chapter c join c.proclaims p where p.id = ?1")
+	@Query("select p from Proclaim p where p.chapter.id = ?1")
 	Collection<Proclaim> findAllProclaimsByChapter(int id);
 }

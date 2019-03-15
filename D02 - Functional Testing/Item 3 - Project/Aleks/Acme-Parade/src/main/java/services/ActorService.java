@@ -33,7 +33,7 @@ import domain.Enrolment;
 import domain.Finder;
 import domain.Float;
 import domain.Member;
-import domain.Proclaim;
+import domain.Parade;
 import domain.Profile;
 import domain.Request;
 import forms.ActorForm;
@@ -57,7 +57,7 @@ public class ActorService {
 	@Autowired
 	private BoxService				boxService;
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator				validator;
 
 	@Autowired
@@ -77,8 +77,8 @@ public class ActorService {
 	public Collection<Brotherhood> findAllBrotherhood() {
 		return this.brotherhoodRepository.findAll();
 	}
-	public Brotherhood findOneBrotherhood(final int id) {
-		return this.brotherhoodRepository.findOne(id);
+	public Collection<Parade> findFinalModeParadesByBrotherhoodId(final int id) {
+		return this.brotherhoodRepository.getFinalModeParadesByBrotherhoodId(id);
 	}
 
 	public Actor findByUserAccount(final int id) {
@@ -115,6 +115,10 @@ public class ActorService {
 
 	public Actor findByUserAccount() {
 		return this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId());
+	}
+
+	public Brotherhood findOneBrotherhood(final int id) {
+		return this.brotherhoodRepository.findOne(id);
 	}
 
 	public <T extends Actor> void setBasicProperties(final T actor, final String auth) {
@@ -166,7 +170,6 @@ public class ActorService {
 			Chapter chapter;
 			chapter = new Chapter();
 			this.setBasicProperties(chapter, auth);
-			chapter.setProclaims(new ArrayList<Proclaim>());
 			chapter.setTitle("");
 			return chapter;
 		} else
@@ -328,7 +331,7 @@ public class ActorService {
 			ua = result.getAccount();
 			if (actor.getAccount().getPassword().equals(actor.getPassword2()))
 				if (!ua.getUsername().equals(actor.getAccount().getUsername()))
-					result.setAccount(this.userAccountAdapted(ua.getUsername(), Utiles.hashPassword(ua.getPassword()), actor.getAuthority()));
+					result.setAccount(this.userAccountAdapted(actor.getAccount().getUsername(), Utiles.hashPassword(actor.getAccount().getPassword()), actor.getAuthority()));
 				else {
 					ua.setPassword(Utiles.hashPassword(actor.getAccount().getPassword()));
 					result.setAccount(ua);

@@ -20,38 +20,48 @@
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <form:form action="${requestURI}" modelAttribute="parade">
-<form:hidden path="id"/>
+	<form:hidden path="id" />
 
 
-	<acme:textbox code="procession.ticker" path="ticker" readonly="true"/>
-	<acme:textbox code="procession.title" path="title" readonly="${view}"/>
-	<acme:textbox code="procession.description" path="description" readonly="${view}"/>
-	<acme:date code="procession.momentOrganised" path="momentOrganised" id="1" read="${view}"/>
-<jstl:if test="${not view}">
-	<input type="checkbox" name="finalMode" value="true"><spring:message code="procession.finalMode" />
-	<br>
-	<div
-		style="width: 500px; height: 100px; overflow-y: scroll; border-style: solid; border-color: initial;">
- <jstl:forEach items="${floats}" var="f">
-		<input type="checkbox" name="floats" value="${f.id}" />
-		<jstl:out value="${f.title}" />
+	<acme:textbox code="parade.ticker" path="ticker" readonly="true" />
+	<acme:textbox code="parade.title" path="title" readonly="${view}" />
+	<acme:textbox code="parade.description" path="description"
+		readonly="${view}" />
+	<acme:date code="parade.momentOrganised" path="momentOrganised" id="1"
+		read="${view}" />
+	<jstl:if test="${not view}">
+		<input type="checkbox" name="finalMode" value="true">
+		<spring:message code="parade.finalMode" />
 		<br>
-	</jstl:forEach>
-	</div>
-	<acme:submit name="save" code="procession.save"/>
-</jstl:if>
-<jstl:if test="${view}">
-	<input type="checkbox" name="finalMode" value="true" disabled="${view}"><spring:message code="procession.finalMode" />
-	<br>
-	<div
-		style="width: 500px; height: 100px; overflow-y: scroll; border-style: solid; border-color: initial;">
- <jstl:forEach items="${floats}" var="f">
-		<input type="checkbox" name="floats" value="${f.id}" disabled="${view}"/>
-		<jstl:out value="${f.title}" />
-		<br>
-	</jstl:forEach>
-	</div>
-</jstl:if>
-	
+		<div
+			style="width: 500px; height: 100px; overflow-y: scroll; border-style: solid; border-color: initial;">
+			<jstl:forEach items="${floats}" var="f">
+				<input type="checkbox" name="floats" value="${f.id}" />
+				<jstl:out value="${f.title}" />
+				<br>
+			</jstl:forEach>
+		</div>
+		<acme:submit name="save" code="parade.save" />
+	</jstl:if>
+	<jstl:if test="${view}">
+		<jstl:choose>
+			<jstl:when test="${parade.finalMode}">
+				<spring:message code="parade.isFinalMode"></spring:message>
+			</jstl:when>
+			<jstl:otherwise>
+				<spring:message code="parade.isDraftMode"></spring:message>
+			</jstl:otherwise>
+		</jstl:choose>
+		<div
+			style="width: 500px; height: 100px; overflow-y: scroll; border-style: solid; border-color: initial;">
+			<jstl:if test="${view}">
+				<jstl:forEach items="${parade.floats}" var="f">
+					<jstl:out value="${f.title}" />
+					<br>
+				</jstl:forEach>
+			</jstl:if>
+		</div>
+	</jstl:if>
+
 </form:form>
-<acme:cancel url="/parade/list.do" code="procession.cancel"/>
+<acme:cancel url="/parade/list.do" code="parade.cancel" />

@@ -19,57 +19,70 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <p>
-	<spring:message code="procession.list" />
+	<spring:message code="parade.list" />
 </p>
 
 <display:table name="parades" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
-	<security:authorize access="hasRole('BROTHERHOOD')">
-	<display:column titleKey="procession.show">
-		<a href="parade/show.do?idParade=${row.id}"><spring:message
-				code="procession.show" /></a>
-	</display:column>
-	</security:authorize>
-	<display:column property="ticker" titleKey="procession.ticker" />
-	<display:column property="title" titleKey="procession.title" />
-	<display:column property="description"
-		titleKey="procession.description" />
 
-	<display:column titleKey="procession.float">
+	<display:column property="status" titleKey="parade.status" />
+	<display:column property="ticker" titleKey="parade.ticker" />
+	<display:column property="title" titleKey="parade.title" />
+
+
+	<display:column property="description" titleKey="parade.description" />
+
+	<display:column titleKey="parade.float">
 		<a href="float/list.do?idParade=${row.id}"><spring:message
-				code="procession.float" /></a>
+				code="parade.float" /></a>
 	</display:column>
 	<security:authorize access="hasRole('BROTHERHOOD')">
-		<jstl:if test="${row.finalMode eq 'false'}">
-			<display:column titleKey="procession.edit">
-				<a href="parade/brotherhood/update.do?idParade=${row.id}"><spring:message
-						code="procession.edit" /></a>
-			</display:column>
-		</jstl:if>
-		<jstl:if test="${row.finalMode eq 'false'}">
-			<display:column titleKey="procession.delete">
-				<a href="parade/brotherhood/delete.do?id=${row.id}"><spring:message
-						code="procession.delete" /></a>
-			</display:column>
-		</jstl:if>
+		<display:column titleKey="parade.show">
+			<a href="parade/show.do?idParade=${row.id}"><spring:message
+					code="parade.show" /></a>
+		</display:column>
 	</security:authorize>
+
+	<jstl:choose>
+		<jstl:when test="${!general}">
+		</jstl:when>
+		<jstl:otherwise>
+			<security:authorize access="hasRole('BROTHERHOOD')">
+				<jstl:if test="${row.finalMode eq 'false'}">
+					<display:column titleKey="parade.edit">
+						<a href="parade/brotherhood/update.do?idParade=${row.id}"><spring:message
+								code="parade.edit" /></a>
+					</display:column>
+				</jstl:if>
+				<jstl:if test="${row.finalMode eq 'false'}">
+					<display:column titleKey="parade.delete">
+						<a href="parade/brotherhood/delete.do?id=${row.id}"><spring:message
+								code="parade.delete" /></a>
+					</display:column>
+				</jstl:if>
+				<display:column titleKey="parade.request">
+					<a href="request/brotherhood/list.do?procId=${row.id}"><spring:message
+							code="parade.request">
+						</spring:message></a>
+				</display:column>
+			</security:authorize>
+
+		</jstl:otherwise>
+	</jstl:choose>
 	<security:authorize access="hasRole('MEMBER')">
-		<display:column titleKey="procession.request">
-			<a href="request/member/list.do?procId=${row.id}"><spring:message
-					code="procession.request" /></a>
-		</display:column>
-		<display:column titleKey="procession.request.create">
-			<a href="request/member/create.do?procId=${row.id}"><spring:message
-					code="procession.request.create" /></a>
-		</display:column>
-	</security:authorize>
-	<security:authorize access="hasRole('BROTHERHOOD')">
-		<display:column titleKey="procession.request">
-			<a href="request/brotherhood/list.do?procId=${row.id}"><spring:message
-					code="procession.request">
-				</spring:message></a>
-		</display:column>
-	</security:authorize>
+				<jstl:if test="${own}">
+					<display:column titleKey="parade.request">
+						<a href="request/member/list.do?procId=${row.id}"><spring:message
+								code="parade.request" /></a>
+					</display:column>
+					<display:column titleKey="parade.request.create">
+						<a href="request/member/create.do?procId=${row.id}"><spring:message
+								code="parade.request.create" /></a>
+					</display:column>
+				</jstl:if>
+			</security:authorize>
+
+
 	<jstl:forEach items="${errors}" var="error">
 		<jstl:out value="${error}" />
 	</jstl:forEach>
@@ -77,3 +90,20 @@
 	<jstl:out value="${message}" />
 
 </display:table>
+
+<script>
+	var table = document.getElementById("row");
+	var tbody = table.getElementsByTagName("tbody")[0];
+	var row = tbody.getElementsByTagName("tr");
+
+	for ( var i = 0; i < row.length; i++) {
+		var value = row[i].getElementsByTagName("td")[0].firstChild.nodeValue;
+		if (value == 'SUBMITTED') {
+			row[i].style.backgroundColor = "grey";
+		} else if (value == 'ACCEPTED') {
+			row[i].style.backgroundColor = "green";
+		} else if (value == 'REJECTED') {
+			row[i].style.backgroundColor = "red";
+		}
+	}
+</script>

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import domain.Brotherhood;
 import domain.Enrolment;
 import domain.Member;
+import domain.Parade;
 
 @Repository
 public interface BrotherhoodRepository extends JpaRepository<Brotherhood, Integer> {
@@ -37,5 +38,8 @@ public interface BrotherhoodRepository extends JpaRepository<Brotherhood, Intege
 
 	@Query("select e from Enrolment e where e.member.id = ?1 and e.brotherhood.id = ?2")
 	Enrolment getEnrolmentByMemberAndBrother(int idMember, int idBrotherhood);
+
+	@Query("select p from Brotherhood b join b.parades p where b.id=?1 and p.finalMode=true")
+	Collection<Parade> getFinalModeParadesByBrotherhoodId(int id);
 
 }

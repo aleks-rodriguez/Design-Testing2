@@ -16,6 +16,7 @@ import security.LoginService;
 import utilities.Utiles;
 import domain.Area;
 import domain.Brotherhood;
+import domain.Chapter;
 
 @Service
 @Transactional
@@ -68,6 +69,19 @@ public class AreaService { //LOS ASSERT DEL PRINCIPAL
 		}
 		return res;
 	}
+
+	public boolean setAreaToChapter(final int area) {
+		boolean res = false;
+		Chapter b;
+		b = this.areaRepository.getChapterByUserAccountId(LoginService.getPrincipal().getId());
+		final Area a = this.areaRepository.findOne(area);
+		if (b.getArea() == null) {
+			b.setArea(a);
+			res = true;
+		}
+		return res;
+	}
+
 	public void delete(final Area a) {
 		Assert.notNull(a);
 		Assert.isTrue(this.areaRepository.getBrotherhoodsByAreaId(a.getId()).isEmpty());
