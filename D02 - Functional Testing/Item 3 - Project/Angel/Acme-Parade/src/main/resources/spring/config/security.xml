@@ -95,6 +95,8 @@
 		<!-- Chapter -->
 		<security:intercept-url pattern="/chapter/personal.do"
 			access="hasRole('CHAPTER')" />
+		<security:intercept-url pattern="/area/chapter/**"
+			access="hasRole('CHAPTER')" />
 		<!-- Authenticated -->
 		<security:intercept-url pattern="/profile/**"
 			access="isAuthenticated()" />

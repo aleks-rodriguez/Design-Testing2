@@ -32,10 +32,16 @@
 					code="area.edit" /></a>
 		</display:column>
 	</security:authorize>
-	<jstl:if test="${check eq 'true'}">
+	<jstl:if test="${check}">
 		<security:authorize access="hasRole('BROTHERHOOD')">
 			<display:column titleKey="area.assign">
 				<a href="area/brotherhood/assign.do?area=${row.id}"><spring:message
+						code="area.assign" /></a>
+			</display:column>
+		</security:authorize>
+		<security:authorize access="hasRole('CHAPTER')">
+			<display:column titleKey="area.assign">
+				<a href="area/chapter/assign.do?area=${row.id}"><spring:message
 						code="area.assign" /></a>
 			</display:column>
 		</security:authorize>

@@ -106,7 +106,8 @@
 		</security:authorize>
 
 		<security:authorize access="hasRole('CHAPTER')">
-
+			<li><a class="fNiv" href="area/chapter/list.do"><spring:message
+						code="master.page.brotherhood.area" /></a></li>
 
 		</security:authorize>
 

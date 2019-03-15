@@ -18,11 +18,14 @@ import security.Authority;
 import security.LoginService;
 import services.AreaService;
 import utilities.Utiles;
+import domain.Actor;
 import domain.Area;
+import domain.Brotherhood;
+import domain.Chapter;
 
 @Controller
 @RequestMapping(value = {
-	"/area/brotherhood", "/area/administrator"
+	"/area/brotherhood", "/area/administrator", "/area/chapter"
 })
 public class AreaController extends AbstractController {
 
@@ -34,24 +37,38 @@ public class AreaController extends AbstractController {
 	public ModelAndView list() {
 		ModelAndView result;
 		result = this.custom(new ModelAndView("area/list"));
-		Collection<Area> areas;
-		if (Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN)) {
+		Collection<Area> areas = null;
+		Actor a;
+		a = this.areaService.findActorByUserAccount(LoginService.getPrincipal().getId());
+		if (Utiles.findAuthority(a.getAccount().getAuthorities(), Authority.ADMIN)) {
 			areas = this.areaService.findAll();
-			result.addObject("areas", areas);
 			result.addObject("requestURI", "area/administrator/list.do");
-		} else if (Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.BROTHERHOOD)) {
+		} else if (Utiles.findAuthority(a.getAccount().getAuthorities(), Authority.BROTHERHOOD)) {
 			areas = new ArrayList<Area>();
-			Area a;
-			a = this.areaService.findByUserAccount().getArea();
-			if (a == null)
+			Brotherhood b;
+			b = (Brotherhood) a;
+			Area ar;
+			ar = b.getArea();
+			if (ar == null)
 				areas = this.areaService.findAll();
 			else
-				areas.add(a);
-			result.addObject("check", areas.size() > 1);
-			result.addObject("areas", areas);
-			result.addObject("requestURI", "area/brotherhood/list.do");
-		}
+				areas.add(ar);
 
+			result.addObject("requestURI", "area/brotherhood/list.do");
+		} else if (Utiles.findAuthority(a.getAccount().getAuthorities(), Authority.CHAPTER)) {
+			areas = new ArrayList<Area>();
+			Chapter c;
+			c = (Chapter) a;
+			Area ar;
+			ar = c.getArea();
+			if (ar == null)
+				areas = this.areaService.findAll();
+			else
+				areas.add(ar);
+			result.addObject("requestURI", "area/chapter/list.do");
+		}
+		result.addObject("check", areas.size() > 1);
+		result.addObject("areas", areas);
 		return result;
 	}
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -109,7 +126,7 @@ public class AreaController extends AbstractController {
 	public ModelAndView assign(@RequestParam final int area) {
 		ModelAndView result = null;
 		//Expected true if brotherhood´s area is null
-		final boolean nonArea = this.areaService.setAreaToBrotherhood(area);
+		final boolean nonArea = this.areaService.setArea(area);
 
 		if (nonArea)
 			result = this.custom(new ModelAndView("redirect:list.do"));
