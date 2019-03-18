@@ -5,6 +5,10 @@ import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -12,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -20,27 +23,33 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Segment extends DomainEntity {
 
-	private String	origin;
-	private String	destiny;
-	private Date	originTime;
-	private Date	destinyTime;
-	private Parade	parade;
+	private Coordinate	origin;
+	private Coordinate	destiny;
+	private Date		originTime;
+	private Date		destinyTime;
+	private Parade		parade;
 
 
-	@NotBlank
-	public String getOrigin() {
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name = "latitude", column = @Column(name = "latitudeOrigin")), @AttributeOverride(name = "longitude", column = @Column(name = "longitudeOrigin"))
+	})
+	public Coordinate getOrigin() {
 		return this.origin;
 	}
 
-	public void setOrigin(final String origin) {
+	public void setOrigin(final Coordinate origin) {
 		this.origin = origin;
 	}
-	@NotBlank
-	public String getDestiny() {
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name = "latitude", column = @Column(name = "latitudeDestiny")), @AttributeOverride(name = "longitude", column = @Column(name = "longitudeDestiny"))
+	})
+	public Coordinate getDestiny() {
 		return this.destiny;
 	}
 
-	public void setDestiny(final String destiny) {
+	public void setDestiny(final Coordinate destiny) {
 		this.destiny = destiny;
 	}
 

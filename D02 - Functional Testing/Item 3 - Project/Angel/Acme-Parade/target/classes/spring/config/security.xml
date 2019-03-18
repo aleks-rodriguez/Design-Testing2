@@ -97,6 +97,10 @@
 			access="hasRole('CHAPTER')" />
 		<security:intercept-url pattern="/area/chapter/**"
 			access="hasRole('CHAPTER')" />
+		<security:intercept-url pattern="/proclaim/chapter/**"
+			access="hasRole('CHAPTER')" />
+		<security:intercept-url pattern="/parade/chapter/**"
+			access="hasRole('CHAPTER')" />
 		<!-- Authenticated -->
 		<security:intercept-url pattern="/profile/**"
 			access="isAuthenticated()" />

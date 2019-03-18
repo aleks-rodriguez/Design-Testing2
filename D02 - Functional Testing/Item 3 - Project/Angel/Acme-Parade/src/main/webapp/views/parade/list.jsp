@@ -24,11 +24,12 @@
 
 <display:table name="parades" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
-	
-	<display:column property="status" titleKey="procession.status" />
+
+	<display:column property="status" titleKey="procession.status"
+		sortable="true" />
 	<display:column property="ticker" titleKey="procession.ticker" />
 	<display:column property="title" titleKey="procession.title" />
-	
+
 
 	<display:column property="description"
 		titleKey="procession.description" />
@@ -37,10 +38,22 @@
 		<a href="float/list.do?idParade=${row.id}"><spring:message
 				code="procession.float" /></a>
 	</display:column>
+	<security:authorize access="hasRole('CHAPTER')">
+		<display:column titleKey="procession.show">
+			<a href="parade/chapter/show.do?idParade=${row.id}"><spring:message
+					code="procession.show" /></a>
+		</display:column>
+	</security:authorize>
 	<security:authorize access="hasRole('BROTHERHOOD')">
 		<display:column titleKey="procession.show">
 			<a href="parade/show.do?idParade=${row.id}"><spring:message
 					code="procession.show" /></a>
+		</display:column>
+	</security:authorize>
+	<security:authorize access="hasRole('BROTHERHOOD')">
+		<display:column titleKey="procession.show">
+			<a href="parade/brotherhood/copy.do?id=${row.id}"><spring:message
+					code="procession.copy" /></a>
 		</display:column>
 	</security:authorize>
 	<security:authorize access="hasRole('BROTHERHOOD')">

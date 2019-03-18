@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
@@ -35,8 +36,11 @@ public class Utiles {
 
 
 	public static void main(final String[] args) {
-		final List<String> res = new ArrayList<String>(Arrays.asList("1", "2"));
-		System.out.println(res.toString().substring(1, res.toString().length() - 1));
+		final String aux1 = "190316-AML76L";
+		final String aux2 = "190316-V53CAA";
+
+		final List<String> tickers = Arrays.asList(aux1, aux2);
+		System.out.println(tickers);
 	}
 
 	public static Collection<Box> initBoxes() {
@@ -127,7 +131,7 @@ public class Utiles {
 		return passEncoded;
 	}
 
-	public static String generateTicker() {
+	public static String generateTicker(final Collection<String> tickers) {
 		SimpleDateFormat formato;
 		formato = new SimpleDateFormat("yyMMdd");
 
@@ -148,7 +152,22 @@ public class Utiles {
 		for (int i = 0; i < 6; i++)
 			c += ch[random.nextInt(ch.length)];
 
-		return formated + "-" + c;
+		String result;
+		result = formated + "-" + c;
+
+		if (tickers.contains(result))
+			Utiles.generateTicker(tickers);
+
+		return result;
+	}
+	public static Set<String> statusParadeByLang(final String s) {
+		Map<String, Set<String>> result;
+		result = new HashMap<String, Set<String>>();
+
+		result.put("en", new HashSet<>(Arrays.asList("SUBMITTED", "ACCEPTED", "REJECTED")));
+		result.put("es", new HashSet<>(Arrays.asList("ENVIADO", "ACEPTADO", "RECHAZADO")));
+
+		return result.get(s);
 	}
 	public static void setParameters(final String systemName, final String banner, final String mess, final Integer hours, final Integer results, final Integer phonePrefix) {
 		Utiles.systemName = systemName;

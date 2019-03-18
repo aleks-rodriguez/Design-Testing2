@@ -27,11 +27,15 @@ import domain.Request;
 public class ParadeService {
 
 	@Autowired(required = false)
-	private Validator	validator;
+	private Validator			validator;
 
 	@Autowired
-	ParadeRepository	processionRepository;
+	private ParadeRepository	processionRepository;
 
+
+	public Collection<Parade> findParadesByBrotherhoodId(final int id) {
+		return this.processionRepository.findParadesByBrotherhoodId(id);
+	}
 
 	public Collection<Parade> findAll() {
 		return this.processionRepository.findAll();
@@ -55,14 +59,14 @@ public class ParadeService {
 		Assert.isTrue(Utiles.findAuthority(user.getAuthorities(), Authority.BROTHERHOOD));
 		Parade p;
 		p = new Parade();
-		p.setTicker(Utiles.generateTicker());
+		p.setTicker(Utiles.generateTicker(this.processionRepository.findAllTickersSystem()));
 		p.setTitle("");
 		p.setDescription("");
 		p.setMomentOrganised(new Date());
 		p.setFinalMode(false);
 		p.setRequests(new ArrayList<Request>());
 		p.setFloats(new ArrayList<Float>());
-		p.setStatus("");
+		p.setStatus("SUBMITTED");
 		p.setWhyRejected("");
 		return p;
 	}
@@ -129,13 +133,14 @@ public class ParadeService {
 		Parade newParade;
 		newParade = this.createParade();
 
+		newParade.setTitle(toCopy.getTitle());
 		newParade.setDescription(toCopy.getDescription());
 		newParade.setFinalMode(false);
 		newParade.setFloats(toCopy.getFloats());
 		newParade.setMomentOrganised(toCopy.getMomentOrganised());
 		newParade.setRequests(toCopy.getRequests());
-		newParade.setTicker(Utiles.generateTicker());
-		newParade.setStatus("");
+		newParade.setTicker(Utiles.generateTicker(this.processionRepository.findAllTickersSystem()));
+		newParade.setStatus("SUBMITTED");
 		newParade.setWhyRejected("");
 
 		Parade saved;

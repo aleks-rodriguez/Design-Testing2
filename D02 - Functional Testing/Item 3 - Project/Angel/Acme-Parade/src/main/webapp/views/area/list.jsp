@@ -44,6 +44,12 @@
 				<a href="area/chapter/assign.do?area=${row.id}"><spring:message
 						code="area.assign" /></a>
 			</display:column>
+
 		</security:authorize>
 	</jstl:if>
 </display:table>
+<security:authorize access="hasRole('CHAPTER')">
+	<jstl:if test="${!nonArea}">
+		<spring:message code="area.assign.error" />
+	</jstl:if>
+</security:authorize>

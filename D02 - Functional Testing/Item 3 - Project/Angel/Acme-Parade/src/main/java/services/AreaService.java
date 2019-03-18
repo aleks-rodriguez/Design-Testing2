@@ -21,11 +21,15 @@ import domain.Chapter;
 
 @Service
 @Transactional
-public class AreaService { //LOS ASSERT DEL PRINCIPAL
+public class AreaService {
 
 	@Autowired
 	private AreaRepository	areaRepository;
 
+
+	public Collection<Brotherhood> findBrotherhoodsByArea(final int id) {
+		return this.areaRepository.getBrotherhoodsByAreaId(id);
+	}
 
 	public Actor findActorByUserAccount(final int id) {
 		return this.areaRepository.findActorByUserAccount(id);
@@ -73,7 +77,7 @@ public class AreaService { //LOS ASSERT DEL PRINCIPAL
 			}
 		} else if (Utiles.findAuthority(a.getAccount().getAuthorities(), Authority.CHAPTER)) {
 			final Chapter c = (Chapter) a;
-			if (c.getArea() == null) {
+			if (c.getArea() == null && this.areaRepository.findChapterIfAreaIsAssigned(area) == null) {
 				c.setArea(ar);
 				res = true;
 			}

@@ -26,11 +26,20 @@
 		titleKey="brotherhood.establishment" />
 	<display:column property="pictures" titleKey="brotherhood.pictures"></display:column>
 
+	<security:authorize access="hasRole('CHAPTER')">
+		<display:column titleKey="brotherhood.procession">
+			<a href="parade/chapter/list.do?idBrotherhood=${row.id}"><spring:message
+					code="brotherhood.procession" /></a>
+		</display:column>
+	</security:authorize>
 
-	<display:column titleKey="brotherhood.procession">
-		<a href="procession/list.do?idBrotherhood=${row.id}"><spring:message
-				code="brotherhood.procession" /></a>
-	</display:column>
+	<security:authorize access="hasRole('NONE')">
+		<display:column titleKey="brotherhood.procession">
+			<a href="parade/list.do?idBrotherhood=${row.id}"><spring:message
+					code="brotherhood.procession" /></a>
+		</display:column>
+	</security:authorize>
+
 	<display:column titleKey="brotherhood.member">
 		<a href="enrolment/listMember.do?idBrotherhood=${row.id}"><spring:message
 				code="brotherhood.member" /></a>

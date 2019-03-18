@@ -33,6 +33,16 @@ public class AreaController extends AbstractController {
 	private AreaService	areaService;
 
 
+	@RequestMapping(value = "/listBrotherhood", method = RequestMethod.GET)
+	public ModelAndView listBrotherhoodChapterLogged() {
+		ModelAndView result;
+		result = this.custom(new ModelAndView("brotherhood/list"));
+		final Chapter c = (Chapter) this.areaService.findActorByUserAccount(LoginService.getPrincipal().getId());
+		result.addObject("brotherhoods", c.getArea() != null ? this.areaService.findBrotherhoodsByArea(c.getArea().getId()) : new ArrayList<Brotherhood>());
+		result.addObject("requestURI", "area/chapter/listBrotherhood.do");
+
+		return result;
+	}
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;
@@ -66,6 +76,7 @@ public class AreaController extends AbstractController {
 			else
 				areas.add(ar);
 			result.addObject("requestURI", "area/chapter/list.do");
+			result.addObject("nonArea", true);
 		}
 		result.addObject("check", areas.size() > 1);
 		result.addObject("areas", areas);
@@ -128,8 +139,12 @@ public class AreaController extends AbstractController {
 		//Expected true if brotherhood´s area is null
 		final boolean nonArea = this.areaService.setArea(area);
 
-		if (nonArea)
+		if (!nonArea) {
+			result = this.custom(new ModelAndView("area/list"));
+			result.addObject("nonArea", "area.assign.error");
+		} else
 			result = this.custom(new ModelAndView("redirect:list.do"));
+
 		return result;
 	}
 

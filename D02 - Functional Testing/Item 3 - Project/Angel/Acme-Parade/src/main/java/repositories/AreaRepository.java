@@ -26,4 +26,7 @@ public interface AreaRepository extends JpaRepository<Area, Integer> {
 
 	@Query("select a from Chapter a where a.account.id = ?1")
 	Chapter getChapterByUserAccountId(int id);
+
+	@Query("select c from Chapter c where c.area.id = ?1")
+	Chapter findChapterIfAreaIsAssigned(int id);
 }

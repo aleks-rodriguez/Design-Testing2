@@ -18,7 +18,6 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import utilities.Utiles;
-import domain.Actor;
 import domain.Chapter;
 import domain.Proclaim;
 
@@ -33,10 +32,16 @@ public class ProclaimService {
 	private Validator			validator;
 
 
+	public Chapter findByUA(final int id) {
+		return this.repositoryProclaim.findByUserAccount(id);
+	}
+
 	public Collection<Proclaim> findProclaimsByChapter(final int id) {
 		return this.repositoryProclaim.findAllProclaimsByChapter(id);
 	}
-
+	public Collection<Proclaim> findProclaimsByChapterFinalMode(final int id) {
+		return this.repositoryProclaim.findAllProclaimsByChapterFinalMode(id);
+	}
 	public Proclaim createProclaim() {
 		Proclaim proclaim;
 		proclaim = new Proclaim();
@@ -57,8 +62,7 @@ public class ProclaimService {
 
 		if (proclaim.getId() == 0) {
 			result = proclaim;
-			final Actor a = this.repositoryProclaim.findByUserAccount(LoginService.getPrincipal().getId());
-			final Chapter c = (Chapter) a;
+			final Chapter c = this.repositoryProclaim.findByUserAccount(LoginService.getPrincipal().getId());
 			result.setChapter(c);
 		} else {
 			result = this.repositoryProclaim.findOne(proclaim.getId());
@@ -79,9 +83,7 @@ public class ProclaimService {
 
 		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.CHAPTER));
 
-		final Actor a = this.repositoryProclaim.findByUserAccount(LoginService.getPrincipal().getId());
-		Chapter c;
-		c = (Chapter) a;
+		final Chapter c = this.repositoryProclaim.findByUserAccount(LoginService.getPrincipal().getId());
 
 		Proclaim saved = null;
 
@@ -94,8 +96,7 @@ public class ProclaimService {
 	public void deleteProclaim(final int id) {
 
 		final UserAccount ua = LoginService.getPrincipal();
-		final Actor a = this.repositoryProclaim.findByUserAccount(ua.getId());
-		final Chapter c = (Chapter) a;
+		final Chapter c = this.repositoryProclaim.findByUserAccount(ua.getId());
 		final Proclaim proclaim = this.repositoryProclaim.findOne(id);
 		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.CHAPTER));
 		Assert.isTrue(proclaim.getChapter().equals(c));

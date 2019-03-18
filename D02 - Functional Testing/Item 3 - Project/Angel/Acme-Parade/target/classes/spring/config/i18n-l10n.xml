@@ -38,6 +38,7 @@
 		<value>/views/member/messages</value>
 		<value>/views/request/messages</value>
 		<value>/views/proclaim/messages</value>
+		<value>/views/segment/messages</value>
 	</util:list>
 
 </beans>

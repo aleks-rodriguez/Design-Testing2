@@ -22,23 +22,19 @@
 	<spring:message code="procession.list" />
 </p>
 
-<display:table name="positions" id="row" requestURI="${requestURI}"
+<display:table name="proclaims" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
 
-	<display:column property="name" titleKey="position.name" />
-	<display:column property="otherLangs" titleKey="position.otherLangs" />
+	<display:column property="moment" titleKey="proclaim.moment" />
+	<display:column property="text" titleKey="proclaim.description" />
 
-	<display:column titleKey="position.edit">
+	<security:authorize access="hasRole('CHAPTER')">
+		<display:column titleKey="proclaim.edit">
 
-		<a href="position/administrator/edit.do?id=${row.id}"><spring:message
-				code="position.edit" /></a>
+			<a href="proclaim/chapter/edit.do?id=${row.id}"><spring:message
+					code="position.edit" /></a>
 
-	</display:column>
-
-	<jstl:forEach items="${errors}" var="error">
-		<jstl:out value="${error}" />
-	</jstl:forEach>
-	<jstl:out value="${oops}" />
-	<jstl:out value="${message}" />
+		</display:column>
+	</security:authorize>
 
 </display:table>

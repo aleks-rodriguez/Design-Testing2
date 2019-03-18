@@ -108,7 +108,17 @@
 		<security:authorize access="hasRole('CHAPTER')">
 			<li><a class="fNiv" href="area/chapter/list.do"><spring:message
 						code="master.page.brotherhood.area" /></a></li>
-
+			<li><a class="fNiv" href="area/chapter/listBrotherhood.do"><spring:message
+						code="master.page.brotherhood.listOwn" /></a></li>
+			<li><a class="fNiv"><spring:message
+						code="master.page.proclaims" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="proclaim/chapter/list.do"><spring:message
+								code="master.page.proclaim.list" /></a></li>
+					<li><a href="proclaim/chapter/create.do"><spring:message
+								code="master.page.proclaim.create" /></a></li>
+				</ul></li>
 		</security:authorize>
 
 

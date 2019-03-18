@@ -1,10 +1,12 @@
 
 package controllers;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -30,7 +32,7 @@ import domain.Parade;
 
 @Controller
 @RequestMapping(value = {
-	"/parade/member", "/parade/brotherhood", "/parade"
+	"/parade/member", "/parade/brotherhood", "/parade", "/parade/chapter"
 })
 public class ParadeController extends AbstractController {
 
@@ -55,18 +57,23 @@ public class ParadeController extends AbstractController {
 	public ModelAndView listParades(@RequestParam(defaultValue = "0") final int idBrotherhood) {
 		ModelAndView result = null;
 		Brotherhood b;
+		Collection<Parade> parades;
 		if (idBrotherhood == 0) {
 			UserAccount user;
 			user = LoginService.getPrincipal();
-
 			b = this.paradeService.findBrotherhoodByUser(user.getId());
+			parades = b.getParades();
 			result = this.custom(new ModelAndView("parade/list"));
 		} else {
-			result = this.custom(new ModelAndView("parade/list"));
 			b = this.actorService.findOneBrotherhood(idBrotherhood);
+			if (Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.CHAPTER))
+				parades = b.getParades();
+			else
+				parades = this.paradeService.findParadesByBrotherhoodId(b.getId());
 
+			result = this.custom(new ModelAndView("parade/list"));
 		}
-		result.addObject("parades", b.getParades());
+		result.addObject("parades", parades);
 		result.addObject("requestURI", "parade/list.do");
 		return result;
 	}
@@ -134,6 +141,14 @@ public class ParadeController extends AbstractController {
 		return result;
 	}
 
+	//Copy parade
+	@RequestMapping(value = "/copy", method = RequestMethod.GET)
+	public ModelAndView copy(@RequestParam final int id) {
+		ModelAndView result = null;
+		this.paradeService.copyParade(id);
+		result = this.custom(new ModelAndView("redirect:list.do"));
+		return result;
+	}
 	//Show
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public ModelAndView show(@RequestParam final int idParade) {
@@ -162,6 +177,7 @@ public class ParadeController extends AbstractController {
 		return model;
 	}
 	protected ModelAndView createEditModelAndView(final Parade parade, final String message) {
+
 		ModelAndView result;
 
 		Map<String, String> map;
@@ -177,7 +193,10 @@ public class ParadeController extends AbstractController {
 			b = this.paradeService.findBrotherhoodByUser(user.getId());
 		} else
 			b = this.paradeService.findBrotherhoodByParade(parade.getId());
+
+		result.addObject("status", Utiles.statusParadeByLang(LocaleContextHolder.getLocale().getLanguage()));
 		result.addObject("floats", b.getFloats());
+		result.addObject("floatsParade", parade.getFloats());
 		result.addObject("message", message);
 		return result;
 	}

@@ -64,7 +64,9 @@
 		<!-- Segment -->
 		<bean class="converters.SegmentToStringConverter" />
 		<bean class="converters.StringToSegmentConverter" />
-
+		<!-- Proclaim -->
+		<bean class="converters.ProclaimToStringConverter" />
+		<bean class="converters.StringToProclaimConverter" />
 	</util:list>
 
 </beans>
