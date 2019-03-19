@@ -4,8 +4,8 @@
   
   ## Fecha de entregas
   
-  * D01 - Mar 7, 2019
-  * D02 - Mar 28, 2019
+  * D01 - Mar 7, 2019 (Terminado)
+  * D02 - Mar 28, 2019 (En proceso)
   * D03 - Apr 25, 2019
   * D04 - May 16, 2019
   * D05 - Hackathon
@@ -38,8 +38,8 @@
   
   ## Delivery dates
   
-  * D01 - Mar 7, 2019
-  * D02 - Mar 28, 2019
+  * D01 - Mar 7, 2019 (Finished)
+  * D02 - Mar 28, 2019 (In progress)
   * D03 - Apr 25, 2019
   * D04 - May 16, 2019
   * D05 - Hackathon
