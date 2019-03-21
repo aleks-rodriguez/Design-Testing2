@@ -12,7 +12,10 @@
     * Ideas must be delivered before Apr 22, 2019
     * Idea Public Presentation. May 17, 2019 (Theory Class)
     * Delivery of. Jun 6, 2019
-
+  ## Repositorios alternativos
+  
+  * D02 - https://github.com/angel96/DT2-FunctionalTesting-Merge
+  
   ## Tecnologías usadas
   
   * Spring MVC 4.0.0
