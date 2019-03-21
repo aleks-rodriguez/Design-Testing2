@@ -25,7 +25,7 @@ import domain.Chapter;
 
 @Controller
 @RequestMapping(value = {
-	"/area/brotherhood", "/area/administrator", "/area/chapter"
+	"/area/brotherhood", "/area/administrator", "/area/chapter", "/area"
 })
 public class AreaController extends AbstractController {
 
@@ -34,11 +34,19 @@ public class AreaController extends AbstractController {
 
 
 	@RequestMapping(value = "/listBrotherhood", method = RequestMethod.GET)
-	public ModelAndView listBrotherhoodChapterLogged() {
+	public ModelAndView listBrotherhoodChapterLogged(@RequestParam(defaultValue = "0") final int area) {
 		ModelAndView result;
 		result = this.custom(new ModelAndView("brotherhood/list"));
-		final Chapter c = (Chapter) this.areaService.findActorByUserAccount(LoginService.getPrincipal().getId());
-		result.addObject("brotherhoods", c.getArea() != null ? this.areaService.findBrotherhoodsByArea(c.getArea().getId()) : new ArrayList<Brotherhood>());
+		try {
+			final Chapter c = (Chapter) this.areaService.findActorByUserAccount(LoginService.getPrincipal().getId());
+			result.addObject("brotherhoods", c.getArea() != null ? this.areaService.findBrotherhoodsByArea(c.getArea().getId()) : new ArrayList<Brotherhood>());
+		} catch (final IllegalArgumentException e) {
+			Collection<Brotherhood> brotherhoods;
+			brotherhoods = this.areaService.findBrotherhoodsByArea(area);
+
+			result.addObject("brotherhoods", !brotherhoods.isEmpty() ? brotherhoods : new ArrayList<Brotherhood>());
+		}
+
 		result.addObject("requestURI", "area/chapter/listBrotherhood.do");
 
 		return result;

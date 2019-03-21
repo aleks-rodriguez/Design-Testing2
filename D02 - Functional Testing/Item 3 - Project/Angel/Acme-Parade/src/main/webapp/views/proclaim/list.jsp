@@ -19,14 +19,18 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <p>
-	<spring:message code="procession.list" />
+	<spring:message code="proclaim.list" />
 </p>
 
 <display:table name="proclaims" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
 
-	<display:column property="moment" titleKey="proclaim.moment" />
-	<display:column property="text" titleKey="proclaim.description" />
+	<display:column titleKey="proclaim.moment">
+		<jstl:out value="${row.moment}" />
+	</display:column>
+	<display:column titleKey="proclaim.description">
+		<jstl:out value="${row.text}" />
+	</display:column>
 
 	<security:authorize access="hasRole('CHAPTER')">
 		<display:column titleKey="proclaim.edit">

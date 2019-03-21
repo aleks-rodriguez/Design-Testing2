@@ -8,6 +8,7 @@ import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import security.LoginService;
 import services.ProclaimService;
+import domain.Chapter;
 import domain.Proclaim;
 
 @Controller
@@ -54,9 +56,10 @@ public class ProclaimController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int id) {
 		ModelAndView result;
-
-		result = this.createEditModelAndView(this.serviceProclaim.findOne(id));
-
+		final Proclaim p = this.serviceProclaim.findOne(id);
+		final Chapter c = this.serviceProclaim.findByUA(LoginService.getPrincipal().getId());
+		Assert.isTrue(p.getChapter().equals(c));
+		result = this.createEditModelAndView(p);
 		return result;
 	}
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")

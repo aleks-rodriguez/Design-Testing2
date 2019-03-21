@@ -17,28 +17,35 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <display:table name="brotherhoods" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
-	<display:column property="title" titleKey="brotherhood.title" />
-	<display:column property="establishment"
-		titleKey="brotherhood.establishment" />
-	<display:column property="pictures" titleKey="brotherhood.pictures"></display:column>
+	<display:column titleKey="brotherhood.title">
+		<jstl:out value="${row.title}" />
+	</display:column>
+	<display:column titleKey="brotherhood.establishment">
+		<jstl:out value="${row.establishment}" />
+	</display:column>
+	
+	<acme:some_pictures titleKey="brotherhood.pictures" items="${row.pictures}"/>
 
-	<security:authorize access="hasRole('CHAPTER')">
-		<display:column titleKey="brotherhood.procession">
+	<display:column titleKey="brotherhood.history">
+		<a href="history/listHistory.do?idBrotherhood=${row.id}"><spring:message
+				code="brotherhood.history" /></a>
+	</display:column>
+
+	<display:column titleKey="brotherhood.procession">
+
+		<security:authorize access="hasRole('CHAPTER')">
 			<a href="parade/chapter/list.do?idBrotherhood=${row.id}"><spring:message
 					code="brotherhood.procession" /></a>
-		</display:column>
-	</security:authorize>
-
-	<security:authorize access="hasRole('NONE')">
-		<display:column titleKey="brotherhood.procession">
+		</security:authorize>
+		<security:authorize access="!hasRole('CHAPTER')">
 			<a href="parade/list.do?idBrotherhood=${row.id}"><spring:message
 					code="brotherhood.procession" /></a>
-		</display:column>
-	</security:authorize>
+		</security:authorize>
+	</display:column>
 
 	<display:column titleKey="brotherhood.member">
 		<a href="enrolment/listMember.do?idBrotherhood=${row.id}"><spring:message

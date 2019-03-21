@@ -17,13 +17,15 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <display:table name="areas" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
 
-	<display:column property="name" titleKey="area.name" />
-	<display:column property="pictures" titleKey="area.pictures" />
+	<display:column titleKey="area.name">
+		<jstl:out value="${row.name}" />
+	</display:column>
+	<acme:some_pictures titleKey="area.pictures" items="${row.pictures}"/>
 
 	<security:authorize access="hasRole('ADMIN')">
 		<display:column titleKey="area.edit">

@@ -30,7 +30,7 @@ public class SegmentService {
 	@Autowired
 	private ParadeService		serviceParade;
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator			validator;
 
 
@@ -52,14 +52,14 @@ public class SegmentService {
 		return coordinate;
 	}
 
-	public Segment create(final Parade parade, final Coordinate contiguous) {
+	public Segment create(final Parade parade) {
+		Brotherhood b;
+		b = this.serviceParade.findBrotherhoodByUser(LoginService.getPrincipal().getId());
+		Assert.isTrue(b.getParades().contains(parade));
 		Segment segment;
 		segment = new Segment();
-
-		segment.setOrigin(contiguous == null ? this.createCoordinate() : contiguous);
-		segment.setDestiny(this.createCoordinate());
-		segment.setOriginTime(new Date());
-		segment.setDestinyTime(new Date());
+		segment.setSegment(this.createCoordinate());
+		segment.setArriveTime(new Date());
 		segment.setParade(parade);
 		return segment;
 	}
@@ -86,10 +86,8 @@ public class SegmentService {
 			result = segment;
 		else {
 			result = this.repositorySegment.findOne(segment.getId());
-			result.setOrigin(segment.getOrigin());
-			result.setDestiny(segment.getDestiny());
-			result.setOriginTime(segment.getOriginTime());
-			result.setDestinyTime(segment.getDestinyTime());
+			result.setSegment(segment.getSegment());
+			result.setArriveTime(segment.getArriveTime());
 		}
 
 		this.validator.validate(result, binding);

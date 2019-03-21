@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -26,15 +29,30 @@ import domain.Request;
 @Transactional
 public class ParadeService {
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator			validator;
 
 	@Autowired
 	private ParadeRepository	processionRepository;
 
 
+	public Collection<Parade> findParadesByBrotherhoodIdFM(final int id) {
+		return this.processionRepository.findParadesByBrotherhoodIdFM(id);
+	}
+
 	public Collection<Parade> findParadesByBrotherhoodId(final int id) {
-		return this.processionRepository.findParadesByBrotherhoodId(id);
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+		Collection<Parade> res = null;
+		if (lang == "en" || lang == null) {
+			res = this.processionRepository.findParadesByBrotherhoodId(id);
+			if (res.isEmpty())
+				res = this.processionRepository.findParadesByBrotherhoodIdES(id);
+		} else {
+			res = this.processionRepository.findParadesByBrotherhoodIdES(id);
+			if (res.isEmpty())
+				res = this.processionRepository.findParadesByBrotherhoodId(id);
+		}
+		return res;
 	}
 
 	public Collection<Parade> findAll() {
@@ -51,6 +69,10 @@ public class ParadeService {
 
 	public Brotherhood findBrotherhoodByParade(final int idParade) {
 		return this.processionRepository.findBrotherhoodByParadesId(idParade);
+	}
+
+	public Collection<Parade> findParadeByBrotherhoodId(final int idBrotherhood) {
+		return this.processionRepository.findParadesByBrotherhoodId(idBrotherhood);
 	}
 
 	public Parade createParade() {
@@ -73,17 +95,20 @@ public class ParadeService {
 	public Parade save(final Parade parade) {
 		UserAccount user;
 		user = LoginService.getPrincipal();
-		Assert.isTrue(Utiles.findAuthority(user.getAuthorities(), Authority.BROTHERHOOD));
-		Parade saved;
-		saved = this.processionRepository.save(parade);
-		Brotherhood b;
-		b = this.processionRepository.findBrotherhoodByUserAccountId(user.getId());
-		Collection<Parade> parades;
-		parades = b.getParades();
-		if (!parades.contains(saved)) {
-			parades.add(saved);
-			b.setParades(parades);
-		}
+		Parade saved = null;
+		if (Utiles.findAuthority(user.getAuthorities(), Authority.BROTHERHOOD)) {
+			saved = this.processionRepository.save(parade);
+			Brotherhood b;
+			b = this.processionRepository.findBrotherhoodByUserAccountId(user.getId());
+			Collection<Parade> parades;
+			parades = b.getParades();
+			if (!parades.contains(saved)) {
+				parades.add(saved);
+				b.setParades(parades);
+			}
+		} else if (Utiles.findAuthority(user.getAuthorities(), Authority.CHAPTER))
+			saved = this.processionRepository.save(parade);
+
 		return saved;
 	}
 
@@ -106,9 +131,10 @@ public class ParadeService {
 
 	public Parade reconstruct(final Parade parade, final BindingResult binding) {
 		Parade result;
-		if (parade.getId() == 0)
+		if (parade.getId() == 0) {
 			result = parade;
-		else {
+			result.setStatus(parade.getStatus());
+		} else {
 			result = this.processionRepository.findOne(parade.getId());
 
 			result.setTicker(parade.getTicker());
@@ -122,6 +148,10 @@ public class ParadeService {
 
 		}
 		this.validator.validate(result, binding);
+
+		if (binding.hasErrors())
+			throw new ValidationException();
+
 		return result;
 	}
 
@@ -129,6 +159,12 @@ public class ParadeService {
 
 		Parade toCopy;
 		toCopy = this.processionRepository.findOne(id);
+
+		Brotherhood b;
+		b = this.findBrotherhoodByParade(toCopy.getId());
+
+		Assert.isTrue(b.getAccount().getId() == LoginService.getPrincipal().getId());
+		Assert.isTrue(toCopy.getFinalMode());
 
 		Parade newParade;
 		newParade = this.createParade();
@@ -145,9 +181,6 @@ public class ParadeService {
 
 		Parade saved;
 		saved = this.processionRepository.save(newParade);
-
-		Brotherhood b;
-		b = this.findBrotherhoodByParade(toCopy.getId());
 
 		Collection<Parade> parades;
 		parades = b.getParades();

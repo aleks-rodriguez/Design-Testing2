@@ -33,6 +33,7 @@ import domain.Enrolment;
 import domain.Finder;
 import domain.Float;
 import domain.Member;
+import domain.Parade;
 import domain.Profile;
 import domain.Request;
 import forms.ActorForm;
@@ -56,7 +57,7 @@ public class ActorService {
 	@Autowired
 	private BoxService				boxService;
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator				validator;
 
 	@Autowired
@@ -76,11 +77,13 @@ public class ActorService {
 	public Collection<Brotherhood> findAllBrotherhood() {
 		return this.brotherhoodRepository.findAll();
 	}
-	public Brotherhood findOneBrotherhood(final int id) {
-		return this.brotherhoodRepository.findOne(id);
+	public Collection<Parade> findFinalModeParadesByBrotherhoodId(final int id) {
+		return this.brotherhoodRepository.getFinalModeParadesByBrotherhoodId(id);
 	}
-
-	public Actor findByUserAccount(final int id) {
+	public Chapter findChapterByUserAccount(final int id) {
+		return this.brotherhoodRepository.getChapterByUserAccount(id);
+	}
+	public Brotherhood findByUserAccount(final int id) {
 		return this.brotherhoodRepository.getByUserAccount(id);
 	}
 
@@ -114,6 +117,10 @@ public class ActorService {
 
 	public Actor findByUserAccount() {
 		return this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId());
+	}
+
+	public Brotherhood findOneBrotherhood(final int id) {
+		return this.brotherhoodRepository.findOne(id);
 	}
 
 	public <T extends Actor> void setBasicProperties(final T actor, final String auth) {

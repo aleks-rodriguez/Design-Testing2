@@ -22,13 +22,10 @@
 <script>
 	$(document).ready(function() {
 		$("#form").submit(function(event) {
-			var mod = $("#mode").val();
+			var mod = $("#mode").is(':checked');			
 			if (mod) {
 				var conf = confirm("<spring:message code='proclaim.confirm1'/>");
-				if (conf) {
-					var conf2 = confirm("<spring:message code='proclaim.confirm2'/>");
-					if (!conf2) { return false; }
-				} else {
+				if (!conf) {
 					return false;
 				}
 			}

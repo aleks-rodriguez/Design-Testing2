@@ -52,10 +52,16 @@
 	}
 
 	console.log(labels);
-
+	var labCad = "";
+	for(var i = 0; i< labels.length; i++){
+		labCad += labels[i] + ",";
+	}
+	if(labCad.endsWith(',')){
+		s = s.replace(',', '');
+	}
 	var data = {
 		labels : [
-				labels[0], labels[1], labels[2], labels[3], labels[4], labels[5], labels[6]
+				labCad
 		],
 		datasets : [
 			{

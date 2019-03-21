@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 import utilities.Utiles;
-import domain.DomainEntity;
 
 @Controller
 public class AbstractController {
@@ -45,7 +44,7 @@ public class AbstractController {
 		return parameter;
 	}
 
-	public <T extends DomainEntity> ModelAndView editFormsUrlId(final String requestURI, final Map<String, String> requestParams, final String requestCancel, final ModelAndView parameter) {
+	public ModelAndView editFormsUrlId(final String requestURI, final Map<String, String> requestParams, final String requestCancel, final ModelAndView parameter) {
 		String req = requestURI;
 
 		if (requestParams.size() > 0)

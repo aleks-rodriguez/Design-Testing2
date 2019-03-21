@@ -36,11 +36,14 @@ public class Utiles {
 
 
 	public static void main(final String[] args) {
-		final String aux1 = "190316-AML76L";
-		final String aux2 = "190316-V53CAA";
+		final String aux1 = "aa.com";
+		final String aux2 = "aaaaa.com";
 
-		final List<String> tickers = Arrays.asList(aux1, aux2);
-		System.out.println(tickers);
+		System.out.println(Utiles.checkURL(Arrays.asList(aux1, aux2)));
+	}
+
+	public boolean date2IsAfterDate1(final Date date1, final Date date2) {
+		return date2.after(date1);
 	}
 
 	public static Collection<Box> initBoxes() {
@@ -207,7 +210,7 @@ public class Utiles {
 		for (int i = 0; i < 2; i++)
 			for (int j = 0; j < queryResult.size(); j++) {
 				String f;
-				f = "" + i + "," + j;
+				f = "" + i + "." + j;
 				res.add(f);
 			}
 		res.removeAll(queryResult);

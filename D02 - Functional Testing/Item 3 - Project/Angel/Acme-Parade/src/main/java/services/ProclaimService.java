@@ -28,7 +28,7 @@ public class ProclaimService {
 	@Autowired
 	private ProclaimRepository	repositoryProclaim;
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator			validator;
 
 
@@ -60,11 +60,9 @@ public class ProclaimService {
 
 		Proclaim result;
 
-		if (proclaim.getId() == 0) {
+		if (proclaim.getId() == 0)
 			result = proclaim;
-			final Chapter c = this.repositoryProclaim.findByUserAccount(LoginService.getPrincipal().getId());
-			result.setChapter(c);
-		} else {
+		else {
 			result = this.repositoryProclaim.findOne(proclaim.getId());
 			result.setFinalMode(proclaim.isFinalMode());
 			result.setMoment(new Date());
@@ -83,13 +81,18 @@ public class ProclaimService {
 
 		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.CHAPTER));
 
-		final Chapter c = this.repositoryProclaim.findByUserAccount(LoginService.getPrincipal().getId());
+		Chapter c;
+		c = this.repositoryProclaim.findByUserAccount(LoginService.getPrincipal().getId());
+
+		if (proclaim.getId() == 0)
+			proclaim.setChapter(c);
 
 		Proclaim saved = null;
 
 		if (proclaim.getChapter().equals(c))
 			saved = this.repositoryProclaim.save(proclaim);
-
+		else
+			throw new IllegalArgumentException();
 		return saved;
 	}
 
@@ -100,6 +103,7 @@ public class ProclaimService {
 		final Proclaim proclaim = this.repositoryProclaim.findOne(id);
 		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.CHAPTER));
 		Assert.isTrue(proclaim.getChapter().equals(c));
+		Assert.isTrue(!proclaim.isFinalMode());
 		this.repositoryProclaim.delete(id);
 
 	}
