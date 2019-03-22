@@ -95,6 +95,20 @@
 		<!-- Chapter -->
 		<security:intercept-url pattern="/chapter/personal.do"
 			access="hasRole('CHAPTER')" />
+			
+		<!-- Sponsor -->
+		<security:intercept-url pattern="/sponsor/personal.do"
+			access="hasRole('SPONSOR')" />
+		<security:intercept-url pattern= "/sponsorship/sponsor/**"
+			access="hasRole('SPONSOR')" />
+<!-- 		<security:intercept-url pattern= "/sponsorship/sponsor/delete.do"
+			access="hasRole('SPONSOR')" />
+		<security:intercept-url pattern= "/sponsorship/sponsor/show.do"
+			access="hasRole('SPONSOR')" />
+ -->		
+		
+		
+			
 		<!-- Authenticated -->
 		<security:intercept-url pattern="/profile/**"
 			access="isAuthenticated()" />
@@ -114,6 +128,7 @@
 
 		<security:logout logout-success-url="/"
 			invalidate-session="true" />
+			
 	</security:http>
 
 </beans>

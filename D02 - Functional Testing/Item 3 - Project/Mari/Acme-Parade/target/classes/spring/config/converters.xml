@@ -33,7 +33,7 @@
 		<bean class="converters.ProfileToStringConverter" />
 		<bean class="converters.StringToProfileConverter" />
 
-		<!-- Procession -->
+		<!-- Parade -->
 		<bean class="converters.ParadeToStringConverter" />
 		<bean class="converters.StringToParadeConverter" />
 
@@ -44,11 +44,11 @@
 		<!-- Message -->
 		<bean class="converters.MessageEntityToStringConverter" />
 		<bean class="converters.StringToMessageEntityConverter" />
-		
+
 		<!-- Enrolment -->
 		<bean class="converters.EnrolmentToStringConverter" />
 		<bean class="converters.StringToEnrolmentConverter" />
-		
+
 		<!-- Float -->
 		<bean class="converters.FloatToStringConverter" />
 		<bean class="converters.StringToFloatConverter" />
@@ -61,6 +61,22 @@
 		<bean class="converters.RequestToStringConverter" />
 		<bean class="converters.StringToRequestConverter" />
 
+		<!-- Segment -->
+		<bean class="converters.SegmentToStringConverter" />
+		<bean class="converters.StringToSegmentConverter" />
+		
+		<!-- Sponsor -->
+		<bean class="converters.SponsorToStringConverter" />
+		<bean class="converters.StringToSponsorConverter" />
+		
+		<!-- Sponsorship -->
+		<bean class="converters.SponsorshipToStringConverter" />
+		<bean class="converters.StringToSponsorshipConverter" />
+		
+		<!-- Credit Card -->
+		<bean class="converters.CreditCardToStringConverter" />
+		<bean class="converters.StringToCreditCardConverter" />
+		
 	</util:list>
 
 </beans>

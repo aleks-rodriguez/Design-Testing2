@@ -87,6 +87,38 @@
 			<li><a class="fNiv" href="area/brotherhood/list.do"><spring:message
 						code="master.page.brotherhood.area" /></a></li>
 		</security:authorize>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<security:authorize access="hasRole('SPONSOR')">
+			<li><a class="fNiv"><spring:message
+						code="master.page.sponsorship" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="sponsorship/sponsor/ListNoSponsorshipParade.do"><spring:message
+								code="master.page.parade.list" /></a></li>
+					<li><a href="sponsorship/sponsor/listSponsorship.do"><spring:message
+								code="master.page.sponsorship.list" /></a></li>
+				</ul></li>
+		
+		</security:authorize>
+		
+		
+		
+		
+		
+		
+		
 
 		<security:authorize access="hasRole('MEMBER')">
 
@@ -126,12 +158,16 @@
 								code="master.page.actor.brotherhood" /></a></li>
 					<li><a href="actor/createChapter.do"><spring:message
 								code="master.page.actor.chapter" /></a></li>
+					<li><a href="actor/createSponsor.do"><spring:message
+								code="master.page.actor.sponsor" /></a></li>
 				</ul></li>
 			<li><a class="fNiv" href="brotherhood/listBrotherhood.do"><spring:message
 						code="master.page.brotherhood.list" /></a></li>
 			<li><a class="fNiv" href="about-us/terms.do"><spring:message
 						code="master.page.terms" /></a></li>
 		</security:authorize>
+		
+
 
 		<!-- Authenticated -->
 		<security:authorize access="isAuthenticated()">
@@ -155,6 +191,14 @@
 						<li><a href="member/personal.do"><spring:message
 									code="master.page.actor.personal" /></a></li>
 					</security:authorize>
+					<security:authorize access="hasRole('CHAPTER')">
+						<li><a href="chapter/personal.do"><spring:message
+									code="master.page.actor.personal" /></a></li>
+					</security:authorize>
+					<security:authorize access="hasRole('SPONSOR')">
+						<li><a href="sponsor/personal.do"><spring:message
+									code="master.page.actor.personal" /></a></li>
+					</security:authorize>
 					<li><a href="box/list.do"><spring:message
 								code="master.page.boxes" /></a></li>
 					<li><a href="message/create.do"><spring:message
@@ -163,9 +207,9 @@
 								code="master.page.profile.list" /></a></li>
 					<li><a href="j_spring_security_logout"><spring:message
 								code="master.page.logout" /> </a></li>
-				</ul></li>
-
-		</security:authorize>
+					</ul></li>
+				
+</security:authorize>
 	</ul>
 </div>
 

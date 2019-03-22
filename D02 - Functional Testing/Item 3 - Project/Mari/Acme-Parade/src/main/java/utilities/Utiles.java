@@ -11,11 +11,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import security.Authority;
 import domain.Box;
+import domain.CreditCard;
 import domain.MessageEntity;
 
 public class Utiles {
@@ -193,5 +196,85 @@ public class Utiles {
 			}
 		res.removeAll(queryResult);
 		return res;
+	}
+
+	public static CreditCard createCreditCard() {
+		CreditCard creditCard;
+		creditCard = new CreditCard();
+		creditCard.setHolder("");
+		creditCard.setMake("");
+		creditCard.setNumber("");
+		creditCard.setExpiration(new Date());
+		creditCard.setCvv(0);
+
+		return creditCard;
+	}
+
+	public static String[] checkCreditCard(final String cadena) {
+		/**
+		 * This method is implemented according to the Luhn Algorithm
+		 * https://www.journaldev.com/1443/java-credit-card-validation-luhn-algorithm-java
+		 * https://howtodoinjava.com/regex/java-regex-validate-credit-card-numbers/
+		 */
+
+		/**
+		 * This string array only have two values
+		 * 1. Type of creditCard
+		 * 2. It is a legal credit card or none.
+		 */
+		String[] result;
+		result = new String[2];
+
+		/**
+		 * This makes a little repository of patterns that checks directly which kind of credit card is given by cadena´s parameter.
+		 */
+		Map<String, Matcher> map;
+		map = new HashMap<String, Matcher>();
+
+		map.put("VISA", Pattern.compile("^4[0-9]{12}(?:[0-9]{3})?$").matcher(cadena));
+		map.put("MASTERCARD", Pattern.compile("^5[1-5][0-9]{14}$").matcher(cadena));
+		map.put("AMEX", Pattern.compile("^3[47][0-9]{13}$").matcher(cadena));
+		map.put("DINERS", Pattern.compile("^3(?:0[0-5]|[68][0-9])?[0-9]{11}$").matcher(cadena));
+
+		if (map.get("VISA").matches())
+			result[0] = "VISA";
+		else if (map.get("MASTERCARD").matches())
+			result[0] = "MASTERCARD";
+		else if (map.get("AMEX").matches())
+			result[0] = "AMEX";
+		else if (map.get("DINERS").matches())
+			result[0] = "DINERS";
+
+		/**
+		 * Luhn Algorithm
+		 */
+		result[1] = Boolean.toString(Utiles.luhnAlgorithm(cadena));
+
+		return result;
+
+	}
+	private static boolean luhnAlgorithm(final String cadena) {
+		final int[] str = new int[cadena.length()];
+
+		for (int i = 0; i < str.length; i++)
+			str[i] = Integer.parseInt(cadena.substring(i, i + 1));
+
+		for (int i = str.length - 2; i >= 0; i = i - 2) {
+
+			int j = str[i];
+			j = j * 2;
+
+			if (j > 9)
+				j = j % 10 + 1;
+
+			str[i] = j;
+
+		}
+		int sum = 0;
+
+		for (int i = 0; i < str.length; i++)
+			sum = sum + str[i];
+
+		return sum % 10 == 0;
 	}
 }

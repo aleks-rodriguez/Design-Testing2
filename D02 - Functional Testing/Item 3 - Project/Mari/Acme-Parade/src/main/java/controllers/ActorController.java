@@ -19,11 +19,12 @@ import domain.Administrator;
 import domain.Brotherhood;
 import domain.Chapter;
 import domain.Member;
+import domain.Sponsor;
 import forms.ActorForm;
 
 @Controller
 @RequestMapping(value = {
-	"/actor", "/brotherhood", "/member", "/administrator", "/chapter"
+	"/actor", "/brotherhood", "/member", "/administrator", "/chapter", "/sponsor"
 })
 public class ActorController extends AbstractController {
 
@@ -68,6 +69,14 @@ public class ActorController extends AbstractController {
 		model.addObject("authority", Authority.CHAPTER);
 		return model;
 	}
+	@RequestMapping(value = "/createSponsor", method = RequestMethod.GET)
+	public ModelAndView createSponsor() {
+		ModelAndView model;
+		model = this.createEditModelAndView(this.serviceActor.map(this.serviceActor.createActor(Authority.SPONSOR), Authority.SPONSOR));
+		model.addObject("authority", Authority.SPONSOR);
+		return model;
+	}
+
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView submit(@ModelAttribute("actor") final ActorForm actor, final BindingResult binding) {
 		ModelAndView result = null;
@@ -76,6 +85,7 @@ public class ActorController extends AbstractController {
 		Member member = null;
 		Brotherhood brotherhood = null;
 		Chapter chapter = null;
+		Sponsor sponsor = null;
 
 		try {
 			String authority = "";
@@ -92,6 +102,10 @@ public class ActorController extends AbstractController {
 			} else if (actor.getAuthority().equals(Authority.CHAPTER)) {
 				authority = Authority.CHAPTER;
 				chapter = this.serviceActor.reconstructChapter(actor, binding);
+			} else if (actor.getAuthority().equals(Authority.SPONSOR)) {
+				authority = Authority.SPONSOR;
+				sponsor = this.serviceActor.reconstructSponsor(actor, binding);
+
 			}
 
 			if (actor.getAuthority().equals(Authority.BROTHERHOOD))
@@ -107,13 +121,15 @@ public class ActorController extends AbstractController {
 
 			if (urls && actor.getAccount().getPassword().equals(actor.getPassword2()) && actor.getAccount().getPassword() != "" && actor.getPassword2() != "") {
 				if (actor.getAuthority().equals(Authority.ADMIN))
-					this.serviceActor.save(admin, null, null, null);
+					this.serviceActor.save(admin, null, null, null, null);
 				else if (actor.getAuthority().equals(Authority.BROTHERHOOD))
-					this.serviceActor.save(null, brotherhood, null, null);
+					this.serviceActor.save(null, brotherhood, null, null, null);
 				else if (actor.getAuthority().equals(Authority.MEMBER))
-					this.serviceActor.save(null, null, member, null);
+					this.serviceActor.save(null, null, member, null, null);
 				else if (actor.getAuthority().equals(Authority.CHAPTER))
-					this.serviceActor.save(null, null, null, chapter);
+					this.serviceActor.save(null, null, null, chapter, null);
+				else if (actor.getAuthority().equals(Authority.SPONSOR))
+					this.serviceActor.save(null, null, null, null, sponsor);
 
 				result = new ModelAndView("redirect:../security/login.do");
 			} else {

@@ -1,14 +1,11 @@
 
 package domain;
 
-import java.util.Collection;
-
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -19,9 +16,8 @@ import org.hibernate.validator.constraints.SafeHtml;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Chapter extends Actor {
 
-	private String					title;
-	private Area					area;
-	private Collection<Proclaim>	proclaims;
+	private String	title;
+	private Area	area;
 
 
 	@NotBlank
@@ -42,14 +38,4 @@ public class Chapter extends Actor {
 	public void setArea(final Area area) {
 		this.area = area;
 	}
-
-	@OneToMany
-	public Collection<Proclaim> getProclaims() {
-		return this.proclaims;
-	}
-
-	public void setProclaims(final Collection<Proclaim> proclaims) {
-		this.proclaims = proclaims;
-	}
-
 }

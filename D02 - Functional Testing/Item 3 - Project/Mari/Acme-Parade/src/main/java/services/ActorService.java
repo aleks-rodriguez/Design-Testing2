@@ -18,6 +18,7 @@ import repositories.AdministratorRepository;
 import repositories.BrotherhoodRepository;
 import repositories.ChapterRepository;
 import repositories.MemberRepository;
+import repositories.SponsorRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
@@ -33,9 +34,10 @@ import domain.Enrolment;
 import domain.Finder;
 import domain.Float;
 import domain.Member;
-import domain.Proclaim;
 import domain.Profile;
 import domain.Request;
+import domain.Sponsor;
+import domain.Sponsorship;
 import forms.ActorForm;
 
 @Service
@@ -66,6 +68,9 @@ public class ActorService {
 	@Autowired
 	private UserAccountRepository	repositoryUser;
 
+	@Autowired
+	private SponsorRepository		sponsorRepository;
+
 
 	public Member findOneMember(final int id) {
 		return this.memberRepository.findOne(id);
@@ -73,24 +78,23 @@ public class ActorService {
 	public Chapter findOneChapter(final int id) {
 		return this.chapterRepository.findOne(id);
 	}
+	public Brotherhood findOneBrotherhood(final int id) {
+		return this.brotherhoodRepository.findOne(id);
+	}
 
 	public Collection<Brotherhood> findAllBrotherhood() {
 		return this.brotherhoodRepository.findAll();
-	}
-	public Brotherhood findOneBrotherhood(final int id) {
-		return this.brotherhoodRepository.findOne(id);
 	}
 
 	public Actor findByUserAccount(final int id) {
 		return this.brotherhoodRepository.getByUserAccount(id);
 	}
+	public Actor findActorByUserAccount(final int id) {
+		return this.brotherhoodRepository.getActorByUserAccount(id);
+	}
 
 	public Member findMemberByUser(final int id) {
 		return this.brotherhoodRepository.getMemberByUserAccount(id);
-	}
-
-	public Actor findActorByUserAccount(final int id) {
-		return this.brotherhoodRepository.getActorByUserAccount(id);
 	}
 
 	public Collection<Chapter> findAllChapters() {
@@ -166,11 +170,15 @@ public class ActorService {
 			Chapter chapter;
 			chapter = new Chapter();
 			this.setBasicProperties(chapter, auth);
-			chapter.setProclaims(new ArrayList<Proclaim>());
 			chapter.setTitle("");
 			return chapter;
-		} else
-			return null;
+		} else {
+			Sponsor sponsor;
+			sponsor = new Sponsor();
+			this.setBasicProperties(sponsor, auth);
+			sponsor.setSponsorship(new ArrayList<Sponsorship>());
+			return sponsor;
+		}
 
 	}
 
@@ -198,7 +206,7 @@ public class ActorService {
 		final Collection<Box> boxes = this.boxService.save(Utiles.initBoxes());
 		actor.setBoxes(boxes);
 	}
-	public void save(final Administrator admin, final Brotherhood brotherhood, final Member member, final Chapter chapter) {
+	public void save(final Administrator admin, final Brotherhood brotherhood, final Member member, final Chapter chapter, final Sponsor sponsor) {
 		if (admin != null) {
 			Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
 			this.adminRepository.save(admin);
@@ -208,6 +216,8 @@ public class ActorService {
 			this.memberRepository.save(member);
 		else if (chapter != null)
 			this.chapterRepository.save(chapter);
+		else if (sponsor != null)
+			this.sponsorRepository.save(sponsor);
 	}
 
 	public Administrator reconstructAdministrator(final ActorForm actor, final BindingResult binding) {
@@ -328,7 +338,7 @@ public class ActorService {
 			ua = result.getAccount();
 			if (actor.getAccount().getPassword().equals(actor.getPassword2()))
 				if (!ua.getUsername().equals(actor.getAccount().getUsername()))
-					result.setAccount(this.userAccountAdapted(ua.getUsername(), Utiles.hashPassword(ua.getPassword()), actor.getAuthority()));
+					result.setAccount(this.userAccountAdapted(actor.getAccount().getUsername(), Utiles.hashPassword(actor.getAccount().getPassword()), actor.getAuthority()));
 				else {
 					ua.setPassword(Utiles.hashPassword(actor.getAccount().getPassword()));
 					result.setAccount(ua);
@@ -393,4 +403,53 @@ public class ActorService {
 
 		return form;
 	}
+
+	//sponsor
+	public Collection<Sponsorship> getSponsorshipsBySponsor(final Sponsor s) {
+
+		Collection<Sponsorship> result;
+		Assert.notNull(s);
+		result = this.sponsorRepository.getSponsorshipsBySponsor(s.getId());
+		Assert.isTrue(result.size() >= 0);
+		return result;
+	}
+
+	public Sponsor reconstructSponsor(final ActorForm actor, final BindingResult binding) {
+
+		Sponsor result = null;
+
+		if (actor.getId() == 0) {
+			result = (Sponsor) this.createActor(Authority.SPONSOR);
+			this.setToActor(result, actor);
+			result.setSponsorship(actor.getSponsorships());
+
+			this.validator.validate(result, binding);
+			if (!binding.hasErrors())
+				this.setBoxes(result);
+		} else {
+			result = this.sponsorRepository.findOne(actor.getId());
+			this.setToActor(result, actor);
+
+			this.validator.validate(result, binding);
+		}
+
+		if (binding.hasErrors())
+			throw new ValidationException();
+
+		return result;
+	}
+
+	public Sponsor findById(final int id) {
+		return this.sponsorRepository.findOne(id);
+	}
+
+	public Sponsor findSponsorByUserAccount(final int userAccount) {
+		Assert.notNull(userAccount);
+		return this.sponsorRepository.findByUserAccount(userAccount);
+	}
+
+	public Collection<Sponsor> findAll() {
+		return this.sponsorRepository.findAll();
+	}
+
 }
