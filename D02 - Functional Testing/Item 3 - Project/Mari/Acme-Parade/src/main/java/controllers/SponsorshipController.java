@@ -57,7 +57,7 @@ public class SponsorshipController extends AbstractController {
 		ModelAndView result;
 		result = new ModelAndView("parade/list");
 		Collection<Parade> withoutSponsorshipParades;
-		withoutSponsorshipParades = this.serviceParade.findAll();
+		withoutSponsorshipParades = this.serviceParade.findParadesAFM();
 		withoutSponsorshipParades.removeAll(this.serviceSponsorship.getParadesBySponsor(this.serviceActor.findSponsorByUserAccount(LoginService.getPrincipal().getId()).getId()));
 		result.addObject("parades", withoutSponsorshipParades);
 

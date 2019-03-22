@@ -1201,8 +1201,8 @@
 				<ref bean="float2" />
 			</list>
 		</property>
-		<property name="finalMode" value="false" />
-		<property name="status" value="SUBMITTED" />
+		<property name="finalMode" value="true" />
+		<property name="status" value="ACCEPTED" />
 		<property name="whyRejected" value="" />
 	</bean>
 

@@ -151,4 +151,8 @@ public class ParadeService {
 
 		return saved;
 	}
+
+	public Collection<Parade> findParadesAFM() {
+		return this.processionRepository.findParadesAFM();
+	}
 }
