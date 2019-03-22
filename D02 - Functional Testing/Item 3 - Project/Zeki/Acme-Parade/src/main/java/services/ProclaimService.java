@@ -18,7 +18,6 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import utilities.Utiles;
-import domain.Actor;
 import domain.Chapter;
 import domain.Proclaim;
 
@@ -29,14 +28,20 @@ public class ProclaimService {
 	@Autowired
 	private ProclaimRepository	repositoryProclaim;
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator			validator;
 
+
+	public Chapter findByUA(final int id) {
+		return this.repositoryProclaim.findByUserAccount(id);
+	}
 
 	public Collection<Proclaim> findProclaimsByChapter(final int id) {
 		return this.repositoryProclaim.findAllProclaimsByChapter(id);
 	}
-
+	public Collection<Proclaim> findProclaimsByChapterFinalMode(final int id) {
+		return this.repositoryProclaim.findAllProclaimsByChapterFinalMode(id);
+	}
 	public Proclaim createProclaim() {
 		Proclaim proclaim;
 		proclaim = new Proclaim();
@@ -55,12 +60,9 @@ public class ProclaimService {
 
 		Proclaim result;
 
-		if (proclaim.getId() == 0) {
+		if (proclaim.getId() == 0)
 			result = proclaim;
-			final Actor a = this.repositoryProclaim.findByUserAccount(LoginService.getPrincipal().getId());
-			final Chapter c = (Chapter) a;
-			result.setChapter(c);
-		} else {
+		else {
 			result = this.repositoryProclaim.findOne(proclaim.getId());
 			result.setFinalMode(proclaim.isFinalMode());
 			result.setMoment(new Date());
@@ -79,26 +81,29 @@ public class ProclaimService {
 
 		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.CHAPTER));
 
-		final Actor a = this.repositoryProclaim.findByUserAccount(LoginService.getPrincipal().getId());
 		Chapter c;
-		c = (Chapter) a;
+		c = this.repositoryProclaim.findByUserAccount(LoginService.getPrincipal().getId());
+
+		if (proclaim.getId() == 0)
+			proclaim.setChapter(c);
 
 		Proclaim saved = null;
 
 		if (proclaim.getChapter().equals(c))
 			saved = this.repositoryProclaim.save(proclaim);
-
+		else
+			throw new IllegalArgumentException();
 		return saved;
 	}
 
 	public void deleteProclaim(final int id) {
 
 		final UserAccount ua = LoginService.getPrincipal();
-		final Actor a = this.repositoryProclaim.findByUserAccount(ua.getId());
-		final Chapter c = (Chapter) a;
+		final Chapter c = this.repositoryProclaim.findByUserAccount(ua.getId());
 		final Proclaim proclaim = this.repositoryProclaim.findOne(id);
 		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.CHAPTER));
 		Assert.isTrue(proclaim.getChapter().equals(c));
+		Assert.isTrue(!proclaim.isFinalMode());
 		this.repositoryProclaim.delete(id);
 
 	}

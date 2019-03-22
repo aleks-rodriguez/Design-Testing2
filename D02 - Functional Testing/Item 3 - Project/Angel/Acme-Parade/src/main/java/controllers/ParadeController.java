@@ -121,9 +121,9 @@ public class ParadeController extends AbstractController {
 	public ModelAndView save(@RequestParam(defaultValue = "0") final int idParade, Parade parade, final BindingResult binding) {
 		ModelAndView result = null;
 		System.out.println("Floats:" + parade.getFloats());
-		parade = this.paradeService.reconstruct(parade, binding);
 
 		try {
+			parade = this.paradeService.reconstruct(parade, binding);
 			this.paradeService.save(parade);
 			if (Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.BROTHERHOOD))
 				result = this.custom(new ModelAndView("redirect:../list.do"));

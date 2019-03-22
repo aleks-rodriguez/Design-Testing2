@@ -4,6 +4,8 @@ package controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -37,9 +39,9 @@ public class FloatController extends AbstractController {
 
 	//List
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView listFloats(@RequestParam(defaultValue = "0") final int idProcession) {
+	public ModelAndView listFloats(@RequestParam(defaultValue = "0") final int idParade) {
 		ModelAndView result = null;
-		if (idProcession == 0) {
+		if (idParade == 0) {
 			UserAccount user;
 			user = LoginService.getPrincipal();
 			Brotherhood b;
@@ -49,7 +51,7 @@ public class FloatController extends AbstractController {
 		} else {
 			result = this.custom(new ModelAndView("float/list"));
 			Parade p;
-			p = this.paradeService.findOne(idProcession);
+			p = this.paradeService.findOne(idParade);
 			result.addObject("floats", p.getFloats());
 		}
 		result.addObject("requestURI", "float/list.do");
@@ -71,22 +73,33 @@ public class FloatController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@RequestParam(defaultValue = "0") final int idFloat, Float f, final BindingResult binding) {
 		ModelAndView result;
-		f = this.floatService.reconstruct(f, binding);
+		try {
+			f = this.floatService.reconstruct(f, binding);
+			if (binding.hasErrors()) {
+				result = this.createEditModelAndView(f);
+				if (f.getId() == 0)
+					result.addObject("requestURI", "float/brotherhood/edit.do");
+				else
+					result.addObject("requestURI", "float/brotherhood/edit.do?idFloat=" + idFloat);
+			} else
+				try {
+					if (f.getPictures().size() > 0 ? Utiles.checkURL(f.getPictures()) : true) {
+						this.floatService.save(f);
+						result = this.custom(new ModelAndView("redirect:../list.do"));
+					} else
+						result = this.createEditModelAndView(f, "float.urls");
 
-		if (binding.hasErrors()) {
+				} catch (final Throwable oops) {
+					result = this.createEditModelAndView(f, "float.commit.error");
+				}
+		} catch (final ValidationException e) {
 			result = this.createEditModelAndView(f);
-			result.addObject("requestURI", "float/brotherhood/edit.do?idFloat=" + idFloat);
-		} else
-			try {
-				if (f.getPictures().size() > 0 ? Utiles.checkURL(f.getPictures()) : true) {
-					this.floatService.save(f);
-					result = this.custom(new ModelAndView("redirect:../list.do"));
-				} else
-					result = this.createEditModelAndView(f, "float.urls");
-
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(f, "float.commit.error");
-			}
+			result.addObject("trace", e.getStackTrace());
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(f, "float.commit.error");
+			result.addObject("trace", oops.getStackTrace());
+			result.addObject("oops", oops.getMessage());
+		}
 		return result;
 	}
 	//Update
@@ -148,7 +161,7 @@ public class FloatController extends AbstractController {
 		map = new HashMap<String, String>();
 		map.put("id", String.valueOf(f.getId()));
 
-		result = this.editFormsUrlId("float/edit.do", map, "/float/list.do", this.custom(new ModelAndView("float/edit")));
+		result = this.editFormsUrlId("float/brotherhood/edit.do", map, "/float/list.do", this.custom(new ModelAndView("float/edit")));
 		result.addObject("float", f);
 		result.addObject("message", message);
 		return result;

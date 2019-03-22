@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -24,9 +23,7 @@ public class History extends DomainEntity {
 	private InceptionRecord					inceptionRecord;
 
 
-	@OneToMany(cascade = {
-		CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH
-	})
+	@OneToMany
 	public Collection<LinkRecord> getLinkRecord() {
 		return this.linkRecord;
 	}
@@ -35,9 +32,7 @@ public class History extends DomainEntity {
 		this.linkRecord = linkRecord;
 	}
 
-	@OneToMany(cascade = {
-		CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH
-	})
+	@OneToMany
 	public Collection<PeriodRecord> getPeriodRecord() {
 		return this.periodRecord;
 	}
@@ -46,9 +41,7 @@ public class History extends DomainEntity {
 		this.periodRecord = periodRecord;
 	}
 
-	@OneToMany(cascade = {
-		CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH
-	})
+	@OneToMany
 	public Collection<LegalRecord> getLegalRecord() {
 		return this.legalRecord;
 	}
@@ -57,9 +50,7 @@ public class History extends DomainEntity {
 		this.legalRecord = legalRecord;
 	}
 
-	@OneToMany(cascade = {
-		CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH
-	})
+	@OneToMany
 	public Collection<MiscellaneousRecord> getMiscellaneousRecord() {
 		return this.miscellaneousRecord;
 	}

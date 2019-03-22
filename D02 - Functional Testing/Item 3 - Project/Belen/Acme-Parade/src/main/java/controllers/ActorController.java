@@ -40,7 +40,14 @@ public class ActorController extends AbstractController {
 		result.addObject("requestURI", "brotherhood/listBrotherhood.do");
 		return result;
 	}
-
+	@RequestMapping(value = "/listChapter", method = RequestMethod.GET)
+	public ModelAndView listChapter() {
+		ModelAndView result;
+		result = this.custom(new ModelAndView("chapter/list"));
+		result.addObject("chapters", this.serviceActor.findAllChapters());
+		result.addObject("requestURI", "chapter/listChapter.do");
+		return result;
+	}
 	@RequestMapping(value = "/createAdmin", method = RequestMethod.GET)
 	public ModelAndView createAdmin() {
 		ModelAndView model;
@@ -103,9 +110,6 @@ public class ActorController extends AbstractController {
 			else
 				urls = true;
 
-			if (!urls)
-				result = this.createEditModelAndView(actor, "actor.urls");
-
 			if (urls && actor.getAccount().getPassword().equals(actor.getPassword2()) && actor.getAccount().getPassword() != "" && actor.getPassword2() != "") {
 				if (actor.getAuthority().equals(Authority.ADMIN))
 					this.serviceActor.save(admin, null, null, null);
@@ -118,7 +122,12 @@ public class ActorController extends AbstractController {
 
 				result = new ModelAndView("redirect:../security/login.do");
 			} else {
-				result = this.createEditModelAndView(actor, "actor.password");
+
+				if (actor.getAuthority().equals(Authority.BROTHERHOOD))
+					result = this.createEditModelAndView(actor, "actor.passwordOrUrls");
+				else
+					result = this.createEditModelAndView(actor, "actor.password");
+
 				result.addObject("authority", authority);
 				result.addObject("errors", binding.getAllErrors());
 			}

@@ -27,7 +27,7 @@ import domain.Request;
 @Transactional
 public class MessageService {
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator				validator;
 
 	@Autowired

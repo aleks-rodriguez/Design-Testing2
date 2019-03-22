@@ -87,4 +87,4 @@
 			value="<spring:message code="actor.save" />" />
 	</jstl:if>
 </form:form>
-<acme:cancel url="/welcome/index.do" code="actor.cancel" />
+<acme:cancel code="actor.cancel" />

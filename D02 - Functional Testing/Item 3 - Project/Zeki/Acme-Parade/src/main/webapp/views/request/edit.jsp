@@ -40,42 +40,40 @@
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-//var jsArray = [ 
-//              <jstl:forEach var="item" items="${numeros}">
-//                <jstl:out value="${item}"/>,
-//               </jstl:forEach>
-//             ];
+var jsArray = [ 
+              <jstl:forEach var="item" items="${numeros}">
+                <jstl:out value="${item}"/>,
+               </jstl:forEach>
+             ];
 
 function mode() {
-//	var checkBox = document.getElementById("check");
+	var checkBox = document.getElementById("check");
 	var row = document.getElementById("row");
 	var column = document.getElementById("column");
-//	var i, j, h0, h1;
+	var i, j, h0, h1;
 
-//	if (checkBox.checked == true) {
-//		for (i = 0; i < jsArray.length; i++) {
-//			for(j = 0; j < jsArray.length; j++){
-//			s = jsArray[i];
-//			s= jsArray.split(".");
-//			h0 = jsArray[i];
-//			h1 = jsArray[j];
-			row.value = random(1,4);
-			column.value = random(1,50);
+	if (checkBox.checked == true) {
+		for (i = 0; i < jsArray.length; i++) {
+			for(j = 0; j < jsArray.length; j++){
+			h0 = jsArray[i];
+			h1 = jsArray[j];
+			row.value = random(h0,jsArray.length);
+			column.value = random(h1,jsArray.length);
 		}
-//	}
-//}
-//}
-
+	}
+}
+}
 </script>
 
-<form:form modelAttribute="request"	action="${requestURI}?procId=${procId}">
+<form:form modelAttribute="request"
+	action="${requestURI}?procId=${procId}">
 	<form:hidden path="id" />
 	<security:authorize access="hasRole('MEMBER')">
 		<form:hidden path="marchRow" value="1" />
 		<form:hidden path="marchColumn" value="1" />
 	</security:authorize>
-	
-	
+
+
 	<form:select path="status" onchange="change(this);">
 		<form:option value="0" label="---" disabled="${view}" />
 		<security:authorize access="hasRole('BROTHERHOOD')">
@@ -86,28 +84,32 @@ function mode() {
 		</security:authorize>
 	</form:select>
 
-	
+
 	<security:authorize access="hasRole('BROTHERHOOD')">
 		<jstl:if test="${request.id !=0 && request.status == 'PENDING'}">
 			<br>
 			<spring:message code="request.check" />
-			<form:checkbox path="${check}" value="${request.status == 'PENDING'}" disabled="${view}" onclick="mode();" id="check"/>
-			
-				<acme:textbox code="request.row" path="marchRow" id="row" readonly="${view}" />
-				<acme:textbox code="request.column" path="marchColumn" id="column" readonly="${view}" />
-				<acme:textbox code="request.reason" path="record" id="record" readonly="${view}" />
-			
-		
+			<form:checkbox path="${check}" value="${request.status == 'PENDING'}"
+				disabled="${view}" onclick="mode();" id="check" />
+
+			<acme:textbox code="request.row" path="marchRow" id="row"
+				readonly="${view}" />
+			<acme:textbox code="request.column" path="marchColumn" id="column"
+				readonly="${view}" />
+			<acme:textbox code="request.reason" path="record" id="record"
+				readonly="${view}" />
+
+
 		</jstl:if>
 		<jstl:if test="${request.id !=0 && request.status == 'APPROVED'}">
 			<br>
-			
+
 			<spring:message code="request.row"></spring:message>
 			<jstl:out value="${request.marchRow}"></jstl:out>
 			<br>
 			<spring:message code="request.column"></spring:message>
 			<jstl:out value="${request.marchColumn}"></jstl:out>
-		
+
 		</jstl:if>
 		<jstl:if test="${request.id !=0 && request.status == 'REJECTED'}">
 			<br>
@@ -127,4 +129,4 @@ function mode() {
 	</jstl:if>
 </form:form>
 
-<acme:cancel url="${requestCancel}" code="request.cancel" />
+<acme:cancel code="request.cancel" />

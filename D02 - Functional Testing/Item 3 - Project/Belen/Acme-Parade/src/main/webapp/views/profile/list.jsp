@@ -25,10 +25,15 @@
 <display:table name="profiles" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
 
-	<display:column property="nick" titleKey="profile.nick" />
-	<display:column property="socialNetworkName"
-		titleKey="profile.socialNetworkName" />
-	<display:column property="link" titleKey="profile.link" />
+	<display:column titleKey="profile.nick">
+		<jstl:out value="${row.nick}" />
+	</display:column>
+	<display:column titleKey="profile.socialNetworkName">
+		<jstl:out value="${row.socialNetworkName}" />
+	</display:column>
+	<display:column titleKey="profile.link">
+		<a href="${row.link}"><jstl:out value="${row.link}" /></a>
+	</display:column>
 	<display:column titleKey="profile.edit">
 		<a href="profile/edit.do?id=${row.id}"><spring:message
 				code="profile.edit" /></a>

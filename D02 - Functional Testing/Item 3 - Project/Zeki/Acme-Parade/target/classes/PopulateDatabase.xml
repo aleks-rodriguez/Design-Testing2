@@ -1076,7 +1076,7 @@
 				<ref bean="float2" />
 			</list>
 		</property>
-		<property name="finalMode" value="false" />
+		<property name="finalMode" value="true" />
 		<property name="status" value="SUBMITTED" />
 		<property name="whyRejected" value="" />
 	</bean>
@@ -1305,15 +1305,29 @@
 		<property name="socialNetworkName" value="Facebook" />
 		<property name="link" value="https://www.facebook.com/DP1015" />
 	</bean>
+
+	<!-- Coordinates -->
+
+	<bean id="coordinate1" class="domain.Coordinate">
+		<property name="latitude" value="0.2517156" />
+		<property name="longitude" value="15.0000625" />
+	</bean>
+
+	<bean id="coordinate2" class="domain.Coordinate">
+		<property name="latitude" value="65.23615" />
+		<property name="longitude" value="-58.2369458" />
+	</bean>
+
 	<!-- Segments_They must be contiguous -->
 	<bean id="segment1" class="domain.Segment">
-
-		<property name="origin" value="Coordenada1" />
-		<property name="destiny" value="Coordenada2" />
+		<property name="number" value="0" />
+		<property name="segment">
+			<ref bean="coordinate1" />
+		</property>
 		<property name="parade">
 			<ref bean="parade1" />
 		</property>
-		<property name="originTime">
+		<property name="arriveTime">
 
 			<bean factory-bean="hourFormat" factory-method="parse">
 				<constructor-arg value="10:00" />
@@ -1321,34 +1335,19 @@
 
 		</property>
 
-		<property name="destinyTime">
-
-			<bean factory-bean="hourFormat" factory-method="parse">
-				<constructor-arg value="11:00" />
-			</bean>
-
-		</property>
-
 	</bean>
 	<bean id="segment2" class="domain.Segment">
-
-		<property name="origin" value="Coordenada2" />
-		<property name="destiny" value="Coordenada3" />
+		<property name="number" value="1" />
+		<property name="segment">
+			<ref bean="coordinate2" />
+		</property>
 		<property name="parade">
 			<ref bean="parade2" />
 		</property>
-		<property name="originTime">
+		<property name="arriveTime">
 
 			<bean factory-bean="hourFormat" factory-method="parse">
 				<constructor-arg value="11:00" />
-			</bean>
-
-		</property>
-
-		<property name="destinyTime">
-
-			<bean factory-bean="hourFormat" factory-method="parse">
-				<constructor-arg value="12:00" />
 			</bean>
 
 		</property>
@@ -1363,8 +1362,10 @@
 			</bean>
 		</property>
 		<property name="text" value="Proclaim1" />
-		<property name="finalMode" value = "true" />
-		<property name="chapter"><ref bean = "chapter1" /></property>
+		<property name="finalMode" value="true" />
+		<property name="chapter">
+			<ref bean="chapter1" />
+		</property>
 	</bean>
 	<bean id="proclaim2" class="domain.Proclaim">
 		<property name="moment">
@@ -1373,8 +1374,10 @@
 			</bean>
 		</property>
 		<property name="text" value="Proclaim2" />
-		<property name="finalMode" value = "false" />
-		<property name="chapter"><ref bean = "chapter2" /></property>
+		<property name="finalMode" value="false" />
+		<property name="chapter">
+			<ref bean="chapter2" />
+		</property>
 	</bean>
 	<bean id="proclaim3" class="domain.Proclaim">
 		<property name="moment">
@@ -1383,8 +1386,10 @@
 			</bean>
 		</property>
 		<property name="text" value="Proclaim3" />
-		<property name="finalMode" value = "true" />
-		<property name="chapter"><ref bean = "chapter1" /></property>
+		<property name="finalMode" value="true" />
+		<property name="chapter">
+			<ref bean="chapter1" />
+		</property>
 	</bean>
 	<bean id="proclaim4" class="domain.Proclaim">
 		<property name="moment">
@@ -1393,16 +1398,18 @@
 			</bean>
 		</property>
 		<property name="text" value="Proclaim4" />
-		<property name="finalMode" value = "false" />
-		<property name="chapter"><ref bean = "chapter2" /></property>
+		<property name="finalMode" value="false" />
+		<property name="chapter">
+			<ref bean="chapter2" />
+		</property>
 	</bean>
 	<!-- Customisation System -->
 
 	<bean id="customisationsys1" class="domain.CustomisationSystem">
 		<property name="systemName" value="Acme-Madruga" />
-		<property name="banner" value="https://image.ibb.co/iuaDgV/Untitled.png" />
+		<property name="banner" value="https://i.imgur.com/PjcX0fO.jpg" />
 		<property name="message"
-			value="Welcome to Acme-Madruga! The site to organise your processions! &lt;br&gt; Â¡ Bienvenidos a Acme-Madruga! Tu sitio para organizar procesiones!" />
+			value="Welcome to Acme-Parade! The site to organise your parades! &lt;br&gt; Bienvenidos a Acme-Parade! Tu sitio para organizar desfiles!" />
 		<property name="phonePrefix" value="34" />
 		<property name="spamWords">
 			<list>

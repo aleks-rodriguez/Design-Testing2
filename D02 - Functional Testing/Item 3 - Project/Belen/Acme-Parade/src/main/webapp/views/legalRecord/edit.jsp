@@ -32,4 +32,4 @@
 	<acme:submit name="save" code="legalRecord.save"/>
 	</jstl:if>
 </form:form>
-<input type="submit" onclick="window.history.back()" value="<spring:message code="legalRecord.cancel"/>"/>
+<acme:cancel code="legalRecord.cancel" />

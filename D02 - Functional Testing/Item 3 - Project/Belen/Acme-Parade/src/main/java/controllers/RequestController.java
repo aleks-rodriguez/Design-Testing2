@@ -2,7 +2,6 @@
 package controllers;
 
 import java.util.Arrays;
-import java.util.List;
 
 import javax.validation.ValidationException;
 
@@ -29,7 +28,7 @@ import forms.RequestForm;
 public class RequestController extends AbstractController {
 
 	@Autowired
-	private RequestService		reqService;
+	private RequestService	reqService;
 	@Autowired
 	private ParadeService	procService;
 
@@ -66,12 +65,7 @@ public class RequestController extends AbstractController {
 		result = this.custom(this.createEditModelAndView(request));
 		if (id != 0)
 			result.addObject("procId", this.reqService.findByRequestId(request.getId()).getId());
-		//////////////
-		List<String> s;
-		s = this.reqService.optimPosition();
-		s.toArray();
 		result.addObject("numeros", this.reqService.optimPosition().toArray());
-		///////////////		
 		return result;
 	}
 
@@ -112,7 +106,7 @@ public class RequestController extends AbstractController {
 		ModelAndView result;
 		try {
 			this.reqService.delete(request.getId());
-			result = this.custom(new ModelAndView("redirect:welcome.do")); //Puede que este mal puesto
+			result = this.custom(new ModelAndView("redirect:welcome.do"));
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(request, "request.commit.error");
 		}

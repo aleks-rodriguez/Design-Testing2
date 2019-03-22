@@ -8,6 +8,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -23,6 +24,7 @@ public class Proclaim extends DomainEntity {
 	private Date	moment;
 	private String	text;
 	private boolean	finalMode;
+	private Chapter	chapter;
 
 
 	public boolean isFinalMode() {
@@ -44,13 +46,22 @@ public class Proclaim extends DomainEntity {
 	}
 
 	@SafeHtml
-	@Length(max = 250)
+	@Length(min = 5, max = 250)
 	public String getText() {
 		return this.text;
 	}
 
 	public void setText(final String text) {
 		this.text = text;
+	}
+
+	@ManyToOne
+	public Chapter getChapter() {
+		return this.chapter;
+	}
+
+	public void setChapter(final Chapter chapter) {
+		this.chapter = chapter;
 	}
 
 }

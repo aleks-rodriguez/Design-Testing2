@@ -51,21 +51,25 @@
 		dat.push(element[1]);
 	}
 
-	console.log(labels);
-
 	var data = {
 		labels : [
-				labels[0], labels[1], labels[2], labels[3], labels[4], labels[5], labels[6]
+
 		],
 		datasets : [
 			{
 				label : "Positions",
 				data : [
-						dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6]
+
 				]
 			}
 		]
 	};
+
+	for ( var i = 0; i < labels.length; i++) {
+		data["labels"].push(labels[i]);
+		data["datasets"][0]["data"].push(dat[i]);
+	}
+
 	var options = {
 		scales : {
 			yAxes : [

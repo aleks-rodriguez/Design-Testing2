@@ -136,15 +136,17 @@ public class ParadeService {
 			result.setStatus(parade.getStatus());
 		} else {
 			result = this.processionRepository.findOne(parade.getId());
-
 			result.setTicker(parade.getTicker());
 			result.setTitle(parade.getTitle());
 			result.setDescription(parade.getDescription());
 			result.setFinalMode(parade.getFinalMode());
-			result.setFloats(parade.getFloats());
-			result.setRequests(parade.getRequests());
 			result.setWhyRejected(parade.getWhyRejected());
 			result.setStatus(parade.getStatus());
+
+			if (Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.BROTHERHOOD)) {
+				result.setFloats(parade.getFloats());
+				result.setRequests(parade.getRequests());
+			}
 
 		}
 		this.validator.validate(result, binding);

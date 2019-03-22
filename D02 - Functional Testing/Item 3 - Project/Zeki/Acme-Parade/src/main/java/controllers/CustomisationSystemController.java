@@ -101,7 +101,10 @@ public class CustomisationSystemController extends AbstractController {
 		result.addObject("dashboardRatio", this.serviceCustom.dashboardRatio());
 		result.addObject("marcadorNumerico", this.serviceCustom.marcadorNumerico());
 		result.addObject("marcadorNumericoArray", this.serviceCustom.marcadorNumericoArray());
-		result.addObject("dashboardRatio2", this.serviceCustom.dashboardRatio2());
+		result.addObject("ratioStatus", this.serviceCustom.ratioStatus());
+		result.addObject("countPerArea", this.serviceCustom.countPerArea());
+		result.addObject("minmaxArea", this.serviceCustom.minmaxArea());
+		result.addObject("largestAndSmallerBro", this.serviceCustom.largestAndSmallerBro());
 		return result;
 
 	}

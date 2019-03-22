@@ -24,7 +24,7 @@ import domain.Parade;
 @Transactional
 public class FloatService {
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator	validator;
 
 	@Autowired

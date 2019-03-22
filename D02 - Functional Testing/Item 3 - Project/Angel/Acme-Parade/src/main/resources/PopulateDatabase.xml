@@ -1320,7 +1320,7 @@
 
 	<!-- Segments_They must be contiguous -->
 	<bean id="segment1" class="domain.Segment">
-
+		<property name="number" value="0" />
 		<property name="segment">
 			<ref bean="coordinate1" />
 		</property>
@@ -1337,7 +1337,7 @@
 
 	</bean>
 	<bean id="segment2" class="domain.Segment">
-
+		<property name="number" value="1" />
 		<property name="segment">
 			<ref bean="coordinate2" />
 		</property>

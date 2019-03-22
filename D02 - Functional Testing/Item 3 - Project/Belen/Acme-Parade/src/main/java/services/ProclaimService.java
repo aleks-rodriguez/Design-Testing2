@@ -5,18 +5,19 @@ import java.util.Collection;
 import java.util.Date;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.ProclaimRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import utilities.Utiles;
-import domain.Actor;
 import domain.Chapter;
 import domain.Proclaim;
 
@@ -27,11 +28,20 @@ public class ProclaimService {
 	@Autowired
 	private ProclaimRepository	repositoryProclaim;
 
+	@Autowired
+	private Validator			validator;
+
+
+	public Chapter findByUA(final int id) {
+		return this.repositoryProclaim.findByUserAccount(id);
+	}
 
 	public Collection<Proclaim> findProclaimsByChapter(final int id) {
 		return this.repositoryProclaim.findAllProclaimsByChapter(id);
 	}
-
+	public Collection<Proclaim> findProclaimsByChapterFinalMode(final int id) {
+		return this.repositoryProclaim.findAllProclaimsByChapterFinalMode(id);
+	}
 	public Proclaim createProclaim() {
 		Proclaim proclaim;
 		proclaim = new Proclaim();
@@ -39,7 +49,6 @@ public class ProclaimService {
 		proclaim.setText("");
 		proclaim.setMoment(new Date());
 		proclaim.setFinalMode(false);
-
 		return proclaim;
 	}
 
@@ -60,6 +69,11 @@ public class ProclaimService {
 			result.setText(proclaim.getText());
 		}
 
+		this.validator.validate(result, binding);
+
+		if (binding.hasErrors())
+			throw new ValidationException();
+
 		return result;
 	}
 
@@ -67,50 +81,30 @@ public class ProclaimService {
 
 		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.CHAPTER));
 
-		final Actor a = this.repositoryProclaim.findByUserAccount(LoginService.getPrincipal().getId());
 		Chapter c;
-		c = (Chapter) a;
+		c = this.repositoryProclaim.findByUserAccount(LoginService.getPrincipal().getId());
 
-		if (proclaim.getId() == 0) {
+		if (proclaim.getId() == 0)
+			proclaim.setChapter(c);
 
-		} else
-			Assert.isTrue(c.getProclaims().contains(proclaim) && proclaim.isFinalMode());
+		Proclaim saved = null;
 
-		Proclaim saved;
-		saved = this.repositoryProclaim.save(proclaim);
-
-		Collection<Proclaim> proclaims;
-		proclaims = c.getProclaims();
-
-		if (!proclaims.contains(saved)) {
-			proclaims.add(saved);
-			c.setProclaims(proclaims);
-		}
-
+		if (proclaim.getChapter().equals(c))
+			saved = this.repositoryProclaim.save(proclaim);
+		else
+			throw new IllegalArgumentException();
 		return saved;
 	}
 
 	public void deleteProclaim(final int id) {
 
 		final UserAccount ua = LoginService.getPrincipal();
-		final Actor a = this.repositoryProclaim.findByUserAccount(ua.getId());
-		Chapter c = null;
-
-		if (a != null)
-			c = (Chapter) a;
-
+		final Chapter c = this.repositoryProclaim.findByUserAccount(ua.getId());
+		final Proclaim proclaim = this.repositoryProclaim.findOne(id);
 		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.CHAPTER));
-		final Proclaim pro = this.findOne(id);
-		Assert.isTrue(c.getProclaims().contains(pro) && !pro.isFinalMode());
-
-		Collection<Proclaim> proclaims;
-		proclaims = c.getProclaims();
-
-		if (!proclaims.contains(pro)) {
-			proclaims.add(pro);
-			c.setProclaims(proclaims);
-			this.repositoryProclaim.delete(id);
-		}
+		Assert.isTrue(proclaim.getChapter().equals(c));
+		Assert.isTrue(!proclaim.isFinalMode());
+		this.repositoryProclaim.delete(id);
 
 	}
 }

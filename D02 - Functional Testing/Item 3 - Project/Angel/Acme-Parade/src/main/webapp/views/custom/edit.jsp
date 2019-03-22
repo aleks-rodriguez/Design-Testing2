@@ -40,6 +40,4 @@
 	<acme:submit name="save" code="custom.save" />
 </form:form>
 
-<input type="button" name="cancel"
-	value="<spring:message code="custom.cancel"/>"
-	onclick="javascript:relativeRedir('/welcome/index.do');" />
+<acme:cancel code="custom.cancel" />

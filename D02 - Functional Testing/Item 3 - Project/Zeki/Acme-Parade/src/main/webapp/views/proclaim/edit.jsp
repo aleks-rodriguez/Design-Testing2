@@ -19,16 +19,35 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form modelAttribute="position" action="${requestURI}">
+<script>
+	$(document).ready(function() {
+		$("#form").submit(function(event) {
+			var mod = $("#mode").is(':checked');			
+			if (mod) {
+				var conf = confirm("<spring:message code='proclaim.confirm1'/>");
+				if (!conf) {
+					return false;
+				}
+			}
+		});
+	});
+</script>
+
+<form:form modelAttribute="proclaim" action="${requestURI}" id="form">
 
 	<form:hidden path="id" />
-	<form:hidden path="version" />
-	<acme:textbox code="position.name" path="name" />
-	<acme:textarea code="position.otherLangs" path="otherLangs" />
-	<acme:submit name="save" code="position.save" />
-	<jstl:if test="${position.id != 0}">
-		<acme:submit name="delete" code="position.delete" />
+	<acme:textbox code="proclaim.date" path="moment" readonly="true" />
+	<acme:textarea code="proclaim.description" path="text"
+		readonly="${proclaim.finalMode}" />
+	<jstl:if test="${proclaim.finalMode eq 'false'}">
+		<spring:message code="proclaim.finalMode" />
+		<form:checkbox path="finalMode" id="mode" />
+		<acme:submit name="save" code="proclaim.save" />
+	</jstl:if>
+
+	<jstl:if test="${proclaim.id != 0 and proclaim.finalMode eq 'false'}">
+		<acme:submit name="delete" code="proclaim.delete" />
 	</jstl:if>
 </form:form>
 
-<acme:cancel url="${requestCancel}" code="position.cancel" />
+<acme:cancel code="proclaim.cancel" />

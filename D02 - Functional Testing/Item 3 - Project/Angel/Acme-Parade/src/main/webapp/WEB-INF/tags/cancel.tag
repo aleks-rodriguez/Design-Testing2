@@ -27,7 +27,7 @@
 
 <%-- Definition --%>
 
-<button type="button" onclick="javascript: relativeRedir('${url}')" >
+<button type="button" onclick="window.history.back()" >
 	<spring:message code="${code}" />
 </button>
 

@@ -148,7 +148,7 @@
 	
 	function trim(cadena) {
 		// USO: Devuelve un string como el
-		// parámetro cadena pero quitando los
+		// parï¿½metro cadena pero quitando los
 		// espacios en blanco de los bordes.
 
 		var retorno = cadena.replace(/^\s+/g, '');

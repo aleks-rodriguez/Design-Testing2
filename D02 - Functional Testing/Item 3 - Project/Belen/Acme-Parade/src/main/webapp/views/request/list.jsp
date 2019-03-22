@@ -27,12 +27,23 @@
 					code="request.showing" /></a>
 		</display:column>
 	</security:authorize>
-	<display:column titleKey="request.proccesion">${procesion.title}</display:column>
-	<display:column property="marchRow" titleKey="request.row" />
-	<display:column property="marchColumn" titleKey="request.column" />
-	<display:column property="status" titleKey="request.status"
-		sortable="true" />
-	<display:column property="record" titleKey="request.reason" />
+	<display:column titleKey="request.proccesion">
+		<jstl:out value="${procesion.title}" />
+	</display:column>
+	<security:authorize access="hasRole('BROTHERHOOD')">
+	<display:column titleKey="request.row">
+		<jstl:out value="${row.marchRow}" />
+	</display:column>
+	<display:column titleKey="request.column">
+		<jstl:out value="${row.marchColumn}" />
+	</display:column>
+	</security:authorize>
+	<display:column titleKey="request.status" sortable="true">
+		<jstl:out value="${row.status}" />
+	</display:column>
+	<display:column titleKey="request.record">
+		<jstl:out value="${row.record}" />
+	</display:column>
 
 	<security:authorize access="hasRole('BROTHERHOOD')">
 		<display:column>
@@ -53,7 +64,7 @@
 	var row = tbody.getElementsByTagName("tr");
 
 	for ( var i = 0; i < row.length; i++) {
-		var value = row[i].getElementsByTagName("td")[4].firstChild.nodeValue;
+		var value = trim(row[i].getElementsByTagName("td")[4].firstChild.nodeValue);
 		if (value == 'APPROVED') {
 			row[i].style.backgroundColor = "lightGreen";
 		} else if (value == 'REJECTED') {
@@ -61,5 +72,14 @@
 		} else if (value == 'PENDING') {
 			row[i].style.backgroundColor = " lightGrey";
 		}
+	}
+	function trim(cadena) {
+		// USO: Devuelve un string como el
+		// par�metro cadena pero quitando los
+		// espacios en blanco de los bordes.
+
+		var retorno = cadena.replace(/^\s+/g, '');
+		retorno = retorno.replace(/\s+$/g, '');
+		return retorno;
 	}
 </script>

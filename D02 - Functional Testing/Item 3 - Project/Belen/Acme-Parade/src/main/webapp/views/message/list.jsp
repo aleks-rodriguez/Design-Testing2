@@ -8,28 +8,40 @@
  * http://www.tdg-seville.info/License.html
  --%>
 
-<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 
-<%@taglib prefix="jstl"	uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<p><jstl:out value="${boxName}"></jstl:out></p>
+<p>
+	<jstl:out value="${boxName}"></jstl:out>
+</p>
 
 <display:table name="messages" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
-	
-	<display:column property="subject" titleKey="message.subject" />
-	<display:column property="body" titleKey="message.body" />
+
+	<display:column titleKey="message.subject">
+		<jstl:out value="${row.subject}" />
+	</display:column>
+	<display:column titleKey="message.body">
+		<jstl:out value="${row.body}" />
+	</display:column>
 	<display:column titleKey="message.tags">
 		<jstl:forEach items="${row.tags}" var="tag">
 			<jstl:out value="${tag}"></jstl:out>
 		</jstl:forEach>
 	</display:column>
-	<display:column property="priority" titleKey="message.priority" />
-	<display:column property="momentsent" titleKey="message.momentsent" />
+	<display:column titleKey="message.priority">
+		<jstl:out value="${row.priority}" />
+	</display:column>
+	<display:column titleKey="message.momentsent">
+		<jstl:out value="${row.momentsent}" />
+	</display:column>
 
 	<display:column>
 		<a href="message/create.do?id=${row.id}"><spring:message
@@ -51,7 +63,7 @@
 
 		</display:column>
 	</jstl:if>
-	
+
 </display:table>
 
 <!-- <a href="message/create.do"><spring:message code="message.create" /></a> -->

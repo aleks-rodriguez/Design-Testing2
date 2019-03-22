@@ -17,13 +17,15 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <display:table name="areas" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
 
-	<display:column property="name" titleKey="area.name" />
-	<display:column property="pictures" titleKey="area.pictures" />
+	<display:column titleKey="area.name">
+		<jstl:out value="${row.name}" />
+	</display:column>
+	<acme:some_pictures titleKey="area.pictures" items="${row.pictures}"/>
 
 	<security:authorize access="hasRole('ADMIN')">
 		<display:column titleKey="area.edit">
@@ -32,12 +34,24 @@
 					code="area.edit" /></a>
 		</display:column>
 	</security:authorize>
-	<jstl:if test="${check eq 'true'}">
+	<jstl:if test="${check}">
 		<security:authorize access="hasRole('BROTHERHOOD')">
 			<display:column titleKey="area.assign">
 				<a href="area/brotherhood/assign.do?area=${row.id}"><spring:message
 						code="area.assign" /></a>
 			</display:column>
 		</security:authorize>
+		<security:authorize access="hasRole('CHAPTER')">
+			<display:column titleKey="area.assign">
+				<a href="area/chapter/assign.do?area=${row.id}"><spring:message
+						code="area.assign" /></a>
+			</display:column>
+
+		</security:authorize>
 	</jstl:if>
 </display:table>
+<security:authorize access="hasRole('CHAPTER')">
+	<jstl:if test="${!nonArea}">
+		<spring:message code="area.assign.error" />
+	</jstl:if>
+</security:authorize>

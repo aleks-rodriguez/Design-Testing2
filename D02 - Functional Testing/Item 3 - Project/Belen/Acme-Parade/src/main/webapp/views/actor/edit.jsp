@@ -41,6 +41,7 @@
 
 							if (id == '0') {
 								var res = confirm("<spring:message code = 'terms' />");
+								if (!res) { return false; }
 							}
 
 							if (phone.startsWith("+") == false) {
@@ -85,6 +86,5 @@
 		<input type="submit" name="save"
 			value="<spring:message code="actor.save" />" />
 	</jstl:if>
-
 </form:form>
-<acme:cancel url="/welcome/index.do" code="actor.cancel" />
+<acme:cancel code="actor.cancel" />

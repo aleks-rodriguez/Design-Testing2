@@ -30,4 +30,4 @@
 	</jstl:if>
 </form:form>
 
-<acme:cancel url="${requestCancel}" code="position.cancel" />
+<acme:cancel code="position.cancel" />

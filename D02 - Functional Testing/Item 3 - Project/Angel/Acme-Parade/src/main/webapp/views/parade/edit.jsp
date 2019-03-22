@@ -40,6 +40,16 @@
 			});
 
 		}
+		$("#form").submit(function(event) {
+			var stat = $("#statusParade").val();
+			var text = $("#rejectedText").val();
+			if (stat == "REJECTED" || stat == "RECHAZADO") {
+				if (text == "") {
+					alert("<spring:message code='parade.chapter.action'/>");
+					return false;
+				}
+			}
+		});
 	});
 </script>
 <form:form action="${requestURI}" modelAttribute="parade" id="form">
@@ -109,4 +119,4 @@
 		</jstl:if>
 	</security:authorize>
 </form:form>
-<acme:cancel url="/area/chapter/listBrotherhood.do" code="parade.cancel" />
+<acme:cancel code="parade.cancel" />

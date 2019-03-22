@@ -30,9 +30,9 @@ public class RequestService {
 	@Autowired
 	private RequestRepository	requestRepository;
 	@Autowired
-	private ParadeService	procService;
+	private ParadeService		procService;
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator			validator;
 
 
@@ -91,23 +91,28 @@ public class RequestService {
 		final Request saved;
 		Collection<Request> reqs;
 		Parade p;
-		Member login;
-		login = (Member) this.requestRepository.findByUserAccount(LoginService.getPrincipal().getId());
+		Member login = null;
+		//		login = (Member) this.requestRepository.findByUserAccount(LoginService.getPrincipal().getId());
+		if (Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER))
+			login = this.requestRepository.findMemberByUserAccount(LoginService.getPrincipal().getId());
 
 		saved = this.requestRepository.save(r);
 		Assert.notNull(saved);
-		p = this.procService.findOne(procId);
-		reqs = p.getRequests();
-		if (!reqs.contains(saved)) {
-			reqs.add(saved);
-			p.setRequests(reqs);
-		}
-		Collection<Request> reqsMember;
-		reqsMember = login.getRequests();
+		if (Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
 
-		if (!reqsMember.contains(saved)) {
-			reqsMember.add(saved);
-			login.setRequests(reqsMember);
+			p = this.procService.findOne(procId);
+			reqs = p.getRequests();
+			if (!reqs.contains(saved)) {
+				reqs.add(saved);
+				p.setRequests(reqs);
+			}
+			Collection<Request> reqsMember;
+			reqsMember = login.getRequests();
+
+			if (!reqsMember.contains(saved)) {
+				reqsMember.add(saved);
+				login.setRequests(reqsMember);
+			}
 		}
 		return saved;
 	}

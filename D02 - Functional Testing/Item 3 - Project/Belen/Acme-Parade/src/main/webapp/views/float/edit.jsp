@@ -30,4 +30,4 @@
 	<acme:submit name="save" code="float.save"/>
 	</jstl:if>
 </form:form>
-<input type="submit" onclick="window.history.back()" value="<spring:message code="float.cancel"/>"/>
+<acme:cancel code="float.cancel" />

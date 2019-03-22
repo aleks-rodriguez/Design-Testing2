@@ -51,27 +51,25 @@
 		dat.push(element[1]);
 	}
 
-	console.log(labels);
-	var labCad = "";
-	for(var i = 0; i< labels.length; i++){
-		labCad += labels[i] + ",";
-	}
-	if(labCad.endsWith(',')){
-		s = s.replace(',', '');
-	}
 	var data = {
 		labels : [
-				labCad
+
 		],
 		datasets : [
 			{
 				label : "Positions",
 				data : [
-						dat[0], dat[1], dat[2], dat[3], dat[4], dat[5], dat[6]
+
 				]
 			}
 		]
 	};
+
+	for ( var i = 0; i < labels.length; i++) {
+		data["labels"].push(labels[i]);
+		data["datasets"][0]["data"].push(dat[i]);
+	}
+
 	var options = {
 		scales : {
 			yAxes : [

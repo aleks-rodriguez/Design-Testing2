@@ -27,4 +27,4 @@
 	<acme:submit name="save" code="user.save" />
 </form:form>
 
-<acme:cancel url="${requestCancel}" code="user.cancel"/>
+<acme:cancel code="user.cancel"/>

@@ -29,4 +29,4 @@
 	<acme:submit name="save" code="miscellaneousRecord.save"/>
 	</jstl:if>
 </form:form>
-<input type="submit" onclick="window.history.back()" value="<spring:message code="miscellaneousRecord.cancel"/>"/>
+<acme:cancel code="miscellaneousRecord.cancel" />

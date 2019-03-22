@@ -21,16 +21,20 @@
 
 <display:table name="enrolments" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
-	<display:column property="member.name" titleKey="enrolment.member"/>
-	<display:column property="moment" titleKey="enrolment.moment" />
+	<display:column titleKey="enrolment.member">
+		<jstl:out value="${row.member.name}" />
+	</display:column>
+	<display:column titleKey="enrolment.moment">
+		<jstl:out value="${row.moment}" />
+	</display:column>
 
 	<security:authorize access="hasRole('BROTHERHOOD')">
-	<display:column titleKey="enrolment.edit">
-		<a href="enrolment/brotherhood/update.do?idEnrolment=${row.id}"><spring:message
-				code="enrolment.edit" /></a>
-	</display:column>
+		<display:column titleKey="enrolment.edit">
+			<a href="enrolment/brotherhood/update.do?idEnrolment=${row.id}"><spring:message
+					code="enrolment.edit" /></a>
+		</display:column>
 	</security:authorize>
-<%-- 	<security:authorize access="hasRole('BROTHERHOOD')">
+	<%-- 	<security:authorize access="hasRole('BROTHERHOOD')">
 	<display:column titleKey="procession.delete">
 		<a href="procession/brotherhood/delete.do?id=${row.id}"><spring:message
 				code="procession.delete" /></a>

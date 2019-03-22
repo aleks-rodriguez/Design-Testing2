@@ -100,4 +100,5 @@ public class Brotherhood extends Actor {
 	public void setHistory(final History history) {
 		this.history = history;
 	}
+
 }

@@ -59,6 +59,14 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/actor/**"
 			access="permitAll" />
+		<security:intercept-url pattern="/area/**"
+			access="permitAll" />
+		<security:intercept-url pattern="/proclaim/**"
+			access="permitAll" />
+		<security:intercept-url pattern="/chapter/listChapter.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/segment/**"
+			access="permitAll" />
 		<security:intercept-url pattern="/inceptionRecord/show.do"
 			access="permitAll" />
 		<security:intercept-url pattern="/legalRecord/show.do"
@@ -93,7 +101,7 @@
 			access="hasRole('BROTHERHOOD')" />
 		<security:intercept-url pattern="/area/brotherhood/**"
 			access="hasRole('BROTHERHOOD')" />
-		<security:intercept-url pattern="/float/brotherhood/edit.do**"
+		<security:intercept-url pattern="/float/brotherhood/edit.do"
 			access="hasRole('BROTHERHOOD')" />
 		<security:intercept-url pattern="/brotherhood/personal.do"
 			access="hasRole('BROTHERHOOD')" />
@@ -110,7 +118,6 @@
 		<security:intercept-url pattern="/miscellaneousRecord/brotherhood/**"
 			access="hasRole('BROTHERHOOD')" />
 
-		
 		<!-- Member -->
 		<security:intercept-url pattern="/parade/member/**"
 			access="hasRole('MEMBER')" />
@@ -122,6 +129,12 @@
 			access="hasRole('MEMBER')" />
 		<!-- Chapter -->
 		<security:intercept-url pattern="/chapter/personal.do"
+			access="hasRole('CHAPTER')" />
+		<security:intercept-url pattern="/area/chapter/**"
+			access="hasRole('CHAPTER')" />
+		<security:intercept-url pattern="/proclaim/chapter/**"
+			access="hasRole('CHAPTER')" />
+		<security:intercept-url pattern="/parade/chapter/**"
 			access="hasRole('CHAPTER')" />
 		<!-- Authenticated -->
 		<security:intercept-url pattern="/profile/**"

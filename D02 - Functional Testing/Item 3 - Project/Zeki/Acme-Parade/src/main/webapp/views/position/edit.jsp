@@ -22,7 +22,6 @@
 <form:form modelAttribute="position" action="${requestURI}">
 
 	<form:hidden path="id" />
-	<form:hidden path="version" />
 	<acme:textbox code="position.name" path="name" />
 	<acme:textarea code="position.otherLangs" path="otherLangs" />
 	<acme:submit name="save" code="position.save" />
@@ -31,4 +30,4 @@
 	</jstl:if>
 </form:form>
 
-<acme:cancel url="${requestCancel}" code="position.cancel" />
+<acme:cancel code="position.cancel" />

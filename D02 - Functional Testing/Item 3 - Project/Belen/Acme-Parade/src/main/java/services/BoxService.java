@@ -21,7 +21,7 @@ import domain.MessageEntity;
 @Transactional
 public class BoxService {
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator		validator;
 
 	@Autowired
@@ -136,7 +136,7 @@ public class BoxService {
 				boxes.remove(b);
 				m.setBox(boxes);
 			}
-		//setteamos los mensajes de la box a vacío
+		//setteamos los mensajes de la box a vacï¿½o
 		colmes.clear();
 		b.setMessageEntity(colmes);
 		//eliminamos la caja al actor que la tiene

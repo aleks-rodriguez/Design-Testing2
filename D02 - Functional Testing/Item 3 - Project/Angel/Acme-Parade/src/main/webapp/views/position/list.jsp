@@ -18,10 +18,6 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<p>
-	<spring:message code="procession.list" />
-</p>
-
 <display:table name="positions" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
 
