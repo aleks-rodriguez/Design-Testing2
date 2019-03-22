@@ -86,6 +86,8 @@
 				</ul></li>
 			<li><a class="fNiv" href="area/brotherhood/list.do"><spring:message
 						code="master.page.brotherhood.area" /></a></li>
+			<li><a class="fNiv" href="history/brotherhood/list.do"><spring:message
+						code="master.page.brotherhood.history" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('MEMBER')">

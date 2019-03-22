@@ -35,6 +35,11 @@
 		<a href="enrolment/listMember.do?idBrotherhood=${row.id}"><spring:message
 				code="brotherhood.member" /></a>
 	</display:column>
+	
+	<display:column titleKey="brotherhood.history">
+		<a href="history/listHistory.do?idBrotherhood=${row.id}"><spring:message
+				code="brotherhood.history" /></a>
+	</display:column>
 
 
 	<security:authorize access="hasRole('MEMBER')">

@@ -1101,7 +1101,7 @@
 
 	<bean id="customisationsys1" class="domain.CustomisationSystem">
 		<property name="systemName" value="Acme-Madruga" />
-		<property name="banner" value="https://image.ibb.co/iuaDgV/Untitled.png" />
+		<property name="banner" value="https://i.imgur.com/PjcX0fO.jpg" />
 		<property name="message"
 			value="Welcome to Acme-Madruga! The site to organise your processions! &lt;br&gt; Â¡ Bienvenidos a Acme-Madruga! Tu sitio para organizar procesiones!" />
 		<property name="phonePrefix" value="34" />

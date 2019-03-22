@@ -30,23 +30,23 @@ public class ParadeService {
 	private Validator	validator;
 
 	@Autowired
-	ParadeRepository	processionRepository;
+	ParadeRepository	paradeRepository;
 
 
 	public Collection<Parade> findAll() {
-		return this.processionRepository.findAll();
+		return this.paradeRepository.findAll();
 	}
 
 	public Parade findOne(final int idParade) {
-		return this.processionRepository.findOne(idParade);
+		return this.paradeRepository.findOne(idParade);
 	}
 
 	public Brotherhood findBrotherhoodByUser(final int userId) {
-		return this.processionRepository.findBrotherhoodByUserAccountId(userId);
+		return this.paradeRepository.findBrotherhoodByUserAccountId(userId);
 	}
 
 	public Brotherhood findBrotherhoodByParade(final int idParade) {
-		return this.processionRepository.findBrotherhoodByParadesId(idParade);
+		return this.paradeRepository.findBrotherhoodByParadesId(idParade);
 	}
 
 	public Parade createParade() {
@@ -69,9 +69,9 @@ public class ParadeService {
 		user = LoginService.getPrincipal();
 		Assert.isTrue(Utiles.findAuthority(user.getAuthorities(), Authority.BROTHERHOOD));
 		Parade saved;
-		saved = this.processionRepository.save(parade);
+		saved = this.paradeRepository.save(parade);
 		Brotherhood b;
-		b = this.processionRepository.findBrotherhoodByUserAccountId(user.getId());
+		b = this.paradeRepository.findBrotherhoodByUserAccountId(user.getId());
 		Collection<Parade> parades;
 		parades = b.getParades();
 		if (!parades.contains(saved)) {
@@ -86,14 +86,14 @@ public class ParadeService {
 		user = LoginService.getPrincipal();
 		Assert.isTrue(Utiles.findAuthority(user.getAuthorities(), Authority.BROTHERHOOD));
 		Parade p;
-		p = this.processionRepository.findOne(idParade);
+		p = this.paradeRepository.findOne(idParade);
 		Brotherhood b;
-		b = this.processionRepository.findBrotherhoodByParadesId(idParade);
+		b = this.paradeRepository.findBrotherhoodByParadesId(idParade);
 		Collection<Parade> paradesPerBrotherhood;
 		paradesPerBrotherhood = b.getParades();
 		paradesPerBrotherhood.remove(p);
 		b.setParades(paradesPerBrotherhood);
-		this.processionRepository.delete(p);
+		this.paradeRepository.delete(p);
 	}
 
 	public Parade reconstruct(final Parade parade, final BindingResult binding) {
@@ -101,7 +101,7 @@ public class ParadeService {
 		if (parade.getId() == 0)
 			result = parade;
 		else {
-			result = this.processionRepository.findOne(parade.getId());
+			result = this.paradeRepository.findOne(parade.getId());
 
 			result.setTicker(parade.getTicker());
 			result.setTitle(parade.getTitle());

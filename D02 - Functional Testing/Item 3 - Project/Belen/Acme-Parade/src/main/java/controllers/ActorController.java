@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
@@ -140,6 +141,17 @@ public class ActorController extends AbstractController {
 		final ActorForm form = this.serviceActor.map(a, null);
 		result = this.createEditModelAndView(form);
 		result.addObject("authority", form.getAuthority());
+		return result;
+	}
+
+	@RequestMapping(value = "/personalBrotherhood", method = RequestMethod.GET)
+	public ModelAndView editPersonalBrotherhood(@RequestParam final int idBrotherhood) {
+		ModelAndView result;
+		final Actor a = this.serviceActor.findOneBrotherhood(idBrotherhood);
+		final ActorForm form = this.serviceActor.map(a, null);
+		result = this.createEditModelAndView(form);
+		result.addObject("authority", form.getAuthority());
+		result.addObject("check", false);
 		return result;
 	}
 	protected <T extends Actor> ModelAndView createEditModelAndView(final T actor) {

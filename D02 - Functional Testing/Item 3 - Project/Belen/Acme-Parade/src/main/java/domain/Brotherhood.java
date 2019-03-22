@@ -12,6 +12,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -31,6 +32,7 @@ public class Brotherhood extends Actor {
 	private Area					area;
 	private Collection<Float>		floats;
 	private Collection<Parade>		parades;
+	private History					history;
 
 
 	@OneToMany
@@ -88,5 +90,14 @@ public class Brotherhood extends Actor {
 	}
 	public void setFloats(final Collection<Float> floats) {
 		this.floats = floats;
+	}
+
+	@OneToOne
+	public History getHistory() {
+		return this.history;
+	}
+
+	public void setHistory(final History history) {
+		this.history = history;
 	}
 }
