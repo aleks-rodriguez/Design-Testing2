@@ -6,11 +6,10 @@ import java.util.Date;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
 
 @Embeddable
@@ -54,8 +53,7 @@ public class CreditCard {
 		this.number = number;
 	}
 
-	@Max(value = 999)
-	@Min(value = 100)
+	@Range(min = 100, max = 999)
 	public int getCvv() {
 		return this.cvv;
 	}

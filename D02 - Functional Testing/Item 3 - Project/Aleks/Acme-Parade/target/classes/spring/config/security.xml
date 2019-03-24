@@ -118,6 +118,17 @@
 		<security:intercept-url pattern="/miscellaneousRecord/brotherhood/**"
 			access="hasRole('BROTHERHOOD')" />
 
+
+			<!-- PRUEBA  Nivel A Madruga -->
+			
+			<security:intercept-url pattern="/brotherhood/view.do/**"
+			access="isAuthenticated()" />
+			<security:intercept-url pattern="/member/view.do/**"
+			access="isAuthenticated()" />
+
+<!-- HABRA QUE CAMBIARLO PERO HAY QUE HABLARLO -->
+
+
 		<!-- Member -->
 		<security:intercept-url pattern="/parade/member/**"
 			access="hasRole('MEMBER')" />

@@ -9,6 +9,8 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
@@ -30,6 +32,9 @@ public class CustomisationSystem extends DomainEntity {
 	private Integer				resultFinder;
 	private Integer				phonePrefix;
 	private Collection<String>	priorities;
+	private Collection<String>	creditCardMakes;
+	private Double				vat;
+	private Double				flatFare;
 
 
 	@ElementCollection
@@ -117,5 +122,33 @@ public class CustomisationSystem extends DomainEntity {
 
 	public void setPhonePrefix(final Integer phonePrefix) {
 		this.phonePrefix = phonePrefix;
+	}
+
+	@ElementCollection
+	public Collection<String> getCreditCardMakes() {
+		return this.creditCardMakes;
+	}
+
+	public void setCreditCardMakes(final Collection<String> creditCardMakes) {
+		this.creditCardMakes = creditCardMakes;
+	}
+
+	@DecimalMin(value = "0.00")
+	@DecimalMax(value = "1.00")
+	public Double getVat() {
+		return this.vat;
+	}
+
+	public void setVat(final Double vat) {
+		this.vat = vat;
+	}
+
+	@DecimalMin(value = "0.00")
+	public Double getFlatFare() {
+		return this.flatFare;
+	}
+
+	public void setFlatFare(final Double flatFare) {
+		this.flatFare = flatFare;
 	}
 }

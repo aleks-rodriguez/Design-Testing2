@@ -46,7 +46,7 @@
 	
 	<security:authorize access="hasRole('SPONSOR')">
 	<display:column title="sponsorship.create.title">
-		<a href="sponsorship/sponsor/create.do?idParade=${row.id}"><spring:message
+		<a href="sponsorship/sponsor/create.do?paradeId=${row.id}"><spring:message
 				code="sponsorship.create" /></a>
 	</display:column>
 	</security:authorize>

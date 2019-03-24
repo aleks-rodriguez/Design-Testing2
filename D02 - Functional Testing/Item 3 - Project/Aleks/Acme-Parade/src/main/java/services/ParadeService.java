@@ -24,6 +24,7 @@ import domain.Brotherhood;
 import domain.Float;
 import domain.Parade;
 import domain.Request;
+import domain.Sponsorship;
 
 @Service
 @Transactional
@@ -38,6 +39,9 @@ public class ParadeService {
 
 	public Collection<Parade> findParadesByBrotherhoodIdFM(final int id) {
 		return this.processionRepository.findParadesByBrotherhoodIdFM(id);
+	}
+	public Collection<Sponsorship> findSponsorshipsByParadeId(final int paradeId) {
+		return this.processionRepository.findSponsorshipByParadeId(paradeId);
 	}
 
 	public Collection<Parade> findParadesByBrotherhoodId(final int id) {

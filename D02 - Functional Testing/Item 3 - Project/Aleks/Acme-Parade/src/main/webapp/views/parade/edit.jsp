@@ -110,3 +110,7 @@
 	</security:authorize>
 </form:form>
 <acme:cancel url="/area/chapter/listBrotherhood.do" code="parade.cancel" />
+
+<div>
+<img alt="" src="${linkBanner}">
+</div>

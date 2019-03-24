@@ -196,6 +196,7 @@ public class ParadeController extends AbstractController {
 		} catch (final IllegalArgumentException e) {
 			result.addObject("requestURI", "parade/show.do?idParade=" + p.getId());
 		}
+		result.addObject("linkBanner", Utiles.randomizeSponsorships(this.paradeService.findSponsorshipsByParadeId(idParade)).getUrlBanner());
 		return result;
 	}
 	// Create edit model and view

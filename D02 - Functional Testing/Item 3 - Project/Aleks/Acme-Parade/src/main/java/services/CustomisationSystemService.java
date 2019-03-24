@@ -61,7 +61,7 @@ public class CustomisationSystemService {
 	public void flagSpam(final int idActor) {
 		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
 		Actor a;
-		a = this.repositoryCustomisationSystem.findActor(idActor);
+		a = this.repositoryCustomisationSystem.findActorByUserAccountId(idActor);
 		a.setSpammer(true);
 	}
 
