@@ -41,6 +41,7 @@
 
 							if (id == '0') {
 								var res = confirm("<spring:message code = 'terms' />");
+								if (!res) { return false; }
 							}
 
 							if (phone.startsWith("+") == false) {
@@ -82,9 +83,16 @@
 		<jstl:if test="${authority eq 'CHAPTER'}">
 			<acme:textbox code="actor.brotherhood.title" path="title" />
 		</jstl:if>
+		<security:authorize access="hasRole('ADMINISTRATOR')">
+			<spring:message code="actor.spam"></spring:message>: <jstl:out value="${spammer}"></jstl:out>
+			 <a href="customisation/administrator/ban.do"><spring:message code="actor.spam.link"></spring:message> </a><br>
+			<spring:message code="actor.polarity"></spring:message>: <jstl:out value="${polarity}"></jstl:out><br>
+				
+		</security:authorize>
+				<security:authorize access="!hasRole('ADMINISTRATOR')">
 		<input type="submit" name="save"
 			value="<spring:message code="actor.save" />" />
+			</security:authorize>
 	</jstl:if>
-
 </form:form>
 <acme:cancel url="/welcome/index.do" code="actor.cancel" />

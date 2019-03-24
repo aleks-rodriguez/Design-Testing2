@@ -32,7 +32,7 @@ public class FinderService {
 	@Autowired
 	private FinderRepository	repositoryFinder;
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator			validator;
 
 

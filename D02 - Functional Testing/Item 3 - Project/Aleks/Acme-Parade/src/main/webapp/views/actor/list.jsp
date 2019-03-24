@@ -25,21 +25,39 @@
 <display:table name="actors" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
 
-	<display:column property="name" titleKey="actor.name" />
-	<display:column property="middleName" titleKey="actor.middlename" />
-	<display:column property="surname" titleKey="actor.surname" />
-	<display:column property="photo" titleKey="actor.photo" />
-	<display:column property="email" titleKey="actor.email" />
-	<display:column property="phone" titleKey="actor.phone" />
-	<display:column property="adress" titleKey="actor.adress" />
-	<display:column property="account.username" titleKey="actor.user" />
-	<display:column property="account.enabled" titleKey="actor.enabled" />
+	<display:column titleKey="actor.name">
+		<jstl:out value="${row.name}" />
+	</display:column>
+	<display:column titleKey="actor.middlename">
+		<jstl:out value="${row.middleName}" />
+	</display:column>
+	<display:column titleKey="actor.surname">
+		<jstl:out value="${row.surname}" />
+	</display:column>
+	<display:column titleKey="actor.photo">
+		<jstl:out value="${row.photo}" />
+	</display:column>
+	<display:column titleKey="actor.email">
+		<jstl:out value="${row.email}" />
+	</display:column>
+	<display:column titleKey="actor.phone">
+		<jstl:out value="${row.phone}" />
+	</display:column>
+	<display:column titleKey="actor.adress">
+		<jstl:out value="${row.adress}" />
+	</display:column>
+	<display:column titleKey="actor.user">
+		<jstl:out value="${row.account.username}" />
+	</display:column>
+	<display:column titleKey="actor.enabled">
+		<jstl:out value="${row.account.enabled}" />
+	</display:column>
 
 	<security:authorize access="hasRole('ADMIN')">
 		<jstl:if test="${ban}">
 			<display:column>
-				<a href="customisation/administrator/ban.do?id=${row.id}" class="btn"><spring:message
-						code="actor.ban" /></a>
+				<a href="customisation/administrator/ban.do?id=${row.id}"
+					class="btn"><spring:message code="actor.ban" /></a>
 			</display:column>
 		</jstl:if>
 		<jstl:if test="${unban}">

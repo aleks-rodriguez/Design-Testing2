@@ -5,17 +5,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import security.Authority;
+import domain.Actor;
 import domain.Box;
+import domain.CreditCard;
 import domain.MessageEntity;
 
 public class Utiles {
@@ -35,8 +41,14 @@ public class Utiles {
 
 
 	public static void main(final String[] args) {
-		final List<String> res = new ArrayList<String>(Arrays.asList("1", "2"));
-		System.out.println(res.toString().substring(1, res.toString().length() - 1));
+		final String aux1 = "aa.com";
+		final String aux2 = "aaaaa.com";
+
+		System.out.println(Utiles.checkURL(Arrays.asList(aux1, aux2)));
+	}
+
+	public boolean date2IsAfterDate1(final Date date1, final Date date2) {
+		return date2.after(date1);
 	}
 
 	public static Collection<Box> initBoxes() {
@@ -127,7 +139,7 @@ public class Utiles {
 		return passEncoded;
 	}
 
-	public static String generateTicker() {
+	public static String generateTicker(final Collection<String> tickers) {
 		SimpleDateFormat formato;
 		formato = new SimpleDateFormat("yyMMdd");
 
@@ -148,7 +160,22 @@ public class Utiles {
 		for (int i = 0; i < 6; i++)
 			c += ch[random.nextInt(ch.length)];
 
-		return formated + "-" + c;
+		String result;
+		result = formated + "-" + c;
+
+		if (tickers.contains(result))
+			Utiles.generateTicker(tickers);
+
+		return result;
+	}
+	public static Set<String> statusParadeByLang(final String s) {
+		Map<String, Set<String>> result;
+		result = new HashMap<String, Set<String>>();
+
+		result.put("en", new HashSet<>(Arrays.asList("SUBMITTED", "ACCEPTED", "REJECTED")));
+		result.put("es", new HashSet<>(Arrays.asList("ENVIADO", "ACEPTADO", "RECHAZADO")));
+
+		return result.get(s);
 	}
 	public static void setParameters(final String systemName, final String banner, final String mess, final Integer hours, final Integer results, final Integer phonePrefix) {
 		Utiles.systemName = systemName;
@@ -172,7 +199,7 @@ public class Utiles {
 
 		return res;
 	}
-	public static boolean isSpammer(final Collection<MessageEntity> cm) {
+	private static boolean isSpammer(final Collection<MessageEntity> cm) {
 		int i = 0;
 		for (final MessageEntity message : cm) {
 			final boolean spam = Utiles.spamWord(Utiles.limpiaString(message.getSubject())) && Utiles.spamWord(Utiles.limpiaString(message.getBody()));
@@ -193,5 +220,154 @@ public class Utiles {
 			}
 		res.removeAll(queryResult);
 		return res;
+	}
+
+	public static boolean checkSpammer(final Actor a) {
+		boolean res;
+		res = false;
+		for (final Box b : a.getBoxes())
+			if (b.getName().equals("Out Box"))
+				res = Utiles.isSpammer(b.getMessageEntity());
+		return res;
+	}
+
+	public static double homotheticalTransformation(final Collection<MessageEntity> sentMessage) {
+
+		Double res = 0.0;
+		final Collection<String> cleanedString = new ArrayList<>();
+
+		List<Double> good;
+		good = new ArrayList<Double>();
+		List<Double> bad;
+		bad = new ArrayList<Double>();
+
+		for (final MessageEntity m : sentMessage) {
+			double p = 0.;
+			double n = 0.;
+			final Collection<String> cleanedSubject = Utiles.limpiaString(m.getSubject().toString());
+			final Collection<String> cleanedBody = Utiles.limpiaString(m.getBody().toString());
+			final Collection<String> cleanedPriority = Utiles.limpiaString(m.getPriority().toString());
+			cleanedString.addAll(cleanedSubject);
+			cleanedSubject.addAll(cleanedPriority);
+			cleanedSubject.addAll(cleanedBody);
+
+			for (final String s : cleanedString) {
+				if (Utiles.goodWords.contains(s))
+					p++;
+				if (Utiles.badWords.contains(s))
+					n++;
+			}
+			good.add(p / cleanedString.size());
+			bad.add(n / cleanedString.size());
+		}
+
+		if (Double.isNaN(Utiles.compute(good)) || Double.isNaN(Utiles.compute(bad)))
+			res = 0.0;
+		else
+			res = Utiles.compute(good) - Utiles.compute(bad);
+
+		return res;
+	}
+
+	private static double compute(final Collection<Double> values) {
+
+		final int a = -1;
+		final int b = 1;
+
+		final double min = Collections.min(values);
+		final double max = Collections.max(values);
+
+		double z = 0.;
+
+		for (final double d : values)
+			z = z + a + ((d - min) * (b - a) / (max - min));
+
+		return z;
+	}
+
+	public static CreditCard createCreditCard() {
+		CreditCard creditCard;
+		creditCard = new CreditCard();
+		creditCard.setHolder("");
+		creditCard.setMake("");
+		creditCard.setNumber("");
+		creditCard.setExpiration(new Date());
+		creditCard.setCvv(0);
+
+		return creditCard;
+	}
+
+	public static String[] checkCreditCard(final String cadena) {
+		/**
+		 * This method is implemented according to the Luhn Algorithm
+		 * https://www.journaldev.com/1443/java-credit-card-validation-luhn-algorithm-java
+		 * https://howtodoinjava.com/regex/java-regex-validate-credit-card-numbers/
+		 */
+
+		/**
+		 * This string array only have two values
+		 * 1. Type of creditCard
+		 * 2. It is a legal credit card or none.
+		 */
+		String[] result;
+		result = new String[2];
+
+		/**
+		 * This makes a little repository of patterns that checks directly which kind of credit card is given by cadena�s parameter.
+		 */
+		Map<String, Matcher> map;
+		map = new HashMap<String, Matcher>();
+
+		map.put("VISA", Pattern.compile("^4[0-9]{12}(?:[0-9]{3})?$").matcher(cadena));
+		map.put("MASTERCARD", Pattern.compile("^5[1-5][0-9]{14}$").matcher(cadena));
+		map.put("AMEX", Pattern.compile("^3[47][0-9]{13}$").matcher(cadena));
+		map.put("DINERS", Pattern.compile("^3(?:0[0-5]|[68][0-9])?[0-9]{11}$").matcher(cadena));
+
+		if (map.get("VISA").matches())
+			result[0] = "VISA";
+		else if (map.get("MASTERCARD").matches())
+			result[0] = "MASTERCARD";
+		else if (map.get("AMEX").matches())
+			result[0] = "AMEX";
+		else if (map.get("DINERS").matches())
+			result[0] = "DINERS";
+
+		/**
+		 * Luhn Algorithm
+		 */
+		result[1] = Boolean.toString(Utiles.luhnAlgorithm(cadena));
+
+		return result;
+
+	}
+	private static boolean luhnAlgorithm(final String cadena) {
+		final int[] str = new int[cadena.length()];
+
+		for (int i = 0; i < str.length; i++)
+			str[i] = Integer.parseInt(cadena.substring(i, i + 1));
+
+		for (int i = str.length - 2; i >= 0; i = i - 2) {
+
+			int j = str[i];
+			j = j * 2;
+
+			if (j > 9)
+				j = j % 10 + 1;
+
+			str[i] = j;
+
+		}
+		int sum = 0;
+
+		for (int i = 0; i < str.length; i++)
+			sum = sum + str[i];
+
+		return sum % 10 == 0;
+	}
+
+	public static List<String> creditCardMakes() {
+		List<String> makes;
+		makes = Arrays.asList("VISA", "MASTERCARD", "AMEX", "DINERS", "FLY");
+		return makes;
 	}
 }

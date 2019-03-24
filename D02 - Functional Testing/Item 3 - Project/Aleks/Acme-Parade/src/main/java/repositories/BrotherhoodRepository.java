@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Brotherhood;
+import domain.Chapter;
 import domain.Enrolment;
 import domain.Member;
 import domain.Parade;
@@ -17,7 +18,8 @@ public interface BrotherhoodRepository extends JpaRepository<Brotherhood, Intege
 
 	@Query("select m from Member m where m.account.id = ?1")
 	Member getMemberByUserAccount(int id);
-
+	@Query("select m from Chapter m where m.account.id = ?1")
+	Chapter getChapterByUserAccount(int id);
 	@Query("select a from Actor a where a.account.id = ?1")
 	Member getActorByUserAccount(int id);
 

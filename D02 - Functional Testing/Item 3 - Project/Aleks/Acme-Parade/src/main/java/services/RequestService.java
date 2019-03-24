@@ -32,7 +32,7 @@ public class RequestService {
 	@Autowired
 	private ParadeService		procService;
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator			validator;
 
 

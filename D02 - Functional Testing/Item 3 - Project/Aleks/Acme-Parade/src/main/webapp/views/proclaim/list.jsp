@@ -19,26 +19,26 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <p>
-	<spring:message code="procession.list" />
+	<spring:message code="proclaim.list" />
 </p>
 
-<display:table name="positions" id="row" requestURI="${requestURI}"
+<display:table name="proclaims" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
 
-	<display:column property="name" titleKey="position.name" />
-	<display:column property="otherLangs" titleKey="position.otherLangs" />
-
-	<display:column titleKey="position.edit">
-
-		<a href="position/administrator/edit.do?id=${row.id}"><spring:message
-				code="position.edit" /></a>
-
+	<display:column titleKey="proclaim.moment">
+		<jstl:out value="${row.moment}" />
+	</display:column>
+	<display:column titleKey="proclaim.description">
+		<jstl:out value="${row.text}" />
 	</display:column>
 
-	<jstl:forEach items="${errors}" var="error">
-		<jstl:out value="${error}" />
-	</jstl:forEach>
-	<jstl:out value="${oops}" />
-	<jstl:out value="${message}" />
+	<security:authorize access="hasRole('CHAPTER')">
+		<display:column titleKey="proclaim.edit">
+
+			<a href="proclaim/chapter/edit.do?id=${row.id}"><spring:message
+					code="position.edit" /></a>
+
+		</display:column>
+	</security:authorize>
 
 </display:table>

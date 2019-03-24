@@ -46,7 +46,7 @@ public class Proclaim extends DomainEntity {
 	}
 
 	@SafeHtml
-	@Length(max = 250)
+	@Length(min = 5, max = 250)
 	public String getText() {
 		return this.text;
 	}

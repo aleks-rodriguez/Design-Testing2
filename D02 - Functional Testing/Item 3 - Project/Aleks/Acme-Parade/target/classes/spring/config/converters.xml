@@ -64,7 +64,45 @@
 		<!-- Segment -->
 		<bean class="converters.SegmentToStringConverter" />
 		<bean class="converters.StringToSegmentConverter" />
-
+		<!-- Proclaim -->
+		<bean class="converters.ProclaimToStringConverter" />
+		<bean class="converters.StringToProclaimConverter" />
+		
+		<!-- Coordinate -->
+		<bean class="converters.CoordinateToStringConverter" />
+		<bean class="converters.StringToCoordinateConverter" />
+		<!-- History and Records -->
+		<bean class="converters.HistoryToStringConverter" />
+		<bean class="converters.StringToHistoryConverter" />
+		
+		<bean class="converters.LinkRecordToStringConverter" />
+		<bean class="converters.StringToLinkRecordConverter" />
+		
+		<bean class="converters.LegalRecordToStringConverter" />
+		<bean class="converters.StringToLegalRecordConverter" />
+		
+		<bean class="converters.PeriodRecordToStringConverter" />
+		<bean class="converters.StringToPeriodRecordConverter" />
+		
+		<bean class="converters.MiscellaneousRecordToStringConverter" />
+		<bean class="converters.StringToMiscellaneousRecordConverter" />
+		
+		<bean class="converters.InceptionRecordToStringConverter" />
+		<bean class="converters.StringToInceptionRecordConverter" />
+		
+		<!-- Sponsor -->
+		<bean class="converters.SponsorToStringConverter" />
+		<bean class="converters.StringToSponsorConverter" />
+		
+		<!-- Sponsorship -->
+		<bean class="converters.SponsorshipToStringConverter" />
+		<bean class="converters.StringToSponsorshipConverter" />
+		
+		<!-- Credit Card -->
+		<bean class="converters.CreditCardToStringConverter" />
+		<bean class="converters.StringToCreditCardConverter" />
+		
+		
 	</util:list>
 
 </beans>

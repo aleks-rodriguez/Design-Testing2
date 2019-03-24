@@ -22,7 +22,7 @@ import domain.Member;
 @Transactional
 public class EnrolmentService {
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator			validator;
 
 	@Autowired
