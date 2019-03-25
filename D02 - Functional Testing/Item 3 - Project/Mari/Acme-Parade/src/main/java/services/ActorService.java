@@ -34,6 +34,7 @@ import domain.Enrolment;
 import domain.Finder;
 import domain.Float;
 import domain.Member;
+import domain.Parade;
 import domain.Profile;
 import domain.Request;
 import domain.Sponsor;
@@ -72,37 +73,40 @@ public class ActorService {
 	private SponsorRepository		sponsorRepository;
 
 
+	public Actor findByUser(final int id) {
+		return this.chapterRepository.findById(id);
+	}
+
 	public Member findOneMember(final int id) {
 		return this.memberRepository.findOne(id);
 	}
 	public Chapter findOneChapter(final int id) {
 		return this.chapterRepository.findOne(id);
 	}
-	public Brotherhood findOneBrotherhood(final int id) {
-		return this.brotherhoodRepository.findOne(id);
-	}
 
 	public Collection<Brotherhood> findAllBrotherhood() {
 		return this.brotherhoodRepository.findAll();
 	}
-
-	public Actor findByUserAccount(final int id) {
-		return this.brotherhoodRepository.getByUserAccount(id);
+	public Collection<Parade> findFinalModeParadesByBrotherhoodId(final int id) {
+		return this.brotherhoodRepository.getFinalModeParadesByBrotherhoodId(id);
 	}
-	public Actor findActorByUserAccount(final int id) {
-		return this.brotherhoodRepository.getActorByUserAccount(id);
+	public Chapter findChapterByUserAccount(final int id) {
+		return this.brotherhoodRepository.getChapterByUserAccount(id);
+	}
+	public Brotherhood findByUserAccount(final int id) {
+		return this.brotherhoodRepository.getByUserAccount(id);
 	}
 
 	public Member findMemberByUser(final int id) {
 		return this.brotherhoodRepository.getMemberByUserAccount(id);
 	}
 
-	public Collection<Chapter> findAllChapters() {
-		return this.chapterRepository.findAll();
+	public Actor findActorByUserAccount(final int id) {
+		return this.brotherhoodRepository.getActorByUserAccount(id);
 	}
 
-	public Chapter findChapterByUserAccount(final int id) {
-		return this.brotherhoodRepository.getChapterByUserAccount(id);
+	public Collection<Chapter> findAllChapters() {
+		return this.chapterRepository.findAll();
 	}
 
 	public Collection<Member> getAllMemberByBrotherhood(final int idBrotherhood) {
@@ -125,6 +129,10 @@ public class ActorService {
 		return this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId());
 	}
 
+	public Brotherhood findOneBrotherhood(final int id) {
+		return this.brotherhoodRepository.findOne(id);
+	}
+
 	public <T extends Actor> void setBasicProperties(final T actor, final String auth) {
 		actor.setProfiles(new ArrayList<Profile>());
 		actor.setAdress("");
@@ -135,7 +143,7 @@ public class ActorService {
 		actor.setPhone("");
 		actor.setPhoto("");
 		actor.setSurname("");
-
+		actor.setSpammer(false);
 		actor.setAccount(this.userAccountAdapted("", "", auth));
 	}
 
@@ -176,15 +184,17 @@ public class ActorService {
 			this.setBasicProperties(chapter, auth);
 			chapter.setTitle("");
 			return chapter;
-		} else {
+		} else if (auth.equals(Authority.SPONSOR)) {
 			Sponsor sponsor;
 			sponsor = new Sponsor();
 			this.setBasicProperties(sponsor, auth);
 			sponsor.setSponsorship(new ArrayList<Sponsorship>());
 			return sponsor;
-		}
+		} else
+			return null;
 
 	}
+
 	public UserAccount userAccountAdapted(final String username, final String password, final String auth) {
 
 		UserAccount user;
@@ -228,10 +238,11 @@ public class ActorService {
 			if (chapter.getId() != 0)
 				Assert.isTrue(LoginService.getPrincipal().getId() == chapter.getAccount().getId());
 			saved = this.chapterRepository.save(chapter);
-		} else if (sponsor != null)
+		} else if (sponsor != null) {
 			if (sponsor.getId() != 0)
 				Assert.isTrue(LoginService.getPrincipal().getId() == sponsor.getAccount().getId());
-		this.sponsorRepository.save(sponsor);
+			this.sponsorRepository.save(sponsor);
+		}
 		return saved;
 	}
 
@@ -348,17 +359,18 @@ public class ActorService {
 		result.setMiddleName(actor.getMiddleName());
 
 		if (result.getAccount().getId() == 0)
-			result.setAccount(this.userAccountAdapted(actor.getAccount().getUsername(), Utiles.hashPassword(actor.getAccount().getPassword()), actor.getAuthority()));
-		else {
-			UserAccount ua;
-			ua = this.repositoryUser.findOne(result.getAccount().getId());
-			if (actor.getAccount().getPassword().equals(actor.getPassword2())) {
-				if (!ua.getUsername().equals(actor.getAccount().getUsername()))
-					ua.setUsername(actor.getAccount().getUsername());
+			if (actor.getAccount().getPassword().equals(actor.getPassword2()))
+				result.setAccount(this.userAccountAdapted(actor.getAccount().getUsername(), Utiles.hashPassword(actor.getAccount().getPassword()), actor.getAuthority()));
+			else {
+				UserAccount ua;
+				ua = this.repositoryUser.findOne(result.getAccount().getId());
+				if (actor.getAccount().getPassword().equals(actor.getPassword2())) {
+					if (!ua.getUsername().equals(actor.getAccount().getUsername()))
+						ua.setUsername(actor.getAccount().getUsername());
 
-				ua.setPassword(Utiles.hashPassword(actor.getAccount().getPassword()));
+					ua.setPassword(Utiles.hashPassword(actor.getAccount().getPassword()));
+				}
 			}
-		}
 
 	}
 	public ActorForm map(final Actor a, String auth) {
@@ -417,7 +429,6 @@ public class ActorService {
 
 		return form;
 	}
-
 	//sponsor
 	public Collection<Sponsorship> getSponsorshipsBySponsor(final Sponsor s) {
 
@@ -436,12 +447,15 @@ public class ActorService {
 			result = (Sponsor) this.createActor(Authority.SPONSOR);
 			this.setToActor(result, actor);
 			this.validator.validate(result, binding);
-			if (!binding.hasErrors())
+			if (!binding.hasErrors()) {
 				this.setBoxes(result);
+				UserAccount user;
+				user = this.repositoryUser.save(result.getAccount());
+				result.setAccount(user);
+			}
 		} else {
 			result = this.sponsorRepository.findOne(actor.getId());
 			this.setToActor(result, actor);
-
 			this.validator.validate(result, binding);
 		}
 
@@ -463,5 +477,4 @@ public class ActorService {
 	public Collection<Sponsor> findAll() {
 		return this.sponsorRepository.findAll();
 	}
-
 }

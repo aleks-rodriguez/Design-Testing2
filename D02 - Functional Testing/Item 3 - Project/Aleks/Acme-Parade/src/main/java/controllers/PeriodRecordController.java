@@ -67,6 +67,7 @@ public class PeriodRecordController extends AbstractController {
 					result = this.createEditModelAndView(p, "periodRecord.urls");
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(p, "periodRecord.commit.error");
+				System.out.println(oops.getStackTrace());
 			}
 		return result;
 	}

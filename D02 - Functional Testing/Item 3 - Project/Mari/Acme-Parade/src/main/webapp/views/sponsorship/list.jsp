@@ -30,7 +30,7 @@
 		<img src="${row.urlBanner}" height="50" width="75" />
 	</display:column>
 	
-	<display:column property="linkTPage" titleKey="sponsorship.linkTPage">
+	<display:column titleKey="sponsorship.linkTPage">
 		<a href="${row.linkTPage}">${row.linkTPage}</a>
 	</display:column>
 	

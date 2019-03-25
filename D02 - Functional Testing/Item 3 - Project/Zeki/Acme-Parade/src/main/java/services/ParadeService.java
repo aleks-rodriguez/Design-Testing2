@@ -62,7 +62,9 @@ public class ParadeService {
 	public Parade findOne(final int idParade) {
 		return this.processionRepository.findOne(idParade);
 	}
-
+	public Collection<Parade> findParadesAFM() {
+		return this.processionRepository.findParadesAFM();
+	}
 	public Brotherhood findBrotherhoodByUser(final int userId) {
 		return this.processionRepository.findBrotherhoodByUserAccountId(userId);
 	}

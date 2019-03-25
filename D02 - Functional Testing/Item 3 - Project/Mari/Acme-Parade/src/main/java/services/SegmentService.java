@@ -61,6 +61,7 @@ public class SegmentService {
 		segment.setSegment(this.createCoordinate());
 		segment.setArriveTime(new Date());
 		segment.setParade(parade);
+		segment.setNumber(0);
 		return segment;
 	}
 
@@ -97,6 +98,7 @@ public class SegmentService {
 
 		return result;
 	}
+
 	public void delete(final int id) {
 
 		Segment segment;

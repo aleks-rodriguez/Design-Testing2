@@ -30,7 +30,7 @@ public class ProclaimServiceTest extends AbstractTest {
 		// Pos 0 --> User Logged
 		// Pos 1 --> Object 
 		// Pos 2 --> Exception
-		// Pos 3 --> Hacked
+
 		final Object[][] objects = {
 			{
 				"chapter1", 0, null
@@ -42,10 +42,7 @@ public class ProclaimServiceTest extends AbstractTest {
 				"chapter2", super.getEntityId("proclaim1"), IllegalArgumentException.class
 			}
 		};
-		final Proclaim p = this.serviceProclaim.findOne(super.getEntityId("proclaim1"));
-		System.out.println(p.getText());
-		System.out.println(p.isFinalMode());
-		System.out.println(p.getMoment());
+
 		final Object[][] objectsForDelete = {
 			{
 				"chapter1", super.getEntityId("proclaim1"), IllegalArgumentException.class
@@ -74,10 +71,10 @@ public class ProclaimServiceTest extends AbstractTest {
 		caught = null;
 		try {
 			super.authenticate(auth);
+			Proclaim proclaim;
+			proclaim = id == 0 ? this.serviceProclaim.createProclaim() : this.serviceProclaim.findOne(id);
+
 			if (!savedOrDelete) {
-				Proclaim proclaim;
-				proclaim = id == 0 ? this.serviceProclaim.createProclaim() : this.serviceProclaim.findOne(id);
-				proclaim.setFinalMode(false);
 				proclaim.setMoment(new Date());
 				proclaim.setText("Pruebas de Test Unitario");
 				this.serviceProclaim.save(proclaim);

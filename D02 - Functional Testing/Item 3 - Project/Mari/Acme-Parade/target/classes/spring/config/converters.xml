@@ -93,16 +93,9 @@
 		<!-- Sponsor -->
 		<bean class="converters.SponsorToStringConverter" />
 		<bean class="converters.StringToSponsorConverter" />
-		
-		<!-- Sponsorship -->
-		<bean class="converters.SponsorshipToStringConverter" />
-		<bean class="converters.StringToSponsorshipConverter" />
-		
-		<!-- Credit Card -->
+		<!-- CreditCard -->
 		<bean class="converters.CreditCardToStringConverter" />
 		<bean class="converters.StringToCreditCardConverter" />
-		
-		
 	</util:list>
 
 </beans>

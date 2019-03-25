@@ -71,7 +71,7 @@ public class PeriodRecordService {
 		Collection<PeriodRecord> periodRecordPerBrotherhood;
 		periodRecordPerBrotherhood = h.getPeriodRecord();
 		if (period.getId() == 0) {
-			periodRecordPerBrotherhood.add(period);
+			periodRecordPerBrotherhood.add(saved);
 			h.setPeriodRecord(periodRecordPerBrotherhood);
 		}
 		return saved;

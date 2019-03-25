@@ -4,6 +4,7 @@ package services;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class LinkRecordService {
 		Collection<LinkRecord> linkRecordPerBrotherhood;
 		linkRecordPerBrotherhood = h.getLinkRecord();
 		if (link.getId() == 0) {
-			linkRecordPerBrotherhood.add(link);
+			linkRecordPerBrotherhood.add(saved);
 			h.setLinkRecord(linkRecordPerBrotherhood);
 		}
 		return saved;
@@ -100,6 +101,8 @@ public class LinkRecordService {
 			result.setBrotherhood(l.getBrotherhood());
 		}
 		this.validator.validate(result, binding);
+		if (binding.hasErrors())
+			throw new ValidationException();
 		return result;
 	}
 }

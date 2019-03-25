@@ -55,7 +55,8 @@ public class AreaController extends AbstractController {
 	public ModelAndView list() {
 		ModelAndView result;
 		result = this.custom(new ModelAndView("area/list"));
-		Collection<Area> areas = null;
+		Collection<Area> areas;
+		areas = new ArrayList<Area>();
 		Actor a;
 		a = this.areaService.findActorByUserAccount(LoginService.getPrincipal().getId());
 		if (Utiles.findAuthority(a.getAccount().getAuthorities(), Authority.ADMIN)) {

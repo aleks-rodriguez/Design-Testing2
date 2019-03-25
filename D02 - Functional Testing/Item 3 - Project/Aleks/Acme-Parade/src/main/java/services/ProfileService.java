@@ -22,7 +22,6 @@ public class ProfileService {
 
 	@Autowired
 	private ProfileRepository	profileRepository;
-
 	@Autowired
 	private Validator			validator;
 

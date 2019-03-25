@@ -26,6 +26,7 @@ public class CustomisationSystemController extends AbstractController {
 
 	@Autowired
 	private CustomisationSystemService	serviceCustom;
+
 	@Autowired
 	private SponsorshipService			sponsorshipService;
 
@@ -85,15 +86,6 @@ public class CustomisationSystemController extends AbstractController {
 		return result;
 	}
 
-	@RequestMapping(value = "/spam", method = RequestMethod.GET)
-	public ModelAndView spamActor(@RequestParam final int id) {
-		ModelAndView result = null;
-		this.serviceCustom.flagSpam(id);
-		result = this.custom(new ModelAndView("redirect:../../"));
-		return result;
-
-	}
-
 	@RequestMapping(value = "/deactivateSponsorships", method = RequestMethod.GET)
 	public ModelAndView deactivate() {
 		ModelAndView result;
@@ -102,6 +94,14 @@ public class CustomisationSystemController extends AbstractController {
 		this.sponsorshipService.save(col);
 		result = this.custom(new ModelAndView("redirect:../../"));
 
+		return result;
+
+	}
+	@RequestMapping(value = "/spam", method = RequestMethod.GET)
+	public ModelAndView spamActor(@RequestParam final int id) {
+		ModelAndView result = null;
+		this.serviceCustom.flagSpam(id);
+		result = this.custom(new ModelAndView("redirect:../../"));
 		return result;
 
 	}

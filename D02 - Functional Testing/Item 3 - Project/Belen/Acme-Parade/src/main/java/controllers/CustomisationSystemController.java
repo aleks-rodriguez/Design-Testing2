@@ -1,6 +1,8 @@
 
 package controllers;
 
+import java.util.Collection;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.CustomisationSystemService;
+import services.SponsorshipService;
+import utilities.Utiles;
 import domain.CustomisationSystem;
+import domain.Sponsorship;
 
 @Controller
 @RequestMapping("/customisation/administrator")
@@ -21,6 +26,9 @@ public class CustomisationSystemController extends AbstractController {
 
 	@Autowired
 	private CustomisationSystemService	serviceCustom;
+
+	@Autowired
+	private SponsorshipService			sponsorshipService;
 
 
 	@RequestMapping(value = "/custom", method = RequestMethod.GET)
@@ -76,6 +84,26 @@ public class CustomisationSystemController extends AbstractController {
 		this.serviceCustom.unBanActor(id);
 		result = this.custom(new ModelAndView("redirect:noenabled.do"));
 		return result;
+	}
+
+	@RequestMapping(value = "/deactivateSponsorships", method = RequestMethod.GET)
+	public ModelAndView deactivate() {
+		ModelAndView result;
+		Collection<Sponsorship> col;
+		col = Utiles.desactiveSponsorships(this.sponsorshipService.findAll());
+		this.sponsorshipService.save(col);
+		result = this.custom(new ModelAndView("redirect:../../"));
+
+		return result;
+
+	}
+	@RequestMapping(value = "/spam", method = RequestMethod.GET)
+	public ModelAndView spamActor(@RequestParam final int id) {
+		ModelAndView result = null;
+		this.serviceCustom.flagSpam(id);
+		result = this.custom(new ModelAndView("redirect:../../"));
+		return result;
+
 	}
 	protected ModelAndView createEditModelAndView(final CustomisationSystem customisationSystem) {
 

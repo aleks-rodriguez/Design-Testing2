@@ -29,4 +29,4 @@
 	<acme:submit name="save" code="enrolment.save"/>
 	</security:authorize>
 </form:form>
-<acme:cancel url="/enrolment/list.do" code="enrolment.cancel"/>
+<acme:cancel code="enrolment.cancel" />>

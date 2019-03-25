@@ -30,4 +30,4 @@
 	<acme:submit name="save" code="inceptionRecord.save"/>
 	</jstl:if>
 </form:form>
-<input type="submit" onclick="window.history.back()" value="<spring:message code="inceptionRecord.cancel"/>"/>
+<acme:cancel code="inceptionRecord.cancel" />

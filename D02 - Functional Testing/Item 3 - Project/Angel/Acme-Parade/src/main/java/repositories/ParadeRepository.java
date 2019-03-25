@@ -30,4 +30,7 @@ public interface ParadeRepository extends JpaRepository<Parade, Integer> {
 
 	@Query("select p.ticker from Parade p")
 	Collection<String> findAllTickersSystem();
+
+	@Query("select p from Parade p where p.status = 'ACCEPTED' and p.finalMode = true")
+	Collection<Parade> findParadesAFM();
 }

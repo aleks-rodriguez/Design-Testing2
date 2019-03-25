@@ -33,7 +33,7 @@
 		<jstl:if test="${view eq 'false' and segment.id != 0}">
 			<acme:submit name="delete" code="segment.delete" />
 		</jstl:if>
-		<jstl:if test="${view eq 'false'}">
+		<jstl:if test="${!view}">
 			<acme:submit name="save" code="segment.save" />
 		</jstl:if>
 	</security:authorize>

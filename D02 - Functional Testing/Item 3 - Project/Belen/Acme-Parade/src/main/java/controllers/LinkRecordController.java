@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -55,22 +57,23 @@ public class LinkRecordController extends AbstractController {
 	public ModelAndView save(@RequestParam(defaultValue = "0") final int idLink, LinkRecord l, final BindingResult binding) {
 		ModelAndView result;
 
-		if (binding.hasErrors()) {
+		try {
+			l = this.linkService.reconstruct(l, binding);
+			this.linkService.save(l);
+			result = this.custom(new ModelAndView("redirect:/history/brotherhood/list.do"));
+			result.addObject("inception", true);
+		} catch (final ValidationException e) {
 			result = this.createEditModelAndView(l);
 			result.addObject("brotherhoodList", this.brotherhoodService.findAllBrotherhood());
 			if (l.getId() != 0)
 				result.addObject("requestURI", "linkRecord/brotherhood/edit.do?idlink=" + idLink);
-			else
+			else {
 				result.addObject("requestURI", "linkRecord/brotherhood/edit.do");
-		} else
-			try {
-				l = this.linkService.reconstruct(l, binding);
-				this.linkService.save(l);
-				result = this.custom(new ModelAndView("redirect:/history/brotherhood/list.do"));
-				result.addObject("inception", true);
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(l, "linkRecord.commit.error");
+				result.addObject("brotherhoodList", this.brotherhoodService.findAllBrotherhood());
 			}
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(l, "linkRecord.commit.error");
+		}
 		return result;
 	}
 	//Update

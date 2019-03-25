@@ -66,7 +66,7 @@ public class MiscellaneousRecordService {
 		Collection<MiscellaneousRecord> miscellaneousRecordPerBrotherhood;
 		miscellaneousRecordPerBrotherhood = h.getMiscellaneousRecord();
 		if (miscellaneous.getId() == 0) {
-			miscellaneousRecordPerBrotherhood.add(miscellaneous);
+			miscellaneousRecordPerBrotherhood.add(saved);
 			h.setMiscellaneousRecord(miscellaneousRecordPerBrotherhood);
 		}
 		return saved;

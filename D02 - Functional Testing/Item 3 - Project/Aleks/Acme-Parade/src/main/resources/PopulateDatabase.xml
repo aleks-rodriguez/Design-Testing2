@@ -907,7 +907,7 @@
 			</list>
 		</property>
 	</bean>
-		<bean id="box41" class="domain.Box">
+	<bean id="box41" class="domain.Box">
 		<property name="name" value="In Box" />
 		<property name="fromSystem" value="true" />
 		<property name="messageEntity">
@@ -919,8 +919,8 @@
 			</list>
 		</property>
 	</bean>
-	
-		<bean id="box42" class="domain.Box">
+
+	<bean id="box42" class="domain.Box">
 		<property name="name" value="Out Box" />
 		<property name="fromSystem" value="true" />
 		<property name="messageEntity">
@@ -932,7 +932,7 @@
 			</list>
 		</property>
 	</bean>
-		<bean id="box43" class="domain.Box">
+	<bean id="box43" class="domain.Box">
 		<property name="name" value="Spam Box" />
 		<property name="fromSystem" value="true" />
 		<property name="messageEntity">
@@ -944,7 +944,7 @@
 			</list>
 		</property>
 	</bean>
-		<bean id="box44" class="domain.Box">
+	<bean id="box44" class="domain.Box">
 		<property name="name" value="Trash Box" />
 		<property name="fromSystem" value="true" />
 		<property name="messageEntity">
@@ -956,7 +956,7 @@
 			</list>
 		</property>
 	</bean>
-		<bean id="box45" class="domain.Box">
+	<bean id="box45" class="domain.Box">
 		<property name="name" value="Notification Box" />
 		<property name="fromSystem" value="true" />
 		<property name="messageEntity">
@@ -968,9 +968,9 @@
 			</list>
 		</property>
 	</bean>
-	
-	
-		<bean id="box46" class="domain.Box">
+
+
+	<bean id="box46" class="domain.Box">
 		<property name="name" value="In Box" />
 		<property name="fromSystem" value="true" />
 		<property name="messageEntity">
@@ -982,8 +982,8 @@
 			</list>
 		</property>
 	</bean>
-	
-		<bean id="box47" class="domain.Box">
+
+	<bean id="box47" class="domain.Box">
 		<property name="name" value="Out Box" />
 		<property name="fromSystem" value="true" />
 		<property name="messageEntity">
@@ -995,7 +995,7 @@
 			</list>
 		</property>
 	</bean>
-		<bean id="box48" class="domain.Box">
+	<bean id="box48" class="domain.Box">
 		<property name="name" value="Spam Box" />
 		<property name="fromSystem" value="true" />
 		<property name="messageEntity">
@@ -1007,7 +1007,7 @@
 			</list>
 		</property>
 	</bean>
-		<bean id="box49" class="domain.Box">
+	<bean id="box49" class="domain.Box">
 		<property name="name" value="Trash Box" />
 		<property name="fromSystem" value="true" />
 		<property name="messageEntity">
@@ -1019,7 +1019,7 @@
 			</list>
 		</property>
 	</bean>
-		<bean id="box50" class="domain.Box">
+	<bean id="box50" class="domain.Box">
 		<property name="name" value="Notification Box" />
 		<property name="fromSystem" value="true" />
 		<property name="messageEntity">
@@ -1031,7 +1031,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- Messages -->
 
 	<!-- Floats -->
@@ -1446,7 +1446,7 @@
 			</bean>
 
 		</property>
-
+		<property name="number" value="0" />
 	</bean>
 	<bean id="segment2" class="domain.Segment">
 
@@ -1463,9 +1463,9 @@
 			</bean>
 
 		</property>
-
+		<property name="number" value="0" />
 	</bean>
-	
+
 	<!-- Coordinates -->
 
 	<bean id="coordinate1" class="domain.Coordinate">
@@ -1477,7 +1477,7 @@
 		<property name="latitude" value="65.23615" />
 		<property name="longitude" value="-58.2369458" />
 	</bean>
-	
+
 
 	<!-- Proclaim -->
 	<bean id="proclaim1" class="domain.Proclaim">
@@ -1487,8 +1487,10 @@
 			</bean>
 		</property>
 		<property name="text" value="Proclaim1" />
-		<property name="finalMode" value = "true" />
-		<property name="chapter"><ref bean = "chapter1" /></property>
+		<property name="finalMode" value="true" />
+		<property name="chapter">
+			<ref bean="chapter1" />
+		</property>
 	</bean>
 	<bean id="proclaim2" class="domain.Proclaim">
 		<property name="moment">
@@ -1497,8 +1499,10 @@
 			</bean>
 		</property>
 		<property name="text" value="Proclaim2" />
-		<property name="finalMode" value = "false" />
-		<property name="chapter"><ref bean = "chapter2" /></property>
+		<property name="finalMode" value="false" />
+		<property name="chapter">
+			<ref bean="chapter2" />
+		</property>
 	</bean>
 	<bean id="proclaim3" class="domain.Proclaim">
 		<property name="moment">
@@ -1507,8 +1511,10 @@
 			</bean>
 		</property>
 		<property name="text" value="Proclaim3" />
-		<property name="finalMode" value = "true" />
-		<property name="chapter"><ref bean = "chapter1" /></property>
+		<property name="finalMode" value="true" />
+		<property name="chapter">
+			<ref bean="chapter1" />
+		</property>
 	</bean>
 	<bean id="proclaim4" class="domain.Proclaim">
 		<property name="moment">
@@ -1517,13 +1523,15 @@
 			</bean>
 		</property>
 		<property name="text" value="Proclaim4" />
-		<property name="finalMode" value = "false" />
-		<property name="chapter"><ref bean = "chapter2" /></property>
+		<property name="finalMode" value="false" />
+		<property name="chapter">
+			<ref bean="chapter2" />
+		</property>
 	</bean>
-	
+
 	<!-- Sponsor -->
-	
-  <bean id="sponsor2" class="domain.Sponsor">
+
+	<bean id="sponsor2" class="domain.Sponsor">
 
 		<property name="name" value="sponsor2" />
 		<property name="middleName" value="sponsor2Middle" />
@@ -1558,15 +1566,15 @@
 			</list>
 		</property>
 	</bean>
-	
-		<bean id="profile22" class="domain.Profile">
+
+	<bean id="profile22" class="domain.Profile">
 		<property name="nick" value="DP1036" />
 		<property name="socialNetworkName" value="Twitter" />
 		<property name="link" value="https://www.twitter.com/DP1036" />
 	</bean>
-		
 
-	
+
+
 
 	<bean id="userAccount22" class="security.UserAccount">
 		<property name="username" value="sponsor2" />
@@ -1580,15 +1588,15 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- SponsorShip -->
 	<bean id="sponsorship1" class="domain.Sponsorship">
 		<property name="urlBanner" value="https://i.imgur.com/VrQpD0U.png" />
 		<property name="linkTPage" value="https://www.targetsponsor.com" />
-	    <property name="isActive" value="true"/>
-	    <property name="creditCard">
-	    	<ref bean="creditcard1" />
-	    </property>
+		<property name="isActive" value="true" />
+		<property name="creditCard">
+			<ref bean="creditcard1" />
+		</property>
 		<property name="sponsor">
 			<ref bean="sponsor1" />
 		</property>
@@ -1596,8 +1604,8 @@
 			<ref bean="parade1" />
 		</property>
 	</bean>
-	
-		<bean id="sponsor1" class="domain.Sponsor">
+
+	<bean id="sponsor1" class="domain.Sponsor">
 
 		<property name="name" value="sponsor1" />
 		<property name="middleName" value="sponsor1Middle" />
@@ -1630,38 +1638,38 @@
 			</list>
 		</property>
 	</bean>
-	
-	
-		<bean id="profile21" class="domain.Profile">
+
+
+	<bean id="profile21" class="domain.Profile">
 		<property name="nick" value="DP1035" />
 		<property name="socialNetworkName" value="Facebook" />
 		<property name="link" value="https://www.facebook.com/DP1035" />
 	</bean>
-	
-		<bean id="userAccount21" class="security.UserAccount">
+
+	<bean id="userAccount21" class="security.UserAccount">
 		<property name="username" value="sponsor1" />
 		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
 		<property name="enabled" value="true" />
 		<property name="authorities">
 			<list>
-		<bean class="security.Authority">
+				<bean class="security.Authority">
 					<property name="authority" value="SPONSOR" />
 				</bean>
 			</list>
 		</property>
 	</bean>
-			
-			
+
+
 
 
 	<bean id="sponsorship2" class="domain.Sponsorship">
 
 		<property name="urlBanner" value="https://i.imgur.com/BrAw5PK.png" />
 		<property name="linkTPage" value="https://www.targetsponsor.com" />
-		<property name="isActive" value="true"/>
-			    <property name="creditCard">
-	    	<ref bean="creditcard2" />
-	    </property>
+		<property name="isActive" value="true" />
+		<property name="creditCard">
+			<ref bean="creditcard2" />
+		</property>
 		<property name="sponsor">
 			<ref bean="sponsor2" />
 		</property>
@@ -1669,19 +1677,19 @@
 			<ref bean="parade2" />
 		</property>
 	</bean>
-	
+
 	<bean id="sponsorship3" class="domain.Sponsorship">
 
 		<property name="urlBanner" value="https://i.imgur.com/awzpjVR.png" />
 		<property name="linkTPage" value="https://www.targetsponsor.com" />
-        <property name="isActive" value="true"/>
+		<property name="isActive" value="true" />
 		<property name="creditCard">
-	    	<ref bean="creditcard3" />
-	    </property>
+			<ref bean="creditcard3" />
+		</property>
 		<property name="sponsor">
 			<ref bean="sponsor2" />
 		</property>
-		
+
 		<property name="parade">
 			<ref bean="parade1" />
 		</property>
@@ -1750,19 +1758,19 @@
 		<property name="hoursFinder" value="2" />
 		<property name="resultFinder" value="10" />
 		<property name="creditCardMakes">
-		<list>
-		<value>VISA</value>
-		<value>MASTERCARD</value>
-		<value>AMEX</value>
-		<value>DINERS</value>
-		<value>FLY</value>
-		</list>
+			<list>
+				<value>VISA</value>
+				<value>MASTERCARD</value>
+				<value>AMEX</value>
+				<value>DINERS</value>
+				<value>FLY</value>
+			</list>
 		</property>
 		<property name="vat" value="0.21"></property>
 		<property name="flatFare" value="0.50"></property>
 	</bean>
 
-<bean id="creditcard1" class="domain.CreditCard">
+	<bean id="creditcard1" class="domain.CreditCard">
 		<property name="holder" value="John Doe" />
 		<property name="make" value="VISA" />
 		<property name="number" value="1345154863154894" />
@@ -1773,9 +1781,9 @@
 		</property>
 		<property name="cvv" value="134" />
 	</bean>
-	
-	
-<bean id="creditcard2" class="domain.CreditCard">
+
+
+	<bean id="creditcard2" class="domain.CreditCard">
 		<property name="holder" value="John Doe" />
 		<property name="make" value="MASTERCARD" />
 		<property name="number" value="1345174861154894" />
@@ -1786,9 +1794,9 @@
 		</property>
 		<property name="cvv" value="138" />
 	</bean>
-	
-	
-<bean id="creditcard3" class="domain.CreditCard">
+
+
+	<bean id="creditcard3" class="domain.CreditCard">
 		<property name="holder" value="John Doe" />
 		<property name="make" value="FLY" />
 		<property name="number" value="1945154853154891" />

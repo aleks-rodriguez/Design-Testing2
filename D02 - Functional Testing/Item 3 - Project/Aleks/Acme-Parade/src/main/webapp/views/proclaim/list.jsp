@@ -34,10 +34,10 @@
 
 	<security:authorize access="hasRole('CHAPTER')">
 		<display:column titleKey="proclaim.edit">
-
-			<a href="proclaim/chapter/edit.do?id=${row.id}"><spring:message
-					code="position.edit" /></a>
-
+			<jstl:if test="${!row.finalMode}">
+				<a href="proclaim/chapter/edit.do?id=${row.id}"><spring:message
+						code="position.edit" /></a>
+			</jstl:if>
 		</display:column>
 	</security:authorize>
 

@@ -64,9 +64,10 @@ public class ProclaimService {
 			result = proclaim;
 		else {
 			result = this.repositoryProclaim.findOne(proclaim.getId());
-			result.setFinalMode(proclaim.isFinalMode());
 			result.setMoment(new Date());
 			result.setText(proclaim.getText());
+			if (!result.isFinalMode())
+				result.setFinalMode(proclaim.isFinalMode());
 		}
 
 		this.validator.validate(result, binding);

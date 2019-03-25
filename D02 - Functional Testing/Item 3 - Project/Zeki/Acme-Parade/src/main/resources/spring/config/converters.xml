@@ -90,6 +90,12 @@
 		<bean class="converters.InceptionRecordToStringConverter" />
 		<bean class="converters.StringToInceptionRecordConverter" />
 		
+		<!-- Sponsor -->
+		<bean class="converters.SponsorToStringConverter" />
+		<bean class="converters.StringToSponsorConverter" />
+		<!-- CreditCard -->
+		<bean class="converters.CreditCardToStringConverter" />
+		<bean class="converters.StringToCreditCardConverter" />
 	</util:list>
 
 </beans>

@@ -23,6 +23,7 @@ import domain.Actor;
 import domain.Box;
 import domain.CreditCard;
 import domain.MessageEntity;
+import domain.Sponsorship;
 
 public class Utiles {
 
@@ -40,16 +41,9 @@ public class Utiles {
 	public static String				mess;
 
 
-	public static void main(final String[] args) {
-		final String aux1 = "aa.com";
-		final String aux2 = "aaaaa.com";
-
-		System.out.println(Utiles.checkURL(Arrays.asList(aux1, aux2)));
-	}
-
-	public boolean date2IsAfterDate1(final Date date1, final Date date2) {
-		return date2.after(date1);
-	}
+	//	public boolean date2IsAfterDate1(final Date date1, final Date date2) {
+	//		return date2.after(date1);
+	//	}
 
 	public static Collection<Box> initBoxes() {
 
@@ -200,13 +194,17 @@ public class Utiles {
 		return res;
 	}
 	private static boolean isSpammer(final Collection<MessageEntity> cm) {
-		int i = 0;
-		for (final MessageEntity message : cm) {
-			final boolean spam = Utiles.spamWord(Utiles.limpiaString(message.getSubject())) && Utiles.spamWord(Utiles.limpiaString(message.getBody()));
-			if (spam)
-				i++;
+		boolean res = false;
+		if (cm.size() != 0) {
+			int i = 0;
+			for (final MessageEntity message : cm) {
+				final boolean spam = Utiles.spamWord(Utiles.limpiaString(message.getSubject())) && Utiles.spamWord(Utiles.limpiaString(message.getBody()));
+				if (spam)
+					i++;
+			}
+			res = (i / cm.size()) >= 0.1;
 		}
-		return (i / cm.size()) >= 0.1;
+		return res;
 	}
 	public static List<String> optimPosition(final List<String> queryResult) {
 		List<String> res;
@@ -232,40 +230,46 @@ public class Utiles {
 	}
 
 	public static double homotheticalTransformation(final Collection<MessageEntity> sentMessage) {
-
 		Double res = 0.0;
-		final Collection<String> cleanedString = new ArrayList<>();
+		Collection<String> cleanedString;
+		cleanedString = new ArrayList<>();
 
 		List<Double> good;
 		good = new ArrayList<Double>();
 		List<Double> bad;
 		bad = new ArrayList<Double>();
 
-		for (final MessageEntity m : sentMessage) {
-			double p = 0.;
-			double n = 0.;
-			final Collection<String> cleanedSubject = Utiles.limpiaString(m.getSubject().toString());
-			final Collection<String> cleanedBody = Utiles.limpiaString(m.getBody().toString());
-			final Collection<String> cleanedPriority = Utiles.limpiaString(m.getPriority().toString());
-			cleanedString.addAll(cleanedSubject);
-			cleanedSubject.addAll(cleanedPriority);
-			cleanedSubject.addAll(cleanedBody);
-
-			for (final String s : cleanedString) {
-				if (Utiles.goodWords.contains(s))
-					p++;
-				if (Utiles.badWords.contains(s))
-					n++;
-			}
-			good.add(p / cleanedString.size());
-			bad.add(n / cleanedString.size());
-		}
-
-		if (Double.isNaN(Utiles.compute(good)) || Double.isNaN(Utiles.compute(bad)))
+		if (sentMessage.isEmpty())
 			res = 0.0;
-		else
-			res = Utiles.compute(good) - Utiles.compute(bad);
+		else {
+			for (final MessageEntity m : sentMessage) {
+				double p = 0.;
+				double n = 0.;
+				Collection<String> cleanedSubject;
+				cleanedSubject = Utiles.limpiaString(m.getSubject().toString());
+				Collection<String> cleanedBody;
+				cleanedBody = Utiles.limpiaString(m.getBody().toString());
+				Collection<String> cleanedPriority;
+				cleanedPriority = Utiles.limpiaString(m.getPriority().toString());
+				cleanedString.addAll(cleanedSubject);
+				cleanedString.addAll(cleanedPriority);
+				cleanedString.addAll(cleanedBody);
 
+				for (final String s : cleanedString) {
+					if (Utiles.goodWords.contains(s))
+						p++;
+					if (Utiles.badWords.contains(s))
+						n++;
+				}
+				good.add(p / cleanedString.size());
+				bad.add(n / cleanedString.size());
+			}
+
+			if (Double.isNaN(Utiles.compute(good)) || Double.isNaN(Utiles.compute(bad)))
+				res = 0.0;
+			else
+				res = Utiles.compute(good) - Utiles.compute(bad);
+		}
 		return res;
 	}
 
@@ -369,5 +373,25 @@ public class Utiles {
 		List<String> makes;
 		makes = Arrays.asList("VISA", "MASTERCARD", "AMEX", "DINERS", "FLY");
 		return makes;
+	}
+
+	public static Sponsorship randomizeSponsorships(final Collection<Sponsorship> sponsorships) {
+		final Random rnd = new Random();
+		final int i = rnd.nextInt(sponsorships.size());
+		return (Sponsorship) sponsorships.toArray()[i];
+	}
+
+	public static Collection<Sponsorship> desactiveSponsorships(final Collection<Sponsorship> sponsorships) {
+		Collection<Sponsorship> result;
+		result = new ArrayList<>();
+		final Date now = new Date();
+		for (final Sponsorship s : sponsorships) {
+			final int diff = s.getCreditCard().getExpiration().compareTo(now);
+			if (diff < 0) {
+				s.setIsActive(false);
+				result.add(s);
+			}
+		}
+		return result;
 	}
 }

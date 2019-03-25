@@ -26,12 +26,13 @@ import forms.ActorForm;
 
 @Controller
 @RequestMapping(value = {
-	"/actor", "/brotherhood", "/member", "/administrator", "/chapter", "/sponsor"
+	"/actor", "/brotherhood", "/member", "/administrator", "/chapter"
 })
 public class ActorController extends AbstractController {
 
 	@Autowired
 	private ActorService	serviceActor;
+
 	@Autowired
 	private MessageService	messageService;
 
@@ -80,15 +81,6 @@ public class ActorController extends AbstractController {
 		model.addObject("authority", Authority.CHAPTER);
 		return model;
 	}
-
-	@RequestMapping(value = "/createSponsor", method = RequestMethod.GET)
-	public ModelAndView createSponsor() {
-		ModelAndView model;
-		model = this.createEditModelAndView(this.serviceActor.map(this.serviceActor.createActor(Authority.SPONSOR), Authority.SPONSOR));
-		model.addObject("authority", Authority.SPONSOR);
-		return model;
-	}
-
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView submit(@ModelAttribute("actor") final ActorForm actor, final BindingResult binding) {
 		ModelAndView result = null;
@@ -138,7 +130,6 @@ public class ActorController extends AbstractController {
 					this.serviceActor.save(null, null, null, chapter, null);
 				else if (actor.getAuthority().equals(Authority.SPONSOR))
 					this.serviceActor.save(null, null, null, null, sponsor);
-
 				result = new ModelAndView("redirect:../security/login.do");
 			} else {
 
@@ -161,6 +152,7 @@ public class ActorController extends AbstractController {
 		}
 		return result;
 	}
+
 	@RequestMapping(value = "/personal", method = RequestMethod.GET)
 	public ModelAndView editPersonalData() {
 		ModelAndView result;
@@ -181,7 +173,6 @@ public class ActorController extends AbstractController {
 		result.addObject("check", false);
 		return result;
 	}
-
 	@RequestMapping(value = "/view", method = RequestMethod.GET)
 	public ModelAndView view(@RequestParam final int id) {
 		ModelAndView result;

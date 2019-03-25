@@ -57,14 +57,18 @@ public class SponsorshipService {
 		result = new Sponsorship();
 
 		result.setUrlBanner("");
-		//		result.setCreditCard(Utiles.createCreditCard()); Asi salen todos los campos vacios
-		result.setCreditCard(null);
+		result.setCreditCard(Utiles.createCreditCard());
 		result.setLinkTPage("");
 		result.setSponsor(sponsor);
 		result.setParade(parade);
 		result.setIsActive(true);
 
 		return result;
+	}
+
+	public void save(final Collection<Sponsorship> col) {
+		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
+		this.sponsorshipRepository.save(col);
 	}
 
 	public Sponsorship save(final Sponsorship sponsorship) {

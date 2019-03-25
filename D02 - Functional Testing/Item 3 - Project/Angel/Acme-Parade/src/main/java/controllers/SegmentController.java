@@ -54,7 +54,7 @@ public class SegmentController extends AbstractController {
 	public ModelAndView create(@RequestParam final int parade) {
 		ModelAndView result;
 		result = this.createEditModelAndView(this.serviceSegment.create(this.serviceParade.findOne(parade)));
-		result.addObject("view", true);
+		result.addObject("view", false);
 		return result;
 	}
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
@@ -88,16 +88,19 @@ public class SegmentController extends AbstractController {
 			result = this.custom(new ModelAndView("redirect:list.do?parade=" + segment.getParade().getId()));
 		} catch (final ValidationException e) {
 			result = this.createEditModelAndView(segment);
+			result.addObject("view", true);
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(segment, "segment.commit.error");
+			result.addObject("view", true);
 		}
 
 		return result;
 	}
-	@RequestMapping(value = "/edit", method = RequestMethod.GET, params = "delete")
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(final Segment segment) {
 		ModelAndView result;
 		try {
+			this.serviceSegment.delete(segment.getId());
 			result = this.custom(new ModelAndView("redirect:list.do?parade=" + segment.getParade().getId()));
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(segment, "segment.commit.error");

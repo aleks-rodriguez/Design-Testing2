@@ -20,6 +20,7 @@
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 <script>
 	$(document).ready(function() {
+
 		if ($("#id").val() != "0") {
 			var v = "${view}";
 			var col = $("#floats2").val();
@@ -48,6 +49,20 @@
 					alert("<spring:message code='parade.chapter.action'/>");
 					return false;
 				}
+			}
+		});
+		$("#statusParade").ready(function() {
+			if (this.value == 'REJECTED') {
+				$("#rejectedTextDiv").show();
+			} else {
+				$("#rejectedTextDiv").hide();
+			}
+		});
+		$("#statusParade").on('change', function() {
+			if (this.value == 'REJECTED') {
+				$("#rejectedTextDiv").show();
+			} else {
+				$("#rejectedTextDiv").hide();
 			}
 		});
 	});
@@ -112,8 +127,10 @@
 			<form:hidden path="status" />
 			<jstl:out value="${parade.status}" />
 		</jstl:if>
-		<acme:textarea code="parade.description.rejected" path="whyRejected"
-			readonly="${parade.status == 'ACCEPTED'}" id="rejectedText" />
+		<div id="rejectedTextDiv">
+			<acme:textarea code="parade.description.rejected" path="whyRejected"
+				readonly="${parade.status == 'ACCEPTED'}" id="rejectedText" />
+		</div>
 		<jstl:if test="${parade.status != 'ACCEPTED'}">
 			<acme:submit name="save" code="parade.save" />
 		</jstl:if>

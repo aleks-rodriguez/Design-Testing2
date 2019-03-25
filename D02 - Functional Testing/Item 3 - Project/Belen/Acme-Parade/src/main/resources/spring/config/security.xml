@@ -136,7 +136,19 @@
 			access="hasRole('CHAPTER')" />
 		<security:intercept-url pattern="/parade/chapter/**"
 			access="hasRole('CHAPTER')" />
+		<!-- Sponsor -->
+		<security:intercept-url pattern="/sponsor/personal.do"
+			access="hasRole('SPONSOR')" />
+		<security:intercept-url pattern="/sponsorship/sponsor/**"
+			access="hasRole('SPONSOR')" />
+
 		<!-- Authenticated -->
+
+		<security:intercept-url pattern="/brotherhood/view.do/**"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/member/view.do/**"
+			access="isAuthenticated()" />
+
 		<security:intercept-url pattern="/profile/**"
 			access="isAuthenticated()" />
 

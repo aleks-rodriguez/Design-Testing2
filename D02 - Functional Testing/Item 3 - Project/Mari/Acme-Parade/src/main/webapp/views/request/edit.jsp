@@ -129,4 +129,4 @@ function mode() {
 	</jstl:if>
 </form:form>
 
-<acme:cancel url="${requestCancel}" code="request.cancel" />
+<acme:cancel code="request.cancel" />

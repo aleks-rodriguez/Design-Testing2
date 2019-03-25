@@ -122,8 +122,6 @@
 								code="master.page.proclaim.create" /></a></li>
 				</ul></li>
 		</security:authorize>
-		
-		<!-- Sponsor -->
 		<security:authorize access="hasRole('SPONSOR')">
 			<li><a class="fNiv"><spring:message
 						code="master.page.sponsorship" /></a>
@@ -133,10 +131,11 @@
 								code="master.page.parade.list" /></a></li>
 					<li><a href="sponsorship/sponsor/listSponsorship.do"><spring:message
 								code="master.page.sponsorship.list" /></a></li>
+					<li><a href="sponsorship/sponsor/listSponsorshipD.do"><spring:message
+								code="master.page.sponsorship.listD" /></a></li>
 				</ul></li>
-		
-		</security:authorize>
 
+		</security:authorize>
 
 		<!-- Anonymous -->
 		<security:authorize access="isAnonymous()">
@@ -177,6 +176,8 @@
 								code="master.page.actor.brotherhood" /></a></li>
 					<li><a href="actor/createChapter.do"><spring:message
 								code="master.page.actor.chapter" /></a></li>
+					<li><a href="actor/createSponsor.do"><spring:message
+								code="master.page.actor.sponsor" /></a></li>
 				</ul></li>
 			<li><a class="fNiv" href="brotherhood/listBrotherhood.do"><spring:message
 						code="master.page.brotherhood.list" /></a></li>
@@ -202,7 +203,7 @@
 						<li><a href="chapter/personal.do"><spring:message
 									code="master.page.actor.personal" /></a></li>
 					</security:authorize>
-						<security:authorize access="hasRole('SPONSOR')">
+					<security:authorize access="hasRole('SPONSOR')">
 						<li><a href="sponsor/personal.do"><spring:message
 									code="master.page.actor.personal" /></a></li>
 					</security:authorize>

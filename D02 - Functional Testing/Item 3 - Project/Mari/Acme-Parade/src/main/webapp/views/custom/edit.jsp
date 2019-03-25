@@ -22,7 +22,7 @@
 <form:form action="customisation/administrator/edit.do"
 	modelAttribute="customisationSystem">
 	<form:hidden path="id" />
-	<form:hidden path="version"/>
+	<form:hidden path="version" />
 	<acme:textbox code="custom.system" path="systemName" />
 	<acme:textbox code="custom.banner" path="banner" />
 	<acme:textarea code="custom.message" path="message" />
@@ -36,10 +36,17 @@
 	<acme:textarea code="custom.badWords" path="badWords" />
 	<acme:textarea code="custom.spamWords" path="spamWords" />
 	<acme:textarea code="custom.priorities" path="priorities" />
+	<acme:textarea code="custom.creditCardMakes" path="creditCardMakes" />
+	<acme:textarea code="custom.vat" path="vat" />
+	<acme:textarea code="custom.flatFare" path="flatFare" />
 
+	<h3>
+		<spring:message code="custom.deactivate.sponsorships"></spring:message>
+	</h3>
+	<a href="customisation/administrator/deactivateSponsorships.do"> <spring:message
+			code="custom.deactivate"></spring:message></a>
+	<br>
 	<acme:submit name="save" code="custom.save" />
 </form:form>
 
-<input type="button" name="cancel"
-	value="<spring:message code="custom.cancel"/>"
-	onclick="javascript:relativeRedir('/welcome/index.do');" />
+<acme:cancel code="custom.cancel" />

@@ -50,4 +50,4 @@
 	</jstl:if>
 </form:form>
 
-<acme:cancel url="${requestCancel}" code="proclaim.cancel" />
+<acme:cancel code="proclaim.cancel" />

@@ -16,7 +16,7 @@
 
 <display:column titleKey="${titleKey}">
 	<jstl:forEach items="${items}" var="p">
-		<img src="${p}" height="80" width="100" />
+		<img src="${p}" alt="${p}" height="80" width="100" />
 	</jstl:forEach>
 </display:column>
 

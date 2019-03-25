@@ -12,6 +12,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,6 +24,7 @@ public class Segment extends DomainEntity {
 	private Coordinate	segment;
 	private Date		arriveTime;
 	private Parade		parade;
+	private int			number;
 
 
 	@Embedded
@@ -51,6 +53,15 @@ public class Segment extends DomainEntity {
 
 	public void setParade(final Parade parade) {
 		this.parade = parade;
+	}
+
+	@Min(value = -1)
+	public int getNumber() {
+		return this.number;
+	}
+
+	public void setNumber(final int number) {
+		this.number = number;
 	}
 
 }

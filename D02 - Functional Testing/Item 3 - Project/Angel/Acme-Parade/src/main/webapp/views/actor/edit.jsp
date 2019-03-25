@@ -86,5 +86,18 @@
 		<input type="submit" name="save"
 			value="<spring:message code="actor.save" />" />
 	</jstl:if>
+	<security:authorize access="hasRole('ADMIN')">
+		<spring:message code="actor.spam"></spring:message>: <jstl:out
+			value="${spammer}"></jstl:out>
+		<jstl:if test="${ spammer || polarity<=-0.5}">
+			<a href="customisation/administrator/spam.do?id=${actor.account.id}"><spring:message
+					code="actor.spam.link"></spring:message> </a>
+		</jstl:if>
+		<br>
+		<spring:message code="actor.polarity"></spring:message>: <jstl:out
+			value="${polarity}"></jstl:out>
+		<br>
+
+	</security:authorize>
 </form:form>
 <acme:cancel code="actor.cancel" />

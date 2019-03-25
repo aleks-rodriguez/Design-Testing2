@@ -32,6 +32,12 @@ public class CustomisationSystemService {
 	private PositionService					servicePosition;
 
 
+	public void flagSpam(final int idActor) {
+		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
+		Actor a;
+		a = this.repositoryCustomisationSystem.findActorByUserAccountId(idActor);
+		a.setSpammer(true);
+	}
 	public CustomisationSystem findUnique() {
 		return this.repositoryCustomisationSystem.findAll().get(0);
 	}
@@ -56,13 +62,6 @@ public class CustomisationSystemService {
 		Actor a;
 		a = this.repositoryCustomisationSystem.findActor(id);
 		a.getAccount().setEnabled(true);
-	}
-
-	public void flagSpam(final int idActor) {
-		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
-		Actor a;
-		a = this.repositoryCustomisationSystem.findActor(idActor);
-		a.setSpammer(true);
 	}
 
 	public Map<String, Double[]> marcadorNumericoArray() {

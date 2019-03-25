@@ -12,6 +12,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -54,6 +55,7 @@ public class Segment extends DomainEntity {
 		this.parade = parade;
 	}
 
+	@Min(value = -1)
 	public int getNumber() {
 		return this.number;
 	}

@@ -31,4 +31,4 @@
 	</jstl:if>
 </form:form>
 
-<acme:cancel url="${requestCancel}" code="area.cancel" />
+<acme:cancel code="area.cancel" />

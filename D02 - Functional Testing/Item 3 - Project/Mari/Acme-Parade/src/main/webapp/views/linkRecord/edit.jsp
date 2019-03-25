@@ -34,4 +34,4 @@
 	<acme:submit name="save" code="linkRecord.save"/>
 	</jstl:if>
 </form:form>
-<input type="submit" onclick="window.history.back()" value="<spring:message code="linkRecord.cancel"/>"/>
+<acme:cancel code="linkRecord.cancel" />

@@ -8,7 +8,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.validation.Valid;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
@@ -23,6 +22,7 @@ public class Sponsorship extends DomainEntity {
 	private Sponsor		sponsor;
 	private Parade		parade;
 	private boolean		isActive;
+
 	private CreditCard	creditCard;
 
 
@@ -71,7 +71,6 @@ public class Sponsorship extends DomainEntity {
 		this.parade = parade;
 	}
 
-	@Valid
 	public CreditCard getCreditCard() {
 		return this.creditCard;
 	}

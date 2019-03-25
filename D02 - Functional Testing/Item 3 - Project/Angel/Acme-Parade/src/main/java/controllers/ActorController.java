@@ -14,12 +14,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
 import services.ActorService;
+import services.MessageService;
 import utilities.Utiles;
 import domain.Actor;
 import domain.Administrator;
 import domain.Brotherhood;
 import domain.Chapter;
 import domain.Member;
+import domain.Sponsor;
 import forms.ActorForm;
 
 @Controller
@@ -30,6 +32,9 @@ public class ActorController extends AbstractController {
 
 	@Autowired
 	private ActorService	serviceActor;
+
+	@Autowired
+	private MessageService	messageService;
 
 
 	@RequestMapping(value = "/listBrotherhood", method = RequestMethod.GET)
@@ -84,6 +89,7 @@ public class ActorController extends AbstractController {
 		Member member = null;
 		Brotherhood brotherhood = null;
 		Chapter chapter = null;
+		Sponsor sponsor = null;
 
 		try {
 			String authority = "";
@@ -100,6 +106,9 @@ public class ActorController extends AbstractController {
 			} else if (actor.getAuthority().equals(Authority.CHAPTER)) {
 				authority = Authority.CHAPTER;
 				chapter = this.serviceActor.reconstructChapter(actor, binding);
+			} else if (actor.getAuthority().equals(Authority.SPONSOR)) {
+				authority = Authority.SPONSOR;
+				sponsor = this.serviceActor.reconstructSponsor(actor, binding);
 			}
 
 			if (actor.getAuthority().equals(Authority.BROTHERHOOD))
@@ -112,14 +121,15 @@ public class ActorController extends AbstractController {
 
 			if (urls && actor.getAccount().getPassword().equals(actor.getPassword2()) && actor.getAccount().getPassword() != "" && actor.getPassword2() != "") {
 				if (actor.getAuthority().equals(Authority.ADMIN))
-					this.serviceActor.save(admin, null, null, null);
+					this.serviceActor.save(admin, null, null, null, null);
 				else if (actor.getAuthority().equals(Authority.BROTHERHOOD))
-					this.serviceActor.save(null, brotherhood, null, null);
+					this.serviceActor.save(null, brotherhood, null, null, null);
 				else if (actor.getAuthority().equals(Authority.MEMBER))
-					this.serviceActor.save(null, null, member, null);
+					this.serviceActor.save(null, null, member, null, null);
 				else if (actor.getAuthority().equals(Authority.CHAPTER))
-					this.serviceActor.save(null, null, null, chapter);
-
+					this.serviceActor.save(null, null, null, chapter, null);
+				else if (actor.getAuthority().equals(Authority.SPONSOR))
+					this.serviceActor.save(null, null, null, null, sponsor);
 				result = new ModelAndView("redirect:../security/login.do");
 			} else {
 
@@ -163,6 +173,25 @@ public class ActorController extends AbstractController {
 		result.addObject("check", false);
 		return result;
 	}
+	@RequestMapping(value = "/view", method = RequestMethod.GET)
+	public ModelAndView view(@RequestParam final int id) {
+		ModelAndView result;
+		final Brotherhood bro = this.serviceActor.findOneBrotherhood(id);
+		if (bro != null) {
+			result = this.createEditModelAndView(bro);
+			result.addObject("check", false);
+			result.addObject("spammer", Utiles.checkSpammer(bro));
+			result.addObject("polarity", Utiles.homotheticalTransformation(this.messageService.getMessageOutBox(bro.getId())));
+		} else {
+			final Member m = this.serviceActor.findMemberByUser(id);
+			result = this.createEditModelAndView(m);
+			result.addObject("spammer", Utiles.checkSpammer(m));
+			result.addObject("check", false);
+			result.addObject("polarity", Utiles.homotheticalTransformation(this.messageService.getMessageOutBox(m.getId())));
+		}
+		return result;
+	}
+
 	protected <T extends Actor> ModelAndView createEditModelAndView(final T actor) {
 		ModelAndView model;
 		model = this.createEditModelAndView(actor, null);

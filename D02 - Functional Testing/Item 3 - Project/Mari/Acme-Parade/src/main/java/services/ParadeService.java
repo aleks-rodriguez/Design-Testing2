@@ -62,7 +62,9 @@ public class ParadeService {
 	public Parade findOne(final int idParade) {
 		return this.processionRepository.findOne(idParade);
 	}
-
+	public Collection<Parade> findParadesAFM() {
+		return this.processionRepository.findParadesAFM();
+	}
 	public Brotherhood findBrotherhoodByUser(final int userId) {
 		return this.processionRepository.findBrotherhoodByUserAccountId(userId);
 	}
@@ -73,10 +75,6 @@ public class ParadeService {
 
 	public Collection<Parade> findParadeByBrotherhoodId(final int idBrotherhood) {
 		return this.processionRepository.findParadesByBrotherhoodId(idBrotherhood);
-	}
-
-	public Collection<Parade> findParadesAFM() {
-		return this.processionRepository.findParadesAFM();
 	}
 
 	public Parade createParade() {
@@ -140,15 +138,17 @@ public class ParadeService {
 			result.setStatus(parade.getStatus());
 		} else {
 			result = this.processionRepository.findOne(parade.getId());
-
 			result.setTicker(parade.getTicker());
 			result.setTitle(parade.getTitle());
 			result.setDescription(parade.getDescription());
 			result.setFinalMode(parade.getFinalMode());
-			result.setFloats(parade.getFloats());
-			result.setRequests(parade.getRequests());
 			result.setWhyRejected(parade.getWhyRejected());
 			result.setStatus(parade.getStatus());
+
+			if (Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.BROTHERHOOD)) {
+				result.setFloats(parade.getFloats());
+				result.setRequests(parade.getRequests());
+			}
 
 		}
 		this.validator.validate(result, binding);

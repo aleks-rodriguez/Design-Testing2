@@ -32,4 +32,4 @@
 	<acme:submit name="save" code="periodRecord.save"/>
 	</jstl:if>
 </form:form>
-<input type="submit" onclick="window.history.back()" value="<spring:message code="periodRecord.cancel"/>"/>
+<acme:cancel code="periodRecord.cancel" />

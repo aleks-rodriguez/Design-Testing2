@@ -14,7 +14,10 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="parade" />
-
+	
+	<!-- Order -->
+	<acme:textbox code="segment.number" path="number"
+		readonly="${view}" />
 	<!-- Coordinate -->
 	<acme:textbox code="coordinate.latitude" path="segment.latitude"
 		readonly="${view}" />
@@ -30,7 +33,7 @@
 		<jstl:if test="${view eq 'false' and segment.id != 0}">
 			<acme:submit name="delete" code="segment.delete" />
 		</jstl:if>
-		<jstl:if test="${view eq 'false'}">
+		<jstl:if test="${!view}">
 			<acme:submit name="save" code="segment.save" />
 		</jstl:if>
 	</security:authorize>

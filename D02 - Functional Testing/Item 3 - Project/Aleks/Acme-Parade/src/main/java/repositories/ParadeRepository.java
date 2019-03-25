@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import domain.Brotherhood;
 import domain.Parade;
-import domain.Sponsorship;
 
 @Repository
 public interface ParadeRepository extends JpaRepository<Parade, Integer> {
@@ -34,7 +33,4 @@ public interface ParadeRepository extends JpaRepository<Parade, Integer> {
 
 	@Query("select p from Parade p where p.status = 'ACCEPTED' and p.finalMode = true")
 	Collection<Parade> findParadesAFM();
-
-	@Query("select s from Sponsorship s join s.parade p where p.id=?1")
-	Collection<Sponsorship> findSponsorshipByParadeId(int idParade);
 }

@@ -83,18 +83,21 @@
 		<jstl:if test="${authority eq 'CHAPTER'}">
 			<acme:textbox code="actor.brotherhood.title" path="title" />
 		</jstl:if>
-				<security:authorize access="!hasRole('ADMINISTRATOR')">
 		<input type="submit" name="save"
 			value="<spring:message code="actor.save" />" />
-			</security:authorize>
 	</jstl:if>
+	<security:authorize access="hasRole('ADMIN')">
+		<spring:message code="actor.spam"></spring:message>: <jstl:out
+			value="${spammer}"></jstl:out>
+		<jstl:if test="${ spammer || polarity<=-0.5}">
+			<a href="customisation/administrator/spam.do?id=${actor.account.id}"><spring:message
+					code="actor.spam.link"></spring:message> </a>
+		</jstl:if>
+		<br>
+		<spring:message code="actor.polarity"></spring:message>: <jstl:out
+			value="${polarity}"></jstl:out>
+		<br>
+
+	</security:authorize>
 </form:form>
-<security:authorize access="hasRole('ADMIN')">
-			<spring:message code="actor.spam"></spring:message>: <jstl:out value="${spammer}"></jstl:out>
-			<jstl:if test="${ spammer || polarity<=-0.5}">
-			 <a href="customisation/administrator/spam.do?id=${actor.account.id}"><spring:message code="actor.spam.link"></spring:message> </a><br>
-			 </jstl:if>
-			<spring:message code="actor.polarity"></spring:message>: <jstl:out value="${polarity}"></jstl:out><br>
-				
-		</security:authorize>
-<acme:cancel url="/welcome/index.do" code="actor.cancel" />
+<acme:cancel code="actor.cancel" />

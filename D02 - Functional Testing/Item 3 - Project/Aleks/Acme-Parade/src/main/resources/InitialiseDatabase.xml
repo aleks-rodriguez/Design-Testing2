@@ -187,9 +187,13 @@
 		</property>
 
 	</bean>
+		<!-- Customisation System -->
+
+	<!-- Customisation System -->
+
 	<bean id="customisationsys1" class="domain.CustomisationSystem">
 		<property name="systemName" value="Acme-Madruga" />
-		<property name="banner" value="https://image.ibb.co/iuaDgV/Untitled.png" />
+		<property name="banner" value="https://i.imgur.com/PjcX0fO.jpg" />
 		<property name="message"
 			value="Welcome to Acme-Madruga! The site to organise your processions! &lt;br&gt; Â¡ Bienvenidos a Acme-Madruga! Tu sitio para organizar procesiones!" />
 		<property name="phonePrefix" value="34" />
@@ -248,6 +252,17 @@
 
 		<property name="hoursFinder" value="2" />
 		<property name="resultFinder" value="10" />
+		<property name="creditCardMakes">
+		<list>
+		<value>VISA</value>
+		<value>MASTERCARD</value>
+		<value>AMEX</value>
+		<value>DINERS</value>
+		<value>FLY</value>
+		</list>
+		</property>
+		<property name="vat" value="0.21"></property>
+		<property name="flatFare" value="0.50"></property>
 	</bean>
 	
 	

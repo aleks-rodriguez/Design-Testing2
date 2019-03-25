@@ -36,21 +36,24 @@
 	</display:column>
 
 
-	<!--<display:column property="description" titleKey="parade.description" />-->
-<security:authorize access="!hasRole('SPONSOR')">
+	<security:authorize access="!hasRole('SPONSOR')">
+		<display:column titleKey="parade.float">
+			<a href="float/list.do?idParade=${row.id}"><spring:message
+					code="parade.float" /></a>
+		</display:column>
+	</security:authorize>
+
+	<security:authorize access="hasRole('SPONSOR')">
+		<display:column titleKey="sponsorship.create.title">
+			<a href="sponsorship/sponsor/create.do?paradeId=${row.id}"><spring:message
+					code="sponsorship.create" /></a>
+		</display:column>
+	</security:authorize>
+
 	<display:column titleKey="parade.float">
 		<a href="float/list.do?idParade=${row.id}"><spring:message
 				code="parade.float" /></a>
 	</display:column>
-	</security:authorize>
-	
-	<security:authorize access="hasRole('SPONSOR')">
-	<display:column title="sponsorship.create.title">
-		<a href="sponsorship/sponsor/create.do?paradeId=${row.id}"><spring:message
-				code="sponsorship.create" /></a>
-	</display:column>
-	</security:authorize>
-	
 	<security:authorize access="hasRole('CHAPTER')">
 		<display:column titleKey="parade.show">
 			<a href="parade/chapter/show.do?idParade=${row.id}"><spring:message
@@ -152,12 +155,12 @@
 			row[i].style.backgroundColor = "red";
 		}
 	}
-	
+
 	// Tomado de https://www.lawebdelprogramador.com/foros/JavaScript/23270-Como-quitar-un-espacio-es-blanco.html
-	
+
 	function trim(cadena) {
 		// USO: Devuelve un string como el
-		// parámetro cadena pero quitando los
+		// parï¿½metro cadena pero quitando los
 		// espacios en blanco de los bordes.
 
 		var retorno = cadena.replace(/^\s+/g, '');

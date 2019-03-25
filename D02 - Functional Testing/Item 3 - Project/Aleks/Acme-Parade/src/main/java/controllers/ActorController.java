@@ -5,7 +5,6 @@ import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
-import security.LoginService;
 import services.ActorService;
 import services.MessageService;
 import utilities.Utiles;
@@ -28,12 +26,13 @@ import forms.ActorForm;
 
 @Controller
 @RequestMapping(value = {
-	"/actor", "/brotherhood", "/member", "/administrator", "/chapter", "/sponsor"
+	"/actor", "/brotherhood", "/member", "/administrator", "/chapter"
 })
 public class ActorController extends AbstractController {
 
 	@Autowired
 	private ActorService	serviceActor;
+
 	@Autowired
 	private MessageService	messageService;
 
@@ -82,15 +81,6 @@ public class ActorController extends AbstractController {
 		model.addObject("authority", Authority.CHAPTER);
 		return model;
 	}
-
-	@RequestMapping(value = "/createSponsor", method = RequestMethod.GET)
-	public ModelAndView createSponsor() {
-		ModelAndView model;
-		model = this.createEditModelAndView(this.serviceActor.map(this.serviceActor.createActor(Authority.SPONSOR), Authority.SPONSOR));
-		model.addObject("authority", Authority.SPONSOR);
-		return model;
-	}
-
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView submit(@ModelAttribute("actor") final ActorForm actor, final BindingResult binding) {
 		ModelAndView result = null;
@@ -140,7 +130,6 @@ public class ActorController extends AbstractController {
 					this.serviceActor.save(null, null, null, chapter, null);
 				else if (actor.getAuthority().equals(Authority.SPONSOR))
 					this.serviceActor.save(null, null, null, null, sponsor);
-
 				result = new ModelAndView("redirect:../security/login.do");
 			} else {
 
@@ -163,6 +152,7 @@ public class ActorController extends AbstractController {
 		}
 		return result;
 	}
+
 	@RequestMapping(value = "/personal", method = RequestMethod.GET)
 	public ModelAndView editPersonalData() {
 		ModelAndView result;
@@ -183,31 +173,25 @@ public class ActorController extends AbstractController {
 		result.addObject("check", false);
 		return result;
 	}
-
 	@RequestMapping(value = "/view", method = RequestMethod.GET)
 	public ModelAndView view(@RequestParam final int id) {
 		ModelAndView result;
-		try {
-			Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.BROTHERHOOD) || Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)
-				|| Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
-			final Brotherhood bro = this.serviceActor.findOneBrotherhood(id);
-			if (bro != null) {
-				result = this.createEditModelAndView(bro);
-				result.addObject("check", false);
-				result.addObject("spammer", Utiles.checkSpammer(bro));
-				result.addObject("polarity", Utiles.homotheticalTransformation(this.messageService.getMessageOutBox(bro.getId())));
-			} else {
-				final Member m = this.serviceActor.findMemberByUser(id);
-				result = this.createEditModelAndView(m);
-				result.addObject("spammer", Utiles.checkSpammer(m));
-				result.addObject("check", false);
-				result.addObject("polarity", Utiles.homotheticalTransformation(this.messageService.getMessageOutBox(m.getId())));
-			}
-		} catch (final IllegalArgumentException oops) {
-			result = this.custom(new ModelAndView("redirect:../"));
+		final Brotherhood bro = this.serviceActor.findOneBrotherhood(id);
+		if (bro != null) {
+			result = this.createEditModelAndView(bro);
+			result.addObject("check", false);
+			result.addObject("spammer", Utiles.checkSpammer(bro));
+			result.addObject("polarity", Utiles.homotheticalTransformation(this.messageService.getMessageOutBox(bro.getId())));
+		} else {
+			final Member m = this.serviceActor.findMemberByUser(id);
+			result = this.createEditModelAndView(m);
+			result.addObject("spammer", Utiles.checkSpammer(m));
+			result.addObject("check", false);
+			result.addObject("polarity", Utiles.homotheticalTransformation(this.messageService.getMessageOutBox(m.getId())));
 		}
 		return result;
 	}
+
 	protected <T extends Actor> ModelAndView createEditModelAndView(final T actor) {
 		ModelAndView model;
 		model = this.createEditModelAndView(actor, null);

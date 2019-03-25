@@ -77,7 +77,10 @@ public class FloatController extends AbstractController {
 			f = this.floatService.reconstruct(f, binding);
 			if (binding.hasErrors()) {
 				result = this.createEditModelAndView(f);
-				result.addObject("requestURI", "float/brotherhood/edit.do?idFloat=" + idFloat);
+				if (f.getId() == 0)
+					result.addObject("requestURI", "float/brotherhood/edit.do");
+				else
+					result.addObject("requestURI", "float/brotherhood/edit.do?idFloat=" + idFloat);
 			} else
 				try {
 					if (f.getPictures().size() > 0 ? Utiles.checkURL(f.getPictures()) : true) {
@@ -158,7 +161,7 @@ public class FloatController extends AbstractController {
 		map = new HashMap<String, String>();
 		map.put("id", String.valueOf(f.getId()));
 
-		result = this.editFormsUrlId("float/edit.do", map, "/float/list.do", this.custom(new ModelAndView("float/edit")));
+		result = this.editFormsUrlId("float/brotherhood/edit.do", map, "/float/list.do", this.custom(new ModelAndView("float/edit")));
 		result.addObject("float", f);
 		result.addObject("message", message);
 		return result;
