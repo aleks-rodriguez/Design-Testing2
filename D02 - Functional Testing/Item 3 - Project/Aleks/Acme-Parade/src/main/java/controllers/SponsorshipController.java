@@ -93,7 +93,7 @@ public class SponsorshipController extends AbstractController {
 
 		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(s);
-			result.addObject("requestURI", "sponsorship/sponsor/edit.do?id=" + paradeId);
+			result.addObject("requestURI", "sponsorship/sponsor/edit.do?paradeId=" + paradeId);
 		} else
 			try {
 				s = this.serviceSponsorship.reconstruct(s, binding, paradeId);

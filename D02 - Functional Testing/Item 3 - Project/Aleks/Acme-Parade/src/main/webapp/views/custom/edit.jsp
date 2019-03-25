@@ -36,7 +36,14 @@
 	<acme:textarea code="custom.badWords" path="badWords" />
 	<acme:textarea code="custom.spamWords" path="spamWords" />
 	<acme:textarea code="custom.priorities" path="priorities" />
-
+	<acme:textarea code="custom.creditCardMakes" path="creditCardMakes"/>
+	<acme:textarea code="custom.vat" path="vat"/>
+	<acme:textarea code="custom.flatFare" path="flatFare"/>
+	
+	<h3><spring:message code="custom.deactivate.sponsorships"></spring:message></h3>
+	<a href="customisation/administrator/deactivateSponsorships.do">
+	<spring:message code="custom.deactivate"></spring:message></a>
+	<br>
 	<acme:submit name="save" code="custom.save" />
 </form:form>
 

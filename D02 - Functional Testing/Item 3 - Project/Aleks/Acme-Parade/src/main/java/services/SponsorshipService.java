@@ -41,6 +41,10 @@ public class SponsorshipService {
 		return this.sponsorshipRepository.findAll();
 	}
 
+	public void save(final Collection<Sponsorship> col) {
+		this.sponsorshipRepository.save(col);
+	}
+
 	public Sponsorship findOne(final int id) {
 		return this.sponsorshipRepository.findOne(id);
 	}
@@ -93,6 +97,7 @@ public class SponsorshipService {
 		final Sponsorship desactive;
 		desactive = this.sponsorshipRepository.findOne(id);
 		desactive.setIsActive(false);
+		desactive.setParade(null);
 
 	}
 

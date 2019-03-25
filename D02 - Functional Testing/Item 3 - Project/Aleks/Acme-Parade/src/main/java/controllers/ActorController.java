@@ -5,6 +5,7 @@ import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
+import security.LoginService;
 import services.ActorService;
 import services.MessageService;
 import utilities.Utiles;
@@ -185,22 +187,27 @@ public class ActorController extends AbstractController {
 	@RequestMapping(value = "/view", method = RequestMethod.GET)
 	public ModelAndView view(@RequestParam final int id) {
 		ModelAndView result;
-		final Brotherhood bro = this.serviceActor.findOneBrotherhood(id);
-		if (bro != null) {
-			result = this.createEditModelAndView(bro);
-			result.addObject("check", false);
-			result.addObject("spammer", Utiles.checkSpammer(bro));
-			result.addObject("polarity", Utiles.homotheticalTransformation(this.messageService.getMessageOutBox(bro.getId())));
-		} else {
-			final Member m = this.serviceActor.findMemberByUser(id);
-			result = this.createEditModelAndView(m);
-			result.addObject("spammer", Utiles.checkSpammer(m));
-			result.addObject("check", false);
-			result.addObject("polarity", Utiles.homotheticalTransformation(this.messageService.getMessageOutBox(m.getId())));
+		try {
+			Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.BROTHERHOOD) || Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)
+				|| Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
+			final Brotherhood bro = this.serviceActor.findOneBrotherhood(id);
+			if (bro != null) {
+				result = this.createEditModelAndView(bro);
+				result.addObject("check", false);
+				result.addObject("spammer", Utiles.checkSpammer(bro));
+				result.addObject("polarity", Utiles.homotheticalTransformation(this.messageService.getMessageOutBox(bro.getId())));
+			} else {
+				final Member m = this.serviceActor.findMemberByUser(id);
+				result = this.createEditModelAndView(m);
+				result.addObject("spammer", Utiles.checkSpammer(m));
+				result.addObject("check", false);
+				result.addObject("polarity", Utiles.homotheticalTransformation(this.messageService.getMessageOutBox(m.getId())));
+			}
+		} catch (final IllegalArgumentException oops) {
+			result = this.custom(new ModelAndView("redirect:../"));
 		}
 		return result;
 	}
-
 	protected <T extends Actor> ModelAndView createEditModelAndView(final T actor) {
 		ModelAndView model;
 		model = this.createEditModelAndView(actor, null);
