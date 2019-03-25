@@ -28,48 +28,41 @@
 	</tr>
 	<tr>
 		<td><spring:message code="custom.area"></spring:message>
-		<td>${marcadorNumerico.get("AVGBrotherhoodPerArea")}</td> <!-- [0] -->
-		<td></td>
-		<td></td>
+		<td>${marcadorNumerico.get("AVGBrotherhoodPerArea")}</td>
+		<td>${minmaxArea.get("MinAreaBro")}</td>
+		<td>${minmaxArea.get("MaxAreaBro")}</td>
 		<td>${marcadorNumerico.get("stddevBrotherhoodPerArea")}</td>
-	<tr>
+	<tr> 
 		<td><spring:message code="custom.enrolment" /></td>
 		<td>${marcadorNumerico.get("AVGEnrolmentMember")}</td>
 		<td>${marcadorNumericoArray.get("EnrolMemberMinMax")[0]}</td>
-		<td>${marcadorNumericoArray.get("EnrolMemberMinMax")[0]}</td>
+		<td>${marcadorNumericoArray.get("EnrolMemberMinMax")[1]}</td>
 		<td>${marcadorNumerico.get("StandarDesviationEnrolmentMember")}</td>
 	</tr>
-	<tr>
+<tr>
 		<td><spring:message code="custom.finder"></spring:message>
-		<td>${marcadorNumericoArray.get("NumberOfResultFinder")[2]}</td> <!-- [0] -->
+		<td>${marcadorNumericoArray.get("NumberOfResultFinder")[2]}</td>
 		<td>${marcadorNumericoArray.get("NumberOfResultFinder")[0]}</td>
 		<td>${marcadorNumericoArray.get("NumberOfResultFinder")[1]}</td>
 		<td>${marcadorNumericoArray.get("NumberOfResultFinder")[3]}</td>
 	<tr>
 </table>
 
+<p>
+<h3>
+	<spring:message code="custom.Brotherhood" />
+</h3>
+<p>
 <table border="1">
-<tr>
-		<th></th>
-		<th><spring:message code="custom.area" /></th>
-		<th><spring:message code="custom.numero" /></th>
-</tr>
-<tr>
-		<td><spring:message code="custom.status" /></td>
-		<td>${dashboardRatio2.get("RatioRequestToMarchByStatus")[1].get("RatioRequestToMarchByStatus")[0]}</td>
-		<td>${dashboardRatio2.get("RatioRequestToMarchByStatus")[0].get("RatioRequestToMarchByStatus")[0]}</td>
-</tr>
-<tr>
-		<td><spring:message code="custom.count" /></td>
-		<td>${dashboardRatio2.get("CountPerArea")[0]}</td>
-		<td>${dashboardRatio2.get("CountPerArea")[1]}</td>
-</tr>
-<tr>.
-		<td><spring:message code="custom.minmax" /></td>
-		<td>${dashboardRatio2.get("MinMaxPerArea")[0]}</td>
-		<td>${dashboardRatio2.get("MinMaxPerArea")[1]}</td>
-</tr>
-	</table>
+	<tr>
+		<th><spring:message code="custom.largest" /></th>
+		<th><spring:message code="custom.smaller" /></th>
+	</tr>
+	<tr>
+		<td>${largestAndSmallerBro.get('LargestBro')}</td>
+		<td>${largestAndSmallerBro.get('SmallerBro')}</td>
+	</tr>
+</table> 
 
 
 <p>
@@ -81,17 +74,12 @@
 	<tr>
 		<th><spring:message code="custom.area" /></th>
 		<th><spring:message code="custom.vs" /></th>
-		<th><spring:message code="custom.requestToMach" /></th>
 	</tr>
 	<tr>
 		<td>${marcadorNumerico.get('AreaPerBrotherhoodRatio')}</td>
 		<td>${marcadorNumerico.get('EmptyVsNotEmpty')}</td>
-		<td>${dashboardRatio.get('RatioRequestToMarchOnEachProcession')}</td>
 	</tr>
-</table>
-
-
-
+</table> 
 
 
 <p>
@@ -122,9 +110,59 @@
 		items="${dashboardProcession.get('ProcessionsInLessThan30Days')}"
 		var="actor">
 		<tr>
-			<th><jstl:out value="${actor.name}" /> <jstl:out
-					value="${actor.surname}" /> </br> <jstl:out value="${actor.email}" /></br>
+			<th><jstl:out value="${actor.title}" /></th>
 		</tr>
 	</jstl:forEach>
 </table>
+
+<p>
+<h3>
+		<th><spring:message
+				code="custom.ratioRequestbystatus" /></th>
+	</h3>
+	<p>
+<table border="1">
+	<jstl:forEach
+		items="${ratioStatus.get('RatioRequestToMarchByStatus')}"
+		var="request">
+		<tr>
+			<th><jstl:out value="${request}" /></th>
+		</tr>
+	</jstl:forEach>
+</table>
+
+<p>
+<h3>
+		<th><spring:message
+				code="custom.ratioRequest" /></th>
+	</h3>
+	<p>
+<table border="1">
+	<jstl:forEach
+		items="${dashboardRatio.get('RatioRequestToMarchOnEachProcession')}"
+		var="request">
+		<tr>
+			<th><jstl:out value="${request}" /></th>
+		</tr>
+	</jstl:forEach>
+</table>
+
+<p>
+<h3>
+		<th><spring:message
+				code="custom.area" /></th>
+	</h3>
+	<p>
+<table border="1">
+	<jstl:forEach
+		items="${countPerArea.get('AreaPerBrotherhood')}"
+		var="request">
+		<tr>
+			<th><jstl:out value="${request}" /></th>
+		</tr>
+	</jstl:forEach>
+</table>
+
+
+
 

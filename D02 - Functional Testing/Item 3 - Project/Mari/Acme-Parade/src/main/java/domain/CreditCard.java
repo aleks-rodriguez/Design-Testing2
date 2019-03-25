@@ -8,6 +8,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -43,8 +44,8 @@ public class CreditCard {
 		this.make = make;
 	}
 
-	@Min(value = 16)
-	@Max(value = 16)
+	@NotBlank
+	@Size(min = 16, max = 16)
 	public String getNumber() {
 		return this.number;
 	}
@@ -53,14 +54,10 @@ public class CreditCard {
 		this.number = number;
 	}
 
-	@Min(value = 3)
-	@Max(value = 3)
+	@Max(value = 999)
+	@Min(value = 100)
 	public int getCvv() {
 		return this.cvv;
-	}
-
-	public void setCvv(final int cvv) {
-		this.cvv = cvv;
 	}
 
 	public Date getExpiration() {
@@ -69,6 +66,10 @@ public class CreditCard {
 
 	public void setExpiration(final Date expiration) {
 		this.expiration = expiration;
+	}
+
+	public void setCvv(final int cvv) {
+		this.cvv = cvv;
 	}
 
 }

@@ -25,8 +25,14 @@
 <display:table name="positions" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
 
-	<display:column property="name" titleKey="position.name" />
-	<display:column property="otherLangs" titleKey="position.otherLangs" />
+	<display:column titleKey="position.name">
+		<jstl:out value="${row.name}" />
+	</display:column>
+	<display:column titleKey="position.otherLangs">
+		<jstl:forEach items="${row.otherLangs}" var="l">
+			<jstl:out value="${l}" />
+		</jstl:forEach>
+	</display:column>
 
 	<display:column titleKey="position.edit">
 

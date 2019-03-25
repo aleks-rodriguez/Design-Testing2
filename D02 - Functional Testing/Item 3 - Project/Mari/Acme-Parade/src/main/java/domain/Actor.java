@@ -37,6 +37,7 @@ public abstract class Actor extends DomainEntity {
 	private UserAccount			account;
 	private Collection<Profile>	profiles;
 	private Collection<Box>		boxes;
+	private boolean				spammer;
 
 
 	@NotBlank
@@ -124,6 +125,14 @@ public abstract class Actor extends DomainEntity {
 
 	public void setBoxes(final Collection<Box> boxes) {
 		this.boxes = boxes;
+	}
+
+	public boolean getSpammer() {
+		return this.spammer;
+	}
+
+	public void setSpammer(final boolean spammer) {
+		this.spammer = spammer;
 	}
 
 }

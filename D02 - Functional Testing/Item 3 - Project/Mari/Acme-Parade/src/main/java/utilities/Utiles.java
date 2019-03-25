@@ -5,18 +5,21 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 import security.Authority;
+import domain.Actor;
 import domain.Box;
 import domain.CreditCard;
 import domain.MessageEntity;
@@ -38,8 +41,14 @@ public class Utiles {
 
 
 	public static void main(final String[] args) {
-		final List<String> res = new ArrayList<String>(Arrays.asList("1", "2"));
-		System.out.println(res.toString().substring(1, res.toString().length() - 1));
+		final String aux1 = "aa.com";
+		final String aux2 = "aaaaa.com";
+
+		System.out.println(Utiles.checkURL(Arrays.asList(aux1, aux2)));
+	}
+
+	public boolean date2IsAfterDate1(final Date date1, final Date date2) {
+		return date2.after(date1);
 	}
 
 	public static Collection<Box> initBoxes() {
@@ -130,7 +139,7 @@ public class Utiles {
 		return passEncoded;
 	}
 
-	public static String generateTicker() {
+	public static String generateTicker(final Collection<String> tickers) {
 		SimpleDateFormat formato;
 		formato = new SimpleDateFormat("yyMMdd");
 
@@ -151,7 +160,22 @@ public class Utiles {
 		for (int i = 0; i < 6; i++)
 			c += ch[random.nextInt(ch.length)];
 
-		return formated + "-" + c;
+		String result;
+		result = formated + "-" + c;
+
+		if (tickers.contains(result))
+			Utiles.generateTicker(tickers);
+
+		return result;
+	}
+	public static Set<String> statusParadeByLang(final String s) {
+		Map<String, Set<String>> result;
+		result = new HashMap<String, Set<String>>();
+
+		result.put("en", new HashSet<>(Arrays.asList("SUBMITTED", "ACCEPTED", "REJECTED")));
+		result.put("es", new HashSet<>(Arrays.asList("ENVIADO", "ACEPTADO", "RECHAZADO")));
+
+		return result.get(s);
 	}
 	public static void setParameters(final String systemName, final String banner, final String mess, final Integer hours, final Integer results, final Integer phonePrefix) {
 		Utiles.systemName = systemName;
@@ -175,7 +199,7 @@ public class Utiles {
 
 		return res;
 	}
-	public static boolean isSpammer(final Collection<MessageEntity> cm) {
+	private static boolean isSpammer(final Collection<MessageEntity> cm) {
 		int i = 0;
 		for (final MessageEntity message : cm) {
 			final boolean spam = Utiles.spamWord(Utiles.limpiaString(message.getSubject())) && Utiles.spamWord(Utiles.limpiaString(message.getBody()));
@@ -191,11 +215,74 @@ public class Utiles {
 		for (int i = 0; i < 2; i++)
 			for (int j = 0; j < queryResult.size(); j++) {
 				String f;
-				f = "" + i + "," + j;
+				f = "" + i + "." + j;
 				res.add(f);
 			}
 		res.removeAll(queryResult);
 		return res;
+	}
+
+	public static boolean checkSpammer(final Actor a) {
+		boolean res;
+		res = false;
+		for (final Box b : a.getBoxes())
+			if (b.getName().equals("Out Box"))
+				res = Utiles.isSpammer(b.getMessageEntity());
+		return res;
+	}
+
+	public static double homotheticalTransformation(final Collection<MessageEntity> sentMessage) {
+
+		Double res = 0.0;
+		final Collection<String> cleanedString = new ArrayList<>();
+
+		List<Double> good;
+		good = new ArrayList<Double>();
+		List<Double> bad;
+		bad = new ArrayList<Double>();
+
+		for (final MessageEntity m : sentMessage) {
+			double p = 0.;
+			double n = 0.;
+			final Collection<String> cleanedSubject = Utiles.limpiaString(m.getSubject().toString());
+			final Collection<String> cleanedBody = Utiles.limpiaString(m.getBody().toString());
+			final Collection<String> cleanedPriority = Utiles.limpiaString(m.getPriority().toString());
+			cleanedString.addAll(cleanedSubject);
+			cleanedSubject.addAll(cleanedPriority);
+			cleanedSubject.addAll(cleanedBody);
+
+			for (final String s : cleanedString) {
+				if (Utiles.goodWords.contains(s))
+					p++;
+				if (Utiles.badWords.contains(s))
+					n++;
+			}
+			good.add(p / cleanedString.size());
+			bad.add(n / cleanedString.size());
+		}
+
+		if (Double.isNaN(Utiles.compute(good)) || Double.isNaN(Utiles.compute(bad)))
+			res = 0.0;
+		else
+			res = Utiles.compute(good) - Utiles.compute(bad);
+
+		return res;
+	}
+
+	private static double compute(final Collection<Double> values) {
+
+		final int a = -1;
+		final int b = 1;
+
+		final double min = Collections.min(values);
+		final double max = Collections.max(values);
+
+		double z = 0.;
+
+		for (final double d : values)
+			z = z + a + ((d - min) * (b - a) / (max - min));
+
+		return z;
 	}
 
 	public static CreditCard createCreditCard() {
@@ -226,7 +313,7 @@ public class Utiles {
 		result = new String[2];
 
 		/**
-		 * This makes a little repository of patterns that checks directly which kind of credit card is given by cadena´s parameter.
+		 * This makes a little repository of patterns that checks directly which kind of credit card is given by cadenaï¿½s parameter.
 		 */
 		Map<String, Matcher> map;
 		map = new HashMap<String, Matcher>();
@@ -276,5 +363,11 @@ public class Utiles {
 			sum = sum + str[i];
 
 		return sum % 10 == 0;
+	}
+
+	public static List<String> creditCardMakes() {
+		List<String> makes;
+		makes = Arrays.asList("VISA", "MASTERCARD", "AMEX", "DINERS", "FLY");
+		return makes;
 	}
 }

@@ -9,10 +9,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
 import services.ActorService;
+import services.MessageService;
 import utilities.Utiles;
 import domain.Actor;
 import domain.Administrator;
@@ -30,6 +32,8 @@ public class ActorController extends AbstractController {
 
 	@Autowired
 	private ActorService	serviceActor;
+	@Autowired
+	private MessageService	messageService;
 
 
 	@RequestMapping(value = "/listBrotherhood", method = RequestMethod.GET)
@@ -40,7 +44,14 @@ public class ActorController extends AbstractController {
 		result.addObject("requestURI", "brotherhood/listBrotherhood.do");
 		return result;
 	}
-
+	@RequestMapping(value = "/listChapter", method = RequestMethod.GET)
+	public ModelAndView listChapter() {
+		ModelAndView result;
+		result = this.custom(new ModelAndView("chapter/list"));
+		result.addObject("chapters", this.serviceActor.findAllChapters());
+		result.addObject("requestURI", "chapter/listChapter.do");
+		return result;
+	}
 	@RequestMapping(value = "/createAdmin", method = RequestMethod.GET)
 	public ModelAndView createAdmin() {
 		ModelAndView model;
@@ -69,6 +80,7 @@ public class ActorController extends AbstractController {
 		model.addObject("authority", Authority.CHAPTER);
 		return model;
 	}
+
 	@RequestMapping(value = "/createSponsor", method = RequestMethod.GET)
 	public ModelAndView createSponsor() {
 		ModelAndView model;
@@ -105,7 +117,6 @@ public class ActorController extends AbstractController {
 			} else if (actor.getAuthority().equals(Authority.SPONSOR)) {
 				authority = Authority.SPONSOR;
 				sponsor = this.serviceActor.reconstructSponsor(actor, binding);
-
 			}
 
 			if (actor.getAuthority().equals(Authority.BROTHERHOOD))
@@ -115,9 +126,6 @@ public class ActorController extends AbstractController {
 					urls = true;
 			else
 				urls = true;
-
-			if (!urls)
-				result = this.createEditModelAndView(actor, "actor.urls");
 
 			if (urls && actor.getAccount().getPassword().equals(actor.getPassword2()) && actor.getAccount().getPassword() != "" && actor.getPassword2() != "") {
 				if (actor.getAuthority().equals(Authority.ADMIN))
@@ -133,7 +141,12 @@ public class ActorController extends AbstractController {
 
 				result = new ModelAndView("redirect:../security/login.do");
 			} else {
-				result = this.createEditModelAndView(actor, "actor.password");
+
+				if (actor.getAuthority().equals(Authority.BROTHERHOOD))
+					result = this.createEditModelAndView(actor, "actor.passwordOrUrls");
+				else
+					result = this.createEditModelAndView(actor, "actor.password");
+
 				result.addObject("authority", authority);
 				result.addObject("errors", binding.getAllErrors());
 			}
@@ -148,7 +161,6 @@ public class ActorController extends AbstractController {
 		}
 		return result;
 	}
-
 	@RequestMapping(value = "/personal", method = RequestMethod.GET)
 	public ModelAndView editPersonalData() {
 		ModelAndView result;
@@ -158,6 +170,37 @@ public class ActorController extends AbstractController {
 		result.addObject("authority", form.getAuthority());
 		return result;
 	}
+
+	@RequestMapping(value = "/personalBrotherhood", method = RequestMethod.GET)
+	public ModelAndView editPersonalBrotherhood(@RequestParam final int idBrotherhood) {
+		ModelAndView result;
+		final Actor a = this.serviceActor.findOneBrotherhood(idBrotherhood);
+		final ActorForm form = this.serviceActor.map(a, null);
+		result = this.createEditModelAndView(form);
+		result.addObject("authority", form.getAuthority());
+		result.addObject("check", false);
+		return result;
+	}
+
+	@RequestMapping(value = "/view", method = RequestMethod.GET)
+	public ModelAndView view(@RequestParam final int id) {
+		ModelAndView result;
+		final Brotherhood bro = this.serviceActor.findOneBrotherhood(id);
+		if (bro != null) {
+			result = this.createEditModelAndView(bro);
+			result.addObject("check", false);
+			result.addObject("spammer", Utiles.checkSpammer(bro));
+			result.addObject("polarity", Utiles.homotheticalTransformation(this.messageService.getMessageOutBox(bro.getId())));
+		} else {
+			final Member m = this.serviceActor.findMemberByUser(id);
+			result = this.createEditModelAndView(m);
+			result.addObject("spammer", Utiles.checkSpammer(m));
+			result.addObject("check", false);
+			result.addObject("polarity", Utiles.homotheticalTransformation(this.messageService.getMessageOutBox(m.getId())));
+		}
+		return result;
+	}
+
 	protected <T extends Actor> ModelAndView createEditModelAndView(final T actor) {
 		ModelAndView model;
 		model = this.createEditModelAndView(actor, null);

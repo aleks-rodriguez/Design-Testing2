@@ -4,6 +4,8 @@ package services;
 import java.util.Collection;
 import java.util.List;
 
+import javax.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.SponsorshipRepository;
+import security.Authority;
 import security.LoginService;
-import security.UserAccount;
 import utilities.Utiles;
 import domain.Parade;
 import domain.Sponsor;
@@ -31,6 +33,8 @@ public class SponsorshipService {
 
 	@Autowired
 	private ActorService			serviceActor;
+	@Autowired
+	private ParadeService			paradeService;
 
 
 	public Collection<Sponsorship> findAll() {
@@ -40,12 +44,21 @@ public class SponsorshipService {
 	public Sponsorship findOne(final int id) {
 		return this.sponsorshipRepository.findOne(id);
 	}
+	public List<Sponsorship> getSponsorshipBySponsor(final int id) {
+		return this.sponsorshipRepository.getSponsorshipBySponsor(id);
+	}
+
+	public List<Parade> getParadesBySponsor(final int id) {
+		return this.sponsorshipRepository.getParadesBySponsor(id);
+	}
+
 	public Sponsorship createSponsorship(final Sponsor sponsor, final Parade parade) {
 		Sponsorship result;
 		result = new Sponsorship();
 
 		result.setUrlBanner("");
-		result.setCreditCard(Utiles.createCreditCard());
+		//		result.setCreditCard(Utiles.createCreditCard()); Asi salen todos los campos vacios
+		result.setCreditCard(null);
 		result.setLinkTPage("");
 		result.setSponsor(sponsor);
 		result.setParade(parade);
@@ -56,17 +69,22 @@ public class SponsorshipService {
 
 	public Sponsorship save(final Sponsorship sponsorship) {
 
-		UserAccount login;
-		login = LoginService.getPrincipal();
-
 		Sponsor logged;
-		logged = (Sponsor) this.serviceActor.findByUserAccount(login.getId());
+		logged = this.serviceActor.findSponsorByUserAccount(LoginService.getPrincipal().getId());
 
 		Assert.notNull(logged);
 
+		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.SPONSOR));
 		Sponsorship saved;
 
 		saved = this.sponsorshipRepository.save(sponsorship);
+
+		if (!(logged.getSponsorship().contains(saved))) {
+			Collection<Sponsorship> actorSponshorships;
+			actorSponshorships = logged.getSponsorship();
+			actorSponshorships.add(saved);
+			logged.setSponsorship(actorSponshorships);
+		}
 
 		return saved;
 	}
@@ -75,34 +93,45 @@ public class SponsorshipService {
 		final Sponsorship desactive;
 		desactive = this.sponsorshipRepository.findOne(id);
 		desactive.setIsActive(false);
-		desactive.setParade(null);
 
 	}
 
-	public List<Sponsorship> getSponsorshipBySponsor(final int id) {
-		return this.sponsorshipRepository.getSponsorshipBySponsor(id);
+	public void reactivate(final int id) {
+		final Sponsorship reactivate;
+		reactivate = this.sponsorshipRepository.findOne(id);
+		reactivate.setIsActive(true);
 	}
 
-	public List<Parade> getParadesBySponsor(final int id) {
-		return this.sponsorshipRepository.getParadesBySponsor(id);
-	}
-
-	public Sponsorship reconstruct(final Sponsorship s, final BindingResult binding) {
+	public Sponsorship reconstruct(final Sponsorship s, final BindingResult binding, final int paradeId) {
 		Sponsorship result;
-		if (s.getId() == 0)
+		if (s.getId() == 0) {
 			result = s;
-		else {
-			result = this.sponsorshipRepository.findOne(s.getId());
-			result.setIsActive(s.getIsActive());
-			result.setLinkTPage(s.getLinkTPage());
-			result.setParade(s.getParade());
-			result.setUrlBanner(s.getUrlBanner());
-			result.setCreditCard(s.getCreditCard());
-			result.setSponsor(s.getSponsor());
+			Boolean check;
+			check = Boolean.valueOf(Utiles.checkCreditCard(s.getCreditCard().getNumber())[1]);
+			if ((s.getCreditCard().getMake().equals("0") || check.equals(false)))
+				throw new ValidationException();
+			else {
+				result.setSponsor(this.serviceActor.findSponsorByUserAccount(LoginService.getPrincipal().getId()));
+				result.setIsActive(true);
+				result.setParade(this.paradeService.findOne(paradeId));
+				this.validator.validate(result, binding);
+			}
 
+		} else {
+			result = this.sponsorshipRepository.findOne(s.getId());
+			result.setLinkTPage(s.getLinkTPage());
+			result.setUrlBanner(s.getUrlBanner());
+
+			result.setCreditCard(s.getCreditCard());
+			this.validator.validate(result, binding);
 		}
-		this.validator.validate(result, binding);
+		if (binding.hasErrors())
+			throw new ValidationException();
 		return result;
+	}
+
+	public List<Sponsorship> getSponsorshipsDeactivatedBySponsor(final int id) {
+		return this.sponsorshipRepository.getSponsorshipsDeactivatedBySponsor(id);
 	}
 
 }

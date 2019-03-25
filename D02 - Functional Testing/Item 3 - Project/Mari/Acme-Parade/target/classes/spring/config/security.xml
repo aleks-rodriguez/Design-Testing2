@@ -53,9 +53,31 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/enrolment/listMember.do"
 			access="permitAll" />
+		<security:intercept-url pattern="/history/listHistory.do"
+			access="permitAll" />
 		<security:intercept-url pattern="/brotherhood/listBrotherhood.do"
 			access="permitAll" />
 		<security:intercept-url pattern="/actor/**"
+			access="permitAll" />
+		<security:intercept-url pattern="/area/**"
+			access="permitAll" />
+		<security:intercept-url pattern="/proclaim/**"
+			access="permitAll" />
+		<security:intercept-url pattern="/chapter/listChapter.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/segment/**"
+			access="permitAll" />
+		<security:intercept-url pattern="/inceptionRecord/show.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/legalRecord/show.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/linkRecord/show.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/periodRecord/show.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/miscellaneousRecord/show.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/brotherhood/personalBrotherhood.do"
 			access="permitAll" />
 		<!-- Administrator -->
 		<security:intercept-url pattern="/customisation/administrator/**"
@@ -79,10 +101,23 @@
 			access="hasRole('BROTHERHOOD')" />
 		<security:intercept-url pattern="/area/brotherhood/**"
 			access="hasRole('BROTHERHOOD')" />
-		<security:intercept-url pattern="/float/brotherhood/edit.do**"
+		<security:intercept-url pattern="/float/brotherhood/edit.do"
 			access="hasRole('BROTHERHOOD')" />
 		<security:intercept-url pattern="/brotherhood/personal.do"
 			access="hasRole('BROTHERHOOD')" />
+		<security:intercept-url pattern="/history/brotherhood/list.do"
+			access="hasRole('BROTHERHOOD')" />
+		<security:intercept-url pattern="/inceptionRecord/brotherhood/**"
+			access="hasRole('BROTHERHOOD')" />
+		<security:intercept-url pattern="/legalRecord/brotherhood/**"
+			access="hasRole('BROTHERHOOD')" />
+		<security:intercept-url pattern="/periodRecord/brotherhood/**"
+			access="hasRole('BROTHERHOOD')" />
+		<security:intercept-url pattern="/linkRecord/brotherhood/**"
+			access="hasRole('BROTHERHOOD')" />
+		<security:intercept-url pattern="/miscellaneousRecord/brotherhood/**"
+			access="hasRole('BROTHERHOOD')" />
+
 		<!-- Member -->
 		<security:intercept-url pattern="/parade/member/**"
 			access="hasRole('MEMBER')" />
@@ -95,8 +130,13 @@
 		<!-- Chapter -->
 		<security:intercept-url pattern="/chapter/personal.do"
 			access="hasRole('CHAPTER')" />
-			
-		<!-- Sponsor -->
+		<security:intercept-url pattern="/area/chapter/**"
+			access="hasRole('CHAPTER')" />
+		<security:intercept-url pattern="/proclaim/chapter/**"
+			access="hasRole('CHAPTER')" />
+		<security:intercept-url pattern="/parade/chapter/**"
+			access="hasRole('CHAPTER')" />
+			<!-- Sponsor -->
 		<security:intercept-url pattern="/sponsor/personal.do"
 			access="hasRole('SPONSOR')" />
 		<security:intercept-url pattern= "/sponsorship/sponsor/**"
@@ -106,9 +146,6 @@
 		<security:intercept-url pattern= "/sponsorship/sponsor/show.do"
 			access="hasRole('SPONSOR')" />
  -->		
-		
-		
-			
 		<!-- Authenticated -->
 		<security:intercept-url pattern="/profile/**"
 			access="isAuthenticated()" />
@@ -128,7 +165,6 @@
 
 		<security:logout logout-success-url="/"
 			invalidate-session="true" />
-			
 	</security:http>
 
 </beans>

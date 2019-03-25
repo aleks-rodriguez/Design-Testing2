@@ -22,7 +22,6 @@
 <form:form modelAttribute="position" action="${requestURI}">
 
 	<form:hidden path="id" />
-	<form:hidden path="version" />
 	<acme:textbox code="position.name" path="name" />
 	<acme:textarea code="position.otherLangs" path="otherLangs" />
 	<acme:submit name="save" code="position.save" />

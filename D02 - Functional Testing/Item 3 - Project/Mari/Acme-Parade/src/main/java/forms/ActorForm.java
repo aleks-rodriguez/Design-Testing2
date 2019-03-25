@@ -4,36 +4,25 @@ package forms;
 import java.util.Collection;
 
 import security.UserAccount;
-import domain.Sponsorship;
 
 public class ActorForm {
 
-	private String					name;
-	private String					middleName;
-	private String					surname;
-	private String					photo;
-	private String					email;
-	private String					phone;
-	private String					adress;
-	private String					authority;
+	private String				name;
+	private String				middleName;
+	private String				surname;
+	private String				photo;
+	private String				email;
+	private String				phone;
+	private String				adress;
+	private String				authority;
 
-	private String					title;
-	private Collection<String>		pictures;
+	private String				title;
+	private Collection<String>	pictures;
 
-	private int						id;
+	private int					id;
 
-	private UserAccount				account;
+	private UserAccount			account;
 
-	private Collection<Sponsorship>	sponsorships;
-
-
-	public Collection<Sponsorship> getSponsorships() {
-		return this.sponsorships;
-	}
-
-	public void setSponsorships(final Collection<Sponsorship> sponsorships) {
-		this.sponsorships = sponsorships;
-	}
 
 	public UserAccount getAccount() {
 		return this.account;

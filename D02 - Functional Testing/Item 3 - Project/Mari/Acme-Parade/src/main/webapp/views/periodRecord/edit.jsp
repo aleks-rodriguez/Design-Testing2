@@ -18,3 +18,18 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+
+<form:form action="${requestURI}" modelAttribute="periodRecord">
+
+<form:hidden path="id"/>
+	
+	<acme:textbox code="periodRecord.title" path="title" readonly="${view}"/>
+	<acme:textarea code="periodRecord.description" path="description" readonly="${view}"/>
+	<acme:date code="periodRecord.startDate" path="startDate" id="1" read="${view}"/>
+	<acme:date code="periodRecord.endDate" path="endDate" id="2" read="${view}"/>
+	<acme:textarea code="periodRecord.photos" path="photos" readonly="${view}"/>
+	<jstl:if test="${not view}">
+	<acme:submit name="save" code="periodRecord.save"/>
+	</jstl:if>
+</form:form>
+<input type="submit" onclick="window.history.back()" value="<spring:message code="periodRecord.cancel"/>"/>

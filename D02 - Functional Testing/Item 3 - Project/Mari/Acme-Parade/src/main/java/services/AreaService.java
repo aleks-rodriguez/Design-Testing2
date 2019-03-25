@@ -14,20 +14,25 @@ import repositories.AreaRepository;
 import security.Authority;
 import security.LoginService;
 import utilities.Utiles;
+import domain.Actor;
 import domain.Area;
 import domain.Brotherhood;
 import domain.Chapter;
 
 @Service
 @Transactional
-public class AreaService { //LOS ASSERT DEL PRINCIPAL
+public class AreaService {
 
 	@Autowired
 	private AreaRepository	areaRepository;
 
 
-	public Brotherhood findByUserAccount() {
-		return this.areaRepository.getBrotherhoodByUserAccountId(LoginService.getPrincipal().getId());
+	public Collection<Brotherhood> findBrotherhoodsByArea(final int id) {
+		return this.areaRepository.getBrotherhoodsByAreaId(id);
+	}
+
+	public Actor findActorByUserAccount(final int id) {
+		return this.areaRepository.findActorByUserAccount(id);
 	}
 
 	public Collection<Area> findAll() {
@@ -58,27 +63,26 @@ public class AreaService { //LOS ASSERT DEL PRINCIPAL
 		return saved;
 	}
 
-	public boolean setAreaToBrotherhood(final int area) {
+	public boolean setArea(final int area) {
 		boolean res = false;
-		Brotherhood b;
-		b = this.areaRepository.getBrotherhoodByUserAccountId(LoginService.getPrincipal().getId());
-		final Area a = this.areaRepository.findOne(area);
-		if (b.getArea() == null) {
-			b.setArea(a);
-			res = true;
+		Actor a;
+		a = this.areaRepository.findActorByUserAccount(LoginService.getPrincipal().getId());
+		Area ar;
+		ar = this.areaRepository.findOne(area);
+		if (Utiles.findAuthority(a.getAccount().getAuthorities(), Authority.BROTHERHOOD)) {
+			final Brotherhood b = (Brotherhood) a;
+			if (b.getArea() == null) {
+				b.setArea(ar);
+				res = true;
+			}
+		} else if (Utiles.findAuthority(a.getAccount().getAuthorities(), Authority.CHAPTER)) {
+			final Chapter c = (Chapter) a;
+			if (c.getArea() == null && this.areaRepository.findChapterIfAreaIsAssigned(area) == null) {
+				c.setArea(ar);
+				res = true;
+			}
 		}
-		return res;
-	}
 
-	public boolean setAreaToChapter(final int area) {
-		boolean res = false;
-		Chapter b;
-		b = this.areaRepository.getChapterByUserAccountId(LoginService.getPrincipal().getId());
-		final Area a = this.areaRepository.findOne(area);
-		if (b.getArea() == null) {
-			b.setArea(a);
-			res = true;
-		}
 		return res;
 	}
 

@@ -59,7 +59,7 @@ public class ActorService {
 	@Autowired
 	private BoxService				boxService;
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator				validator;
 
 	@Autowired
@@ -99,6 +99,10 @@ public class ActorService {
 
 	public Collection<Chapter> findAllChapters() {
 		return this.chapterRepository.findAll();
+	}
+
+	public Chapter findChapterByUserAccount(final int id) {
+		return this.brotherhoodRepository.getChapterByUserAccount(id);
 	}
 
 	public Collection<Member> getAllMemberByBrotherhood(final int idBrotherhood) {
@@ -181,7 +185,6 @@ public class ActorService {
 		}
 
 	}
-
 	public UserAccount userAccountAdapted(final String username, final String password, final String auth) {
 
 		UserAccount user;
@@ -206,18 +209,30 @@ public class ActorService {
 		final Collection<Box> boxes = this.boxService.save(Utiles.initBoxes());
 		actor.setBoxes(boxes);
 	}
-	public void save(final Administrator admin, final Brotherhood brotherhood, final Member member, final Chapter chapter, final Sponsor sponsor) {
+	public Actor save(final Administrator admin, final Brotherhood brotherhood, final Member member, final Chapter chapter, final Sponsor sponsor) {
+		Actor saved = null;
 		if (admin != null) {
+			if (admin.getId() != 0)
+				Assert.isTrue(LoginService.getPrincipal().getId() == admin.getAccount().getId());
 			Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
-			this.adminRepository.save(admin);
-		} else if (brotherhood != null)
-			this.brotherhoodRepository.save(brotherhood);
-		else if (member != null)
-			this.memberRepository.save(member);
-		else if (chapter != null)
-			this.chapterRepository.save(chapter);
-		else if (sponsor != null)
-			this.sponsorRepository.save(sponsor);
+			saved = this.adminRepository.save(admin);
+		} else if (brotherhood != null) {
+			if (brotherhood.getId() != 0)
+				Assert.isTrue(LoginService.getPrincipal().getId() == brotherhood.getAccount().getId());
+			saved = this.brotherhoodRepository.save(brotherhood);
+		} else if (member != null) {
+			if (member.getId() != 0)
+				Assert.isTrue(LoginService.getPrincipal().getId() == member.getAccount().getId());
+			saved = this.memberRepository.save(member);
+		} else if (chapter != null) {
+			if (chapter.getId() != 0)
+				Assert.isTrue(LoginService.getPrincipal().getId() == chapter.getAccount().getId());
+			saved = this.chapterRepository.save(chapter);
+		} else if (sponsor != null)
+			if (sponsor.getId() != 0)
+				Assert.isTrue(LoginService.getPrincipal().getId() == sponsor.getAccount().getId());
+		this.sponsorRepository.save(sponsor);
+		return saved;
 	}
 
 	public Administrator reconstructAdministrator(final ActorForm actor, final BindingResult binding) {
@@ -276,7 +291,7 @@ public class ActorService {
 			result = (Member) this.createActor(Authority.MEMBER);
 			this.setToActor(result, actor);
 			this.validator.validate(result, binding);
-			if (!binding.hasErrors() && (actor.getAccount().getPassword().equals(actor.getPassword2()))) {
+			if (!binding.hasErrors()) {
 				this.setBoxes(result);
 				Finder finder;
 				finder = this.serviceFinder.save(this.serviceFinder.createFinder());
@@ -317,7 +332,8 @@ public class ActorService {
 			result.setTitle(actor.getTitle());
 			this.validator.validate(result, binding);
 		}
-
+		if (binding.hasErrors())
+			throw new ValidationException();
 		return result;
 	}
 
@@ -335,15 +351,13 @@ public class ActorService {
 			result.setAccount(this.userAccountAdapted(actor.getAccount().getUsername(), Utiles.hashPassword(actor.getAccount().getPassword()), actor.getAuthority()));
 		else {
 			UserAccount ua;
-			ua = result.getAccount();
-			if (actor.getAccount().getPassword().equals(actor.getPassword2()))
+			ua = this.repositoryUser.findOne(result.getAccount().getId());
+			if (actor.getAccount().getPassword().equals(actor.getPassword2())) {
 				if (!ua.getUsername().equals(actor.getAccount().getUsername()))
-					result.setAccount(this.userAccountAdapted(actor.getAccount().getUsername(), Utiles.hashPassword(actor.getAccount().getPassword()), actor.getAuthority()));
-				else {
-					ua.setPassword(Utiles.hashPassword(actor.getAccount().getPassword()));
-					result.setAccount(ua);
-				}
+					ua.setUsername(actor.getAccount().getUsername());
 
+				ua.setPassword(Utiles.hashPassword(actor.getAccount().getPassword()));
+			}
 		}
 
 	}
@@ -421,8 +435,6 @@ public class ActorService {
 		if (actor.getId() == 0) {
 			result = (Sponsor) this.createActor(Authority.SPONSOR);
 			this.setToActor(result, actor);
-			result.setSponsorship(actor.getSponsorships());
-
 			this.validator.validate(result, binding);
 			if (!binding.hasErrors())
 				this.setBoxes(result);

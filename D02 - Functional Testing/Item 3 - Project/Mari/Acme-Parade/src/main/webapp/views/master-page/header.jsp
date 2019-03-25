@@ -63,7 +63,7 @@
 						code="master.page.procession" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="parade/list.do"><spring:message
+					<li><a href="parade/brotherhood/list.do?idBrotherhood=0"><spring:message
 								code="master.page.procession.list" /></a></li>
 					<li><a href="parade/brotherhood/create.do"><spring:message
 								code="master.page.procession.create" /></a></li>
@@ -86,39 +86,9 @@
 				</ul></li>
 			<li><a class="fNiv" href="area/brotherhood/list.do"><spring:message
 						code="master.page.brotherhood.area" /></a></li>
+			<li><a class="fNiv" href="history/brotherhood/list.do"><spring:message
+						code="master.page.brotherhood.history" /></a></li>
 		</security:authorize>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		<security:authorize access="hasRole('SPONSOR')">
-			<li><a class="fNiv"><spring:message
-						code="master.page.sponsorship" /></a>
-				<ul>
-					<li class="arrow"></li>
-					<li><a href="sponsorship/sponsor/ListNoSponsorshipParade.do"><spring:message
-								code="master.page.parade.list" /></a></li>
-					<li><a href="sponsorship/sponsor/listSponsorship.do"><spring:message
-								code="master.page.sponsorship.list" /></a></li>
-				</ul></li>
-		
-		</security:authorize>
-		
-		
-		
-		
-		
-		
-		
 
 		<security:authorize access="hasRole('MEMBER')">
 
@@ -138,8 +108,35 @@
 		</security:authorize>
 
 		<security:authorize access="hasRole('CHAPTER')">
-
-
+			<li><a class="fNiv" href="area/chapter/list.do"><spring:message
+						code="master.page.brotherhood.area" /></a></li>
+			<li><a class="fNiv" href="area/chapter/listBrotherhood.do"><spring:message
+						code="master.page.brotherhood.listOwn" /></a></li>
+			<li><a class="fNiv"><spring:message
+						code="master.page.proclaims" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="proclaim/chapter/list.do"><spring:message
+								code="master.page.proclaim.list" /></a></li>
+					<li><a href="proclaim/chapter/create.do"><spring:message
+								code="master.page.proclaim.create" /></a></li>
+				</ul></li>
+		</security:authorize>
+		
+		<!-- Sponsor -->
+		<security:authorize access="hasRole('SPONSOR')">
+			<li><a class="fNiv"><spring:message
+						code="master.page.sponsorship" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="sponsorship/sponsor/ListNoSponsorshipParade.do"><spring:message
+								code="master.page.parade.list" /></a></li>
+					<li><a href="sponsorship/sponsor/listSponsorship.do"><spring:message
+								code="master.page.sponsorship.list" /></a></li>
+					<li><a href="sponsorship/sponsor/listSponsorshipD.do"><spring:message
+								code="master.page.sponsorship.listD" /></a></li>
+				</ul></li>
+		
 		</security:authorize>
 
 
@@ -163,14 +160,26 @@
 				</ul></li>
 			<li><a class="fNiv" href="brotherhood/listBrotherhood.do"><spring:message
 						code="master.page.brotherhood.list" /></a></li>
+			<li><a class="fNiv" href="chapter/listChapter.do"><spring:message
+						code="master.page.chapters" /></a></li>
 			<li><a class="fNiv" href="about-us/terms.do"><spring:message
 						code="master.page.terms" /></a></li>
 		</security:authorize>
-		
-
 
 		<!-- Authenticated -->
 		<security:authorize access="isAuthenticated()">
+			<li><a class="fNiv"><spring:message
+						code="master.page.create" /></a>
+
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="actor/createMember.do"><spring:message
+								code="master.page.actor.member" /></a></li>
+					<li><a href="actor/createBrotherhood.do"><spring:message
+								code="master.page.actor.brotherhood" /></a></li>
+					<li><a href="actor/createChapter.do"><spring:message
+								code="master.page.actor.chapter" /></a></li>
+				</ul></li>
 			<li><a class="fNiv" href="brotherhood/listBrotherhood.do"><spring:message
 						code="master.page.brotherhood.list" /></a></li>
 			<li><a class="fNiv"> <spring:message
@@ -195,7 +204,7 @@
 						<li><a href="chapter/personal.do"><spring:message
 									code="master.page.actor.personal" /></a></li>
 					</security:authorize>
-					<security:authorize access="hasRole('SPONSOR')">
+						<security:authorize access="hasRole('SPONSOR')">
 						<li><a href="sponsor/personal.do"><spring:message
 									code="master.page.actor.personal" /></a></li>
 					</security:authorize>
@@ -207,9 +216,10 @@
 								code="master.page.profile.list" /></a></li>
 					<li><a href="j_spring_security_logout"><spring:message
 								code="master.page.logout" /> </a></li>
-					</ul></li>
-				
-</security:authorize>
+				</ul></li>
+			<li><a class="fNiv" href="about-us/terms.do"><spring:message
+						code="master.page.terms" /></a></li>
+		</security:authorize>
 	</ul>
 </div>
 

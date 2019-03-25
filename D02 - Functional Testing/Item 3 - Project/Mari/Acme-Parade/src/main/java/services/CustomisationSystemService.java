@@ -18,8 +18,8 @@ import utilities.Utiles;
 import domain.Actor;
 import domain.CustomisationSystem;
 import domain.Member;
-import domain.Position;
 import domain.Parade;
+import domain.Position;
 
 @Service
 @Transactional
@@ -57,39 +57,12 @@ public class CustomisationSystemService {
 		a = this.repositoryCustomisationSystem.findActor(id);
 		a.getAccount().setEnabled(true);
 	}
-	public Map<String, String[]> dashboardRatio() {
+
+	public void flagSpam(final int idActor) {
 		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
-		Map<String, String[]> result;
-		result = new HashMap<String, String[]>();
-		result.put("RatioRequestToMarchOnEachProcession", this.repositoryCustomisationSystem.requestToMarchOnEachProcession());
-		//result.put("RatioRequestToMarchByStatus", (String[]) this.repositoryCustomisationSystem.findRatioRequestsToMarchByStatus());
-		//result.put("CountPerArea", (String[]) this.repositoryCustomisationSystem.countPerArea());//area
-		//result.put("MinMaxPerArea", (String[]) this.repositoryCustomisationSystem.minMaxPerArea());//area
-		return result;
-	}
-
-	public Map<String, Map<String, Double>> dashboardRatio2() {
-		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
-		Map<String, Map<String, Double>> result;
-		result = new HashMap<String, Map<String, Double>>();
-		//		result.put("RatioRequestToMarchByStatus", this.repositoryCustomisationSystem.findRatioRequestsToMarchByStatus());
-		//		result.put("CountPerArea", this.repositoryCustomisationSystem.countPerArea());//area
-		//		result.put("MinMaxPerArea", this.repositoryCustomisationSystem.minMaxPerArea());//area
-
-		final Collection<Object[]> ratiosRequestToMarch = this.repositoryCustomisationSystem.findRatioRequestsToMarchByStatus();
-
-		Map<String, Double> ratiosRequest;
-		ratiosRequest = new HashMap<String, Double>();
-
-		for (final Object[] o : ratiosRequestToMarch) {
-			final String s = String.valueOf(o[1]);
-			final Double d = (Double) o[0];
-			ratiosRequest.put(s, d);
-		}
-
-		result.put("RatioRequestToMarchByStatus", ratiosRequest);
-
-		return result;
+		Actor a;
+		a = this.repositoryCustomisationSystem.findActor(idActor);
+		a.setSpammer(true);
 	}
 
 	public Map<String, Double[]> marcadorNumericoArray() {
@@ -137,6 +110,79 @@ public class CustomisationSystemService {
 		return result;
 	}
 
+	public Map<String, Map<String, Double>> ratioStatus() {
+		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
+		Map<String, Double> result;
+		result = new HashMap<String, Double>();
+		final Collection<Object[]> rep = this.repositoryCustomisationSystem.findRatioRequestsToMarchByStatus();
+		for (final Object[] o : rep)
+			result.put(o[1].toString(), (Double) o[0]);
+		final Map<String, Map<String, Double>> result2;
+		result2 = new HashMap<>();
+		result2.put("RatioRequestToMarchByStatus", result);
+		return result2;
+
+	}
+
+	public Map<String, Map<String, Map<String, Double>>> dashboardRatio() {
+		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
+		Map<String, Double> result1;
+		result1 = new HashMap<String, Double>();
+		Map<String, Map<String, Double>> result2;
+		result2 = new HashMap<String, Map<String, Double>>();
+		final Collection<Object[]> rep = this.repositoryCustomisationSystem.requestToMarchOnEachProcession();
+		for (final Object[] o : rep) {
+			result1.put(o[1].toString(), (Double) o[2]);
+			result2.put(o[0].toString(), result1);
+		}
+		final Map<String, Map<String, Map<String, Double>>> result3;
+		result3 = new HashMap<>();
+		result3.put("RatioRequestToMarchOnEachProcession", result2);
+		return result3;
+	}
+
+	public Map<String, Map<String, Double>> countPerArea() {
+		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
+		Map<String, Double> result;
+		result = new HashMap<String, Double>();
+		final Collection<Object[]> rep = this.repositoryCustomisationSystem.countPerArea();
+		for (final Object[] o : rep)
+			result.put(o[0].toString(), (Double) o[1]);
+		final Map<String, Map<String, Double>> result2;
+		result2 = new HashMap<>();
+		result2.put("AreaPerBrotherhood", result);
+		return result2;
+	}
+
+	public Map<String, Double> minmaxArea() {
+		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
+		Map<String, Double> result;
+		result = new HashMap<String, Double>();
+		if (!this.repositoryCustomisationSystem.minMaxPerArea().isEmpty()) {
+			result.put("MaxAreaBro", this.repositoryCustomisationSystem.minMaxPerArea().get(0));
+			result.put("MinAreaBro", this.repositoryCustomisationSystem.minMaxPerArea().get(this.repositoryCustomisationSystem.minMaxPerArea().size() - 1));
+		} else {
+			result.put("MaxAreaBro", 0.0);
+			result.put("MinAreaBro", 0.0);
+		}
+		return result;
+
+	}
+
+	public Map<String, String> largestAndSmallerBro() {
+		Assert.isTrue(Utiles.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
+		Map<String, String> result;
+		result = new HashMap<String, String>();
+		if (!this.repositoryCustomisationSystem.largestAndSmallerBro().isEmpty()) {
+			result.put("LargestBro", this.repositoryCustomisationSystem.largestAndSmallerBro().get(0));
+			result.put("SmallerBro", this.repositoryCustomisationSystem.largestAndSmallerBro().get(this.repositoryCustomisationSystem.largestAndSmallerBro().size() - 1));
+		} else {
+			result.put("LargestBro", "");
+			result.put("SmallerBro", "");
+		}
+		return result;
+	}
+
 	public Map<String, Double> getPositionsCount(final String lang) {
 		Map<String, Double> result;
 
@@ -164,4 +210,5 @@ public class CustomisationSystemService {
 		}
 		return result;
 	}
+
 }

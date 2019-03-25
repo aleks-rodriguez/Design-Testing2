@@ -27,12 +27,21 @@
 					code="request.showing" /></a>
 		</display:column>
 	</security:authorize>
-	<display:column titleKey="request.proccesion">${procesion.title}</display:column>
-	<display:column property="marchRow" titleKey="request.row" />
-	<display:column property="marchColumn" titleKey="request.column" />
-	<display:column property="status" titleKey="request.status"
-		sortable="true" />
-	<display:column property="record" titleKey="request.reason" />
+	<display:column titleKey="request.proccesion">
+		<jstl:out value="${procesion.title}" />
+	</display:column>
+	<display:column titleKey="request.row">
+		<jstl:out value="${row.marchRow}" />
+	</display:column>
+	<display:column titleKey="request.column">
+		<jstl:out value="${row.marchColumn}" />
+	</display:column>
+	<display:column titleKey="request.status" sortable="true">
+		<jstl:out value="${row.status}" />
+	</display:column>
+	<display:column titleKey="request.reason">
+		<jstl:out value="${row.reason}" />
+	</display:column>
 
 	<security:authorize access="hasRole('BROTHERHOOD')">
 		<display:column>

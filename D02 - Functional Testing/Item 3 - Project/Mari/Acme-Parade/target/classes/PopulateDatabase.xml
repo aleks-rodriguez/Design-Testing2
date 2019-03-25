@@ -1228,8 +1228,8 @@
 				<ref bean="float4" />
 			</list>
 		</property>
-		<property name="finalMode" value="false" />
-		<property name="status" value="SUBMITTED" />
+		<property name="finalMode" value="true" />
+		<property name="status" value="ACCEPTED" />
 		<property name="whyRejected" value="" />
 	</bean>
 
@@ -1433,12 +1433,13 @@
 	<!-- Segments_They must be contiguous -->
 	<bean id="segment1" class="domain.Segment">
 
-		<property name="origin" value="Coordenada1" />
-		<property name="destiny" value="Coordenada2" />
+		<property name="segment">
+			<ref bean="coordinate1" />
+		</property>
 		<property name="parade">
 			<ref bean="parade1" />
 		</property>
-		<property name="originTime">
+		<property name="arriveTime">
 
 			<bean factory-bean="hourFormat" factory-method="parse">
 				<constructor-arg value="10:00" />
@@ -1446,23 +1447,16 @@
 
 		</property>
 
-		<property name="destinyTime">
-
-			<bean factory-bean="hourFormat" factory-method="parse">
-				<constructor-arg value="11:00" />
-			</bean>
-
-		</property>
-
 	</bean>
 	<bean id="segment2" class="domain.Segment">
 
-		<property name="origin" value="Coordenada2" />
-		<property name="destiny" value="Coordenada3" />
+		<property name="segment">
+			<ref bean="coordinate2" />
+		</property>
 		<property name="parade">
 			<ref bean="parade2" />
 		</property>
-		<property name="originTime">
+		<property name="arriveTime">
 
 			<bean factory-bean="hourFormat" factory-method="parse">
 				<constructor-arg value="11:00" />
@@ -1470,15 +1464,20 @@
 
 		</property>
 
-		<property name="destinyTime">
-
-			<bean factory-bean="hourFormat" factory-method="parse">
-				<constructor-arg value="12:00" />
-			</bean>
-
-		</property>
-
 	</bean>
+	
+	<!-- Coordinates -->
+
+	<bean id="coordinate1" class="domain.Coordinate">
+		<property name="latitude" value="0.2517156" />
+		<property name="longitude" value="15.0000625" />
+	</bean>
+
+	<bean id="coordinate2" class="domain.Coordinate">
+		<property name="latitude" value="65.23615" />
+		<property name="longitude" value="-58.2369458" />
+	</bean>
+	
 
 	<!-- Proclaim -->
 	<bean id="proclaim1" class="domain.Proclaim">

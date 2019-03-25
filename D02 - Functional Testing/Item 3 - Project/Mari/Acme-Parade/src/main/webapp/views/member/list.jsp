@@ -27,8 +27,12 @@
 					code="member.show" /></a>
 		</display:column>
 	</security:authorize>
-	<display:column property="surname" titleKey="member.surname" />
-	<display:column property="name" titleKey="member.name" />
+	<display:column titleKey="member.surname">
+		<jstl:out value="${row.surname}" />
+	</display:column>
+	<display:column titleKey="member.name">
+		<jstl:out value="${row.name}" />
+	</display:column>
 	<security:authorize access="hasRole('BROTHERHOOD')">
 		<display:column titleKey="member.delete">
 			<a href="enrolment/brotherhood/deleteMember.do?idMember=${row.id}"><spring:message

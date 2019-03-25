@@ -21,7 +21,7 @@ import domain.MessageEntity;
 @Transactional
 public class BoxService {
 
-	@Autowired(required = false)
+	@Autowired
 	private Validator		validator;
 
 	@Autowired

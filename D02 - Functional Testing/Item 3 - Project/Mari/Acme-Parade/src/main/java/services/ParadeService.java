@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -26,12 +29,31 @@ import domain.Request;
 @Transactional
 public class ParadeService {
 
-	@Autowired(required = false)
-	private Validator	validator;
+	@Autowired
+	private Validator			validator;
 
 	@Autowired
-	ParadeRepository	processionRepository;
+	private ParadeRepository	processionRepository;
 
+
+	public Collection<Parade> findParadesByBrotherhoodIdFM(final int id) {
+		return this.processionRepository.findParadesByBrotherhoodIdFM(id);
+	}
+
+	public Collection<Parade> findParadesByBrotherhoodId(final int id) {
+		final String lang = LocaleContextHolder.getLocale().getLanguage();
+		Collection<Parade> res = null;
+		if (lang == "en" || lang == null) {
+			res = this.processionRepository.findParadesByBrotherhoodId(id);
+			if (res.isEmpty())
+				res = this.processionRepository.findParadesByBrotherhoodIdES(id);
+		} else {
+			res = this.processionRepository.findParadesByBrotherhoodIdES(id);
+			if (res.isEmpty())
+				res = this.processionRepository.findParadesByBrotherhoodId(id);
+		}
+		return res;
+	}
 
 	public Collection<Parade> findAll() {
 		return this.processionRepository.findAll();
@@ -49,37 +71,48 @@ public class ParadeService {
 		return this.processionRepository.findBrotherhoodByParadesId(idParade);
 	}
 
+	public Collection<Parade> findParadeByBrotherhoodId(final int idBrotherhood) {
+		return this.processionRepository.findParadesByBrotherhoodId(idBrotherhood);
+	}
+
+	public Collection<Parade> findParadesAFM() {
+		return this.processionRepository.findParadesAFM();
+	}
+
 	public Parade createParade() {
 		UserAccount user;
 		user = LoginService.getPrincipal();
 		Assert.isTrue(Utiles.findAuthority(user.getAuthorities(), Authority.BROTHERHOOD));
 		Parade p;
 		p = new Parade();
-		p.setTicker(Utiles.generateTicker());
+		p.setTicker(Utiles.generateTicker(this.processionRepository.findAllTickersSystem()));
 		p.setTitle("");
 		p.setDescription("");
 		p.setMomentOrganised(new Date());
 		p.setFinalMode(false);
 		p.setRequests(new ArrayList<Request>());
 		p.setFloats(new ArrayList<Float>());
-		p.setStatus("");
+		p.setStatus("SUBMITTED");
 		p.setWhyRejected("");
 		return p;
 	}
 	public Parade save(final Parade parade) {
 		UserAccount user;
 		user = LoginService.getPrincipal();
-		Assert.isTrue(Utiles.findAuthority(user.getAuthorities(), Authority.BROTHERHOOD));
-		Parade saved;
-		saved = this.processionRepository.save(parade);
-		Brotherhood b;
-		b = this.processionRepository.findBrotherhoodByUserAccountId(user.getId());
-		Collection<Parade> parades;
-		parades = b.getParades();
-		if (!parades.contains(saved)) {
-			parades.add(saved);
-			b.setParades(parades);
-		}
+		Parade saved = null;
+		if (Utiles.findAuthority(user.getAuthorities(), Authority.BROTHERHOOD)) {
+			saved = this.processionRepository.save(parade);
+			Brotherhood b;
+			b = this.processionRepository.findBrotherhoodByUserAccountId(user.getId());
+			Collection<Parade> parades;
+			parades = b.getParades();
+			if (!parades.contains(saved)) {
+				parades.add(saved);
+				b.setParades(parades);
+			}
+		} else if (Utiles.findAuthority(user.getAuthorities(), Authority.CHAPTER))
+			saved = this.processionRepository.save(parade);
+
 		return saved;
 	}
 
@@ -102,9 +135,10 @@ public class ParadeService {
 
 	public Parade reconstruct(final Parade parade, final BindingResult binding) {
 		Parade result;
-		if (parade.getId() == 0)
+		if (parade.getId() == 0) {
 			result = parade;
-		else {
+			result.setStatus(parade.getStatus());
+		} else {
 			result = this.processionRepository.findOne(parade.getId());
 
 			result.setTicker(parade.getTicker());
@@ -118,6 +152,10 @@ public class ParadeService {
 
 		}
 		this.validator.validate(result, binding);
+
+		if (binding.hasErrors())
+			throw new ValidationException();
+
 		return result;
 	}
 
@@ -126,23 +164,27 @@ public class ParadeService {
 		Parade toCopy;
 		toCopy = this.processionRepository.findOne(id);
 
+		Brotherhood b;
+		b = this.findBrotherhoodByParade(toCopy.getId());
+
+		Assert.isTrue(b.getAccount().getId() == LoginService.getPrincipal().getId());
+		Assert.isTrue(toCopy.getFinalMode());
+
 		Parade newParade;
 		newParade = this.createParade();
 
+		newParade.setTitle(toCopy.getTitle());
 		newParade.setDescription(toCopy.getDescription());
 		newParade.setFinalMode(false);
 		newParade.setFloats(toCopy.getFloats());
 		newParade.setMomentOrganised(toCopy.getMomentOrganised());
 		newParade.setRequests(toCopy.getRequests());
-		newParade.setTicker(Utiles.generateTicker());
-		newParade.setStatus("");
+		newParade.setTicker(Utiles.generateTicker(this.processionRepository.findAllTickersSystem()));
+		newParade.setStatus("SUBMITTED");
 		newParade.setWhyRejected("");
 
 		Parade saved;
 		saved = this.processionRepository.save(newParade);
-
-		Brotherhood b;
-		b = this.findBrotherhoodByParade(toCopy.getId());
 
 		Collection<Parade> parades;
 		parades = b.getParades();
@@ -150,9 +192,5 @@ public class ParadeService {
 		b.setParades(parades);
 
 		return saved;
-	}
-
-	public Collection<Parade> findParadesAFM() {
-		return this.processionRepository.findParadesAFM();
 	}
 }

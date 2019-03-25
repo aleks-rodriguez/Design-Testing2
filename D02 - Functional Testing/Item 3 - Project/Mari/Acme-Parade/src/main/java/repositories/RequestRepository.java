@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Actor;
+import domain.Member;
 import domain.Parade;
 import domain.Request;
 
@@ -17,6 +18,12 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
 
 	@Query("select a from Actor a where a.account.id = ?1")
 	Actor findByUserAccount(int id);
+
+	@Query("select a from Member a where a.account.id=?1")
+	Member findMemberByUserAccount(int accountId);
+
+	@Query("select a from Brotherhood a where a.account.id=?1")
+	Member findBroByUserAccount(int accountId);
 
 	@Query("select p.requests from Parade p where p.id = ?1")
 	Collection<Request> getRequestByProcessionId(int id);
