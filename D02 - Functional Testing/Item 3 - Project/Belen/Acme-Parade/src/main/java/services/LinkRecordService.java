@@ -65,12 +65,14 @@ public class LinkRecordService {
 		b = this.paradeService.findBrotherhoodByUser(user.getId());
 		History h;
 		h = b.getHistory();
+		Assert.notNull(b.getHistory(), "You don't have access");
 		Collection<LinkRecord> linkRecordPerBrotherhood;
 		linkRecordPerBrotherhood = h.getLinkRecord();
 		if (link.getId() == 0) {
 			linkRecordPerBrotherhood.add(saved);
 			h.setLinkRecord(linkRecordPerBrotherhood);
-		}
+		} else
+			Assert.isTrue(b.getHistory().getLinkRecord().contains(this.findOne(saved.getId())), "You don't have access to edit this link record");
 		return saved;
 	}
 
@@ -84,6 +86,8 @@ public class LinkRecordService {
 		b = this.paradeService.findBrotherhoodByUser(user.getId());
 		History h;
 		h = b.getHistory();
+		Assert.notNull(b.getHistory(), "You don't have access");
+		Assert.isTrue(b.getHistory().getLinkRecord().contains(this.findOne(l.getId())), "You don't have access to edit this link record");
 		Collection<LinkRecord> linkRecordPerBrotherhood;
 		linkRecordPerBrotherhood = h.getLinkRecord();
 		linkRecordPerBrotherhood.remove(l);

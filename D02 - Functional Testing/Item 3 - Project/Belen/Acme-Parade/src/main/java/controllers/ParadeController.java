@@ -149,6 +149,7 @@ public class ParadeController extends AbstractController {
 		result = this.createEditModelAndView(p);
 		Brotherhood b;
 		b = this.paradeService.findBrotherhoodByUser(LoginService.getPrincipal().getId());
+		Assert.isTrue(b.getParades().contains(p), "You don't have permission to delete this parade");
 		result.addObject("floatsBro", b.getFloats());
 		result.addObject("floats", p.getFloats());
 		result.addObject("view", false);

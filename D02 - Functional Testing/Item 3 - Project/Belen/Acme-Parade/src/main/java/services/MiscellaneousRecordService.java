@@ -63,12 +63,14 @@ public class MiscellaneousRecordService {
 		b = this.paradeService.findBrotherhoodByUser(user.getId());
 		History h;
 		h = b.getHistory();
+		Assert.notNull(b.getHistory(), "You don't have access");
 		Collection<MiscellaneousRecord> miscellaneousRecordPerBrotherhood;
 		miscellaneousRecordPerBrotherhood = h.getMiscellaneousRecord();
 		if (miscellaneous.getId() == 0) {
 			miscellaneousRecordPerBrotherhood.add(saved);
 			h.setMiscellaneousRecord(miscellaneousRecordPerBrotherhood);
-		}
+		} else
+			Assert.isTrue(b.getHistory().getMiscellaneousRecord().contains(this.findOne(saved.getId())), "You don't have access to edit this miscellaneous record");
 		return saved;
 	}
 
@@ -76,15 +78,17 @@ public class MiscellaneousRecordService {
 		UserAccount user;
 		user = LoginService.getPrincipal();
 		Assert.isTrue(Utiles.findAuthority(user.getAuthorities(), Authority.BROTHERHOOD));
-		MiscellaneousRecord l;
-		l = this.miscellaneousRecordRepository.findOne(idMiscellaneous);
+		MiscellaneousRecord m;
+		m = this.miscellaneousRecordRepository.findOne(idMiscellaneous);
 		Brotherhood b;
 		b = this.paradeService.findBrotherhoodByUser(user.getId());
 		History h;
 		h = b.getHistory();
+		Assert.notNull(b.getHistory(), "You don't have access");
+		Assert.isTrue(b.getHistory().getMiscellaneousRecord().contains(this.findOne(idMiscellaneous)), "You don't have access to edit this miscellaneous record");
 		Collection<MiscellaneousRecord> miscellaneousRecordPerBrotherhood;
 		miscellaneousRecordPerBrotherhood = h.getMiscellaneousRecord();
-		miscellaneousRecordPerBrotherhood.remove(l);
+		miscellaneousRecordPerBrotherhood.remove(m);
 		this.miscellaneousRecordRepository.delete(idMiscellaneous);
 	}
 
