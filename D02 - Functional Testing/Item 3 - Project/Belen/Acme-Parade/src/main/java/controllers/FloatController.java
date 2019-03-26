@@ -109,9 +109,10 @@ public class FloatController extends AbstractController {
 		Float f;
 		UserAccount user;
 		user = LoginService.getPrincipal();
-
+		Brotherhood b;
+		b = this.paradeService.findBrotherhoodByUser(user.getId());
 		f = this.floatService.findOne(idFloat);
-		Assert.notNull(f);
+		Assert.isTrue(b.getFloats().contains(f), "You don't have permission to delete this parade");
 		if (!(this.floatService.findBrotherhoodByUser(user.getId()).getFloats().contains(this.floatService.findOne(idFloat))))
 			result = new ModelAndView("redirect:/");
 		else {

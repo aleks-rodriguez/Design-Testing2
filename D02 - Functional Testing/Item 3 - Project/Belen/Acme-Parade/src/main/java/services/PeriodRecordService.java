@@ -68,12 +68,14 @@ public class PeriodRecordService {
 		b = this.paradeService.findBrotherhoodByUser(user.getId());
 		History h;
 		h = b.getHistory();
+		Assert.notNull(b.getHistory(), "You don't have access");
 		Collection<PeriodRecord> periodRecordPerBrotherhood;
 		periodRecordPerBrotherhood = h.getPeriodRecord();
 		if (period.getId() == 0) {
 			periodRecordPerBrotherhood.add(saved);
 			h.setPeriodRecord(periodRecordPerBrotherhood);
-		}
+		} else
+			Assert.isTrue(b.getHistory().getPeriodRecord().contains(this.findOne(saved.getId())), "You don't have access to edit this period record");
 		return saved;
 	}
 
@@ -87,6 +89,8 @@ public class PeriodRecordService {
 		b = this.paradeService.findBrotherhoodByUser(user.getId());
 		History h;
 		h = b.getHistory();
+		Assert.notNull(b.getHistory(), "You don't have access");
+		Assert.isTrue(b.getHistory().getPeriodRecord().contains(this.findOne(idPeriod)), "You don't have access to edit this period record");
 		Collection<PeriodRecord> periodRecordPerBrotherhood;
 		periodRecordPerBrotherhood = h.getPeriodRecord();
 		periodRecordPerBrotherhood.remove(l);

@@ -68,6 +68,7 @@ public class FloatService {
 		saved = this.floatRepository.save(f);
 		Brotherhood b;
 		b = this.findBrotherhoodByUser(user.getId());
+		Assert.isTrue(b.getFloats().contains(saved), "You don't have permission to edit this float");
 		Collection<Float> floatsPerBrotherhood;
 		floatsPerBrotherhood = b.getFloats();
 		if (f.getId() == 0) {
@@ -87,6 +88,7 @@ public class FloatService {
 		b = this.floatRepository.findBrotherhoodByUserAccountId(user.getId());
 		Float f;
 		f = this.floatRepository.findOne(idFloat);
+		Assert.isTrue(b.getFloats().contains(f), "You don't have permission to delete this float");
 		for (final Parade procession : b.getParades()) {
 			Collection<Float> floatPerProcession;
 			floatPerProcession = procession.getFloats();

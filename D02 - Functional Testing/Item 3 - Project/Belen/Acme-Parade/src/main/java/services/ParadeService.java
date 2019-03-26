@@ -102,6 +102,7 @@ public class ParadeService {
 			saved = this.processionRepository.save(parade);
 			Brotherhood b;
 			b = this.processionRepository.findBrotherhoodByUserAccountId(user.getId());
+			Assert.isTrue(b.getParades().contains(saved), "You don't have permission to edit this parade");
 			Collection<Parade> parades;
 			parades = b.getParades();
 			if (!parades.contains(saved)) {
@@ -122,6 +123,7 @@ public class ParadeService {
 		p = this.processionRepository.findOne(idParade);
 		Brotherhood b;
 		b = this.processionRepository.findBrotherhoodByParadesId(idParade);
+		Assert.isTrue(b.getParades().contains(p), "You don't have permission to delete this parade");
 		Collection<Parade> paradesPerBrotherhood;
 		paradesPerBrotherhood = b.getParades();
 		if (paradesPerBrotherhood.contains(p)) {

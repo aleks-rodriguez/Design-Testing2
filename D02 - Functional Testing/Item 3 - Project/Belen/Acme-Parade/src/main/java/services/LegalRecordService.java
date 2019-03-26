@@ -67,12 +67,14 @@ public class LegalRecordService {
 		b = this.paradeService.findBrotherhoodByUser(user.getId());
 		History h;
 		h = b.getHistory();
+		Assert.notNull(b.getHistory(), "You don't have access");
 		Collection<LegalRecord> legalRecordPerBrotherhood;
 		legalRecordPerBrotherhood = h.getLegalRecord();
 		if (legal.getId() == 0) {
 			legalRecordPerBrotherhood.add(saved);
 			h.setLegalRecord(legalRecordPerBrotherhood);
-		}
+		} else
+			Assert.isTrue(b.getHistory().getLegalRecord().contains(this.findOne(saved.getId())), "You don't have access to edit this legal record");
 		return saved;
 	}
 
@@ -86,6 +88,8 @@ public class LegalRecordService {
 		b = this.paradeService.findBrotherhoodByUser(user.getId());
 		History h;
 		h = b.getHistory();
+		Assert.notNull(b.getHistory(), "You don't have access");
+		Assert.isTrue(b.getHistory().getLegalRecord().contains(this.findOne(l.getId())), "You don't have access to delete this legal record");
 		Collection<LegalRecord> legalRecordPerBrotherhood;
 		legalRecordPerBrotherhood = h.getLegalRecord();
 		legalRecordPerBrotherhood.remove(l);

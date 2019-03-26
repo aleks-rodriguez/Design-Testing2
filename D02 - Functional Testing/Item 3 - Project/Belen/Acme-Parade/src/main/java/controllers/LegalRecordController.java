@@ -79,12 +79,8 @@ public class LegalRecordController extends AbstractController {
 		l = this.legalService.findOne(idLegal);
 		Assert.notNull(b.getHistory(), "You don't have access");
 		Assert.isTrue(b.getHistory().getLegalRecord().contains(this.legalService.findOne(idLegal)), "You don't have access to edit this legal record");
-		if (!(this.paradeService.findBrotherhoodByUser(user.getId()).getHistory().getLegalRecord().contains(this.legalService.findOne(idLegal))))
-			result = new ModelAndView("redirect:/");
-		else {
-			result = this.createEditModelAndView(l);
-			result.addObject("requestURI", "legalRecord/brotherhood/edit.do?idLegal=" + idLegal);
-		}
+		result = this.createEditModelAndView(l);
+		result.addObject("requestURI", "legalRecord/brotherhood/edit.do?idLegal=" + idLegal);
 		return result;
 	}
 
