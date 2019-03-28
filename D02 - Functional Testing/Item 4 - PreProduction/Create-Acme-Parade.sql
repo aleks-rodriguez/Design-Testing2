@@ -1,12 +1,28 @@
 ﻿start transaction;
 drop database if exists `Acme-Parade`;
 create database `Acme-Parade`;
-use Acme-HandyWork;
+use `Acme-Parade`;
 create user 'acme-user'@'%'identified by 'ACME-Us3r-P@ssw0rd';
 create user 'acme-manager'@'%' identified by 'ACME-M@n@ger-6874';
 grant select, insert, update, delete on `Acme-Parade`.* to 'acme-user'@'%';
 grant select, insert, update, delete, create, drop, references, index, alter, create temporary tables,
 lock tables, create view, create routine, alter routine, execute, trigger, show view on `Acme-Parade`.* to 'acme-manager'@'%';
+-- MySQL dump 10.13  Distrib 5.5.29, for Win64 (x86)
+--
+-- Host: localhost    Database: Acme-Parade
+-- ------------------------------------------------------
+-- Server version	5.5.29
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
 -- Table structure for table `actor_boxes`
@@ -1547,5 +1563,5 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-28 19:31:03
+-- Dump completed on 2019-03-28 19:58:23
 commit;
