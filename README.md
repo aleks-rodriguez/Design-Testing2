@@ -15,6 +15,7 @@
   ## Repositorios alternativos
   
   * D02 - https://github.com/angel96/DT2-FunctionalTesting-Merge
+  * D03 - https://github.com/angel96/DT2PerformanceTesting-Merge
   
   ## Tecnologías usadas
   
