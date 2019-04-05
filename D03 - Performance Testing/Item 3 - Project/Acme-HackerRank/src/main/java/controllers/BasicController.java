@@ -29,10 +29,11 @@ public abstract class BasicController extends AbstractController {
 	 */
 
 	//List
-	public <T extends DomainEntity> ModelAndView listModelAndView(final String nameCollection, final String nameView, final Collection<T> objects) {
+	public <T extends DomainEntity> ModelAndView listModelAndView(final String nameCollection, final String nameView, final Collection<T> objects, final String requestURI) {
 		ModelAndView result;
 		result = this.custom(new ModelAndView(nameView));
 		result.addObject(nameCollection, objects);
+		result.addObject("requestURI", requestURI);
 		return result;
 	}
 	//Create
@@ -70,7 +71,7 @@ public abstract class BasicController extends AbstractController {
 			result = this.createAndEditModelAndView(e, error, nameEntity, nameView, requestParams, requestURI, requestCancel);
 		}
 
-		return this.custom(result);
+		return result;
 	}
 	// Delete
 	public <T extends DomainEntity> ModelAndView delete(final T e, final String error, final String nameEntity, final String nameView, final Map<String, String> requestParams, final String requestURI, final String requestCancel, final String nameResolver) {

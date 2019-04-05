@@ -27,6 +27,11 @@
 	<!-- Data source -->
 
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"	destroy-method="close">
+<!-- CleverCloud 
+    <property name="jdbcUrl" value="jdbc:mysql://b7rvejv0nlpeyuie6bni-mysql.services.clever-cloud.com:3306/b7rvejv0nlpeyuie6bni" />
+    <property name="user" value="utxzg2dmpjpaiuwz" />
+    <property name="password" value="CJRlW3bmf6xvdh082dWb" />
+    -->
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
 		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/acme-hackerrank" />
 		<property name="user" value="acme-user" />

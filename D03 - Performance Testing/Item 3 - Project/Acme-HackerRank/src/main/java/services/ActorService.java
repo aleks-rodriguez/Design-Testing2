@@ -7,14 +7,25 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
+import repositories.AdministratorRepository;
+import security.Authority;
+import security.LoginService;
+import domain.Actor;
+import domain.Administrator;
 import domain.CreditCard;
 
 @Service
 @Transactional
-public class ActorService {
+public class ActorService extends AbstractService {
+
+	@Autowired
+	private AdministratorRepository	repository;
+
 
 	public CreditCard createCreditCard() {
 		CreditCard creditCard;
@@ -41,4 +52,24 @@ public class ActorService {
 
 		return passEncoded;
 	}
+
+	public void delete(final int actorId) {
+		Assert.notNull(LoginService.getPrincipal().getUsername());
+		Actor a;
+
+		if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN)) {
+			a = this.repository.findActorByUserAccountId(actorId);
+			//			Assert.isTrue(this.adminRepository.getAdministratorByUserAccountId(LoginService.getPrincipal().getId()).getId() == actorId, "Delete not allowed");
+			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
+
+			a.getAccount().setEnabled(false);
+			a.setName("anonymous");
+			a.setPhone("anonymous");
+			a.setSurname("anonymous");
+			a.setPhone("anonymous");
+			a.setEmail("anonymous@email.anon");
+			this.repository.save((Administrator) a);
+		}
+	}
+
 }
