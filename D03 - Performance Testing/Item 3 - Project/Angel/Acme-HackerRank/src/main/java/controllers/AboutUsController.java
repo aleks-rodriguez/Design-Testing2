@@ -12,6 +12,6 @@ public class AboutUsController extends AbstractController {
 
 	@RequestMapping(value = "terms", method = RequestMethod.GET)
 	public ModelAndView termsAndConditions() {
-		return this.custom(new ModelAndView("about-us/terms-conditions"));
+		return super.custom(new ModelAndView("about-us/terms-conditions"));
 	}
 }

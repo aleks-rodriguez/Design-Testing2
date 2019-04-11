@@ -15,14 +15,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.CustomisationService;
+import services.CustomisationSystemService;
 
 @Controller
 @RequestMapping("/welcome")
 public class WelcomeController extends AbstractController {
 
 	@Autowired
-	private CustomisationService	service;
+	private CustomisationSystemService	service;
 
 
 	// Constructors -----------------------------------------------------------

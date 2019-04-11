@@ -18,7 +18,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="security"
-  uri="http://www.springframework.org/security/tags"%>
+	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 <link href="styles/date.css" rel="stylesheet">
 <%-- Attributes --%>
@@ -26,23 +26,52 @@
 <%@ attribute name="path" required="true"%>
 <%@ attribute name="code" required="true"%>
 <%@ attribute name="id" required="true"%>
-<%@ attribute name="read" required="false"%>
+<%@ attribute name="readonly" required="false"%>
+<%@ attribute name="start" required="false"%>
+<%@ attribute name="end" required="false"%>
 
 <%-- Definition --%>
 
 <script type="text/javascript">
-  $(function() {
-    var id = "#" + "${id}";
-    $(id).datepicker({
-      appendText : "(yy/mm/dd)",
-      dateFormat : "yy/mm/dd"
-    });
-  });
+	$(function() {
+		var start = "${start}";
+		var end = "${end}";
+
+		var id = "#" + "${id}";
+
+		if (start == "" && end == "") {
+			$(id).datepicker({
+				appendText : "(yy/mm/dd)",
+				dateFormat : "yy/mm/dd"
+			});
+		} else if (start != "" && end == "") {
+			$(id).datepicker({
+				appendText : "(yy/mm/dd)",
+				dateFormat : "yy/mm/dd",
+				minDate : new Date(start)
+			});
+		} else if (start == "" && end != ""){
+			$(id).datepicker({
+				appendText : "(yy/mm/dd)",
+				dateFormat : "yy/mm/dd",
+				maxDate : new Date(end)
+			});
+		} else {
+			$(id).datepicker({
+				appendText : "(yy/mm/dd)",
+				dateFormat : "yy/mm/dd",
+				minDate : new Date(start),
+				maxDate : new Date(end)
+			});
+		}
+
+	});
 </script>
 <div>
-  <form:label path="${path}">
-    <spring:message code="${code}" />
-  </form:label>
-  <form:input path="${path}" type="text" id="${id}" readonly="${read}"/>
-  <form:errors path="${path}" cssClass="error" />
+	<form:label path="${path}">
+		<spring:message code="${code}" />
+	</form:label>
+	<form:input path="${path}" type="text" id="${id}"
+		readonly="${readonly}" />
+	<form:errors path="${path}" cssClass="error" />
 </div>

@@ -1,10 +1,9 @@
 
 package controllers;
 
-import java.util.HashMap;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,35 +25,45 @@ public class ProfileController extends BasicController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
-		return super.listModelAndView("profiles", "profile/list", this.service.getActorByUser(LoginService.getPrincipal().getId()).getProfiles());
+		return super.listModelAndView("profiles", "profile/list", this.service.getActorByUser(LoginService.getPrincipal().getId()).getProfiles(), "profile/list.do");
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
-		return super.create(this.service.createProfile(), "profile", "profile/edit", new HashMap<String, String>(), "profile/edit.do", "redirect:list.do");
+		return super.create(this.service.createProfile(), "profile", "profile/edit", "profile/edit.do", "/profile/list.do");
+	}
+
+	@RequestMapping(value = "/show", method = RequestMethod.GET)
+	public ModelAndView show(@RequestParam final int id) {
+		ModelAndView result;
+		result = super.show(this.service.findOne(id), "profile", "profile/edit", "profile/edit.do", "profile/list.do");
+		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int id) {
-		return super.edit(this.service.findOne(id), "profile", "profile/edit", new HashMap<String, String>(), "profile/edit.do", "redirect:list.do");
+		return super.edit(this.service.findOne(id), "profile", "profile/edit", "profile/edit.do", "/profile/list.do");
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView saveEntity(final Profile profile, final BindingResult binding) {
 		ModelAndView result;
-		result = super.save(profile, binding, "profile.commit.error", "profile", "profile/edit", new HashMap<String, String>(), "profile/edit.do", "redirect:list.do", "redirect:list.do");
+		if (profile.getId() != 0)
+			Assert.isTrue(this.service.getActorByUser(LoginService.getPrincipal().getId()).getProfiles().contains(profile), "You don't have permission to do this");
+		result = super.save(profile, binding, "profile.commit.error", "profile", "profile/edit", "profile/edit.do", "/profile/list.do", "redirect:list.do");
 		return result;
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView deleteEntity(@RequestParam final int id) {
 		ModelAndView result;
-		result = super.delete(this.service.findOne(id), "profile.commit.error", "profile", "profile/edit", new HashMap<String, String>(), "profile/edit.do", "redirect:list.do", "redirect:list.do");
+		Assert.isTrue(this.service.getActorByUser(LoginService.getPrincipal().getId()).getProfiles().contains(this.service.findOne(id)), "You don't have permission to do this");
+		result = super.delete(this.service.findOne(id), "profile.commit.error", "profile", "profile/edit", "profile/edit.do", "/profile/list.do", "redirect:list.do");
 		return result;
 	}
 
 	@Override
-	public <T extends DomainEntity> ModelAndView saveAction(final T e, final BindingResult binding, final String nameResolver) {
+	public <T> ModelAndView saveAction(final T e, final BindingResult binding, final String nameResolver) {
 		ModelAndView result;
 		Profile profile;
 		profile = (Profile) e;

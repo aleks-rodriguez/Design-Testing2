@@ -44,6 +44,34 @@
 		<!-- Application -->
 		<bean class="converters.ApplicationToStringConverter" />
 		<bean class="converters.StringToApplicationConverter" />
+		
+		<!-- Ticker -->
+		<bean class="converters.TickerToStringConverter" />
+		<bean class="converters.StringToTickerConverter" />
+		
+		<!-- Curricula -->
+		<bean class="converters.CurriculaToStringConverter" />
+		<bean class="converters.StringToCurriculaConverter" />
+		
+		<!-- EducationData -->
+		<bean class="converters.EducationDataToStringConverter" />
+		<bean class="converters.StringToEducationDataConverter" />
+		
+		<!-- MiscellaneousData -->
+		<bean class="converters.MiscellaneousDataToStringConverter" />
+		<bean class="converters.StringToMiscellaneousDataConverter" />
+		
+		<!-- PositionData -->
+		<bean class="converters.PositionDataToStringConverter" />
+		<bean class="converters.StringToPositionDataConverter" />
+		
+		<!-- Application -->
+		<bean class="converters.ApplicationToStringConverter" />
+		<bean class="converters.StringToApplicationConverter" />
+		<!-- Answer -->
+		<bean class="converters.AnswerToStringConverter" />
+		<bean class="converters.StringToAnswerConverter" />
 	</util:list>
 
 </beans>
+		

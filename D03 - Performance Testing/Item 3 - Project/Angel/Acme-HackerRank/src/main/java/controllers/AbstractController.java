@@ -24,7 +24,6 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-import security.Authority;
 import domain.CustomisationSystem;
 
 @Controller
@@ -38,6 +37,10 @@ public class AbstractController {
 		System.setProperty("mess", param.getMessage());
 		System.setProperty("banner", param.getBanner());
 		System.setProperty("phonePrefix", param.getBanner());
+		System.setProperty("spamwords", param.getSpamwords().get(this.getLanguageSystem()));
+		System.setProperty("hoursFinder", param.getHoursFinder().toString());
+		System.setProperty("finderSize", param.getResultFinder().toString());
+
 	}
 
 	// Panic handler ----------------------------------------------------------
@@ -76,20 +79,6 @@ public class AbstractController {
 		return res;
 	}
 
-	public Boolean findAuthority(final Collection<Authority> comp, final String a) {
-		Boolean res = false;
-		if (comp.size() > 1) {
-			Authority aut;
-			aut = new Authority();
-			aut.setAuthority(a);
-			res = comp.contains(aut);
-		} else
-			for (final Authority authority : comp)
-				if (authority.toString().equals(a))
-					res = true;
-
-		return res;
-	}
 	public boolean luhnAlgorithm(final String cadena) {
 		int[] str;
 		str = new int[cadena.length()];
@@ -129,7 +118,7 @@ public class AbstractController {
 		return result.get(this.getLanguageSystem());
 	}
 
-	public boolean checkURL(final Collection<String> urls) {
+	public boolean checkURL(final Collection<String> urls, final boolean optional) {
 		boolean res = false;
 
 		for (final String url : urls) {
@@ -138,7 +127,7 @@ public class AbstractController {
 				break;
 		}
 
-		return res;
+		return urls.size() > 0 ? res : optional;
 	}
 	//CustomisationSystem for Controllers ModelAndView
 

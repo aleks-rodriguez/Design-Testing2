@@ -23,4 +23,5 @@ public interface CustomisationSystemRepository extends JpaRepository<Customisati
 
 	@Query("select a from Actor a where a.account.id = ?1")
 	Actor findActorByUserAccountId(int id);
+
 }
