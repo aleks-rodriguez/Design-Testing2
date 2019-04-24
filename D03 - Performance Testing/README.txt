@@ -21,3 +21,5 @@ all the information related to the deliverable.
 Things to take into account before you see our deliverable:
 
 1. Make use of the provide Script SQL (create-acme-parade.sql) to initialize Database.
+2. Hibernate Search Lucenete doesn´t work properly in production due to the amount of threads used by spring, 
+tomcat and lucene at the same time. This does not happen in developer.
