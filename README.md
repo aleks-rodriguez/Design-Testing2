@@ -6,7 +6,7 @@
   
   * D01 - Mar 7, 2019 (Terminado)
   * D02 - Mar 28, 2019 (Terminado)
-  * D03 - Apr 25, 2019
+  * D03 - Apr 25, 2019 (Terminado)
   * D04 - May 16, 2019
   * D05 - Hackathon
     * Ideas must be delivered before Apr 22, 2019
@@ -16,6 +16,7 @@
   
   * D02 - https://github.com/angel96/DT2-FunctionalTesting-Merge
   * D03 - https://github.com/angel96/DT2PerformanceTesting-Merge
+  * D05 - https://github.com/angel96/DEL5
   
   ## Tecnologías usadas
   
@@ -44,7 +45,7 @@
   
   * D01 - Mar 7, 2019 (Finished)
   * D02 - Mar 28, 2019 (Finished)
-  * D03 - Apr 25, 2019
+  * D03 - Apr 25, 2019 (Finished)
   * D04 - May 16, 2019
   * D05 - Hackathon
     * Antes del 22 de Abril se debe de enviar una bateria de ideas
