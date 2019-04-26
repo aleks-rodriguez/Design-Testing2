@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- * converters.xml * * Copyright (C) 2019 Universidad de Sevilla * * The 
+	use of this project is hereby constrained to the conditions of the * TDG 
+	Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd		
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd		
+	">
+
+	<util:list id="converters">
+		<!-- Nivel C -->
+		
+		<!-- Authority -->
+		<bean class="converters.AuthorityToStringConverter" />
+		<bean class="converters.StringToAuthorityConverter" />
+		<!-- Administrator -->
+		<bean class="converters.AdministratorToStringConverter" />
+		<bean class="converters.StringToAdministratorConverter" />
+		<!-- Rookie -->
+		<bean class="converters.RookieToStringConverter" />
+		<bean class="converters.StringToRookieConverter" />
+		<!-- Company -->
+		<bean class="converters.CompanyToStringConverter" />
+		<bean class="converters.StringToCompanyConverter" />
+		<!-- Position -->
+		<bean class="converters.PositionToStringConverter" />
+		<bean class="converters.StringToPositionConverter" />
+		<!-- CreditCard -->
+		<bean class="converters.CreditCardToStringConverter" />
+		<bean class="converters.StringToCreditCardConverter" />
+		<!-- Position -->
+		<bean class="converters.PositionToStringConverter" />
+		<bean class="converters.StringToPositionConverter" />
+		<!-- Problem -->
+		<bean class="converters.ProblemToStringConverter" />
+		<bean class="converters.StringToProblemConverter" />
+		<!-- Profile -->
+		<bean class="converters.ProfileToStringConverter" />
+		<bean class="converters.StringToProfileConverter" />
+		<!-- Application -->
+		<bean class="converters.ApplicationToStringConverter" />
+		<bean class="converters.StringToApplicationConverter" />
+		
+		<!-- Ticker -->
+		<bean class="converters.TickerToStringConverter" />
+		<bean class="converters.StringToTickerConverter" />
+		
+		<!-- Curricula -->
+		<bean class="converters.CurriculaToStringConverter" />
+		<bean class="converters.StringToCurriculaConverter" />
+		
+		<!-- EducationData -->
+		<bean class="converters.EducationDataToStringConverter" />
+		<bean class="converters.StringToEducationDataConverter" />
+		
+		<!-- MiscellaneousData -->
+		<bean class="converters.MiscellaneousDataToStringConverter" />
+		<bean class="converters.StringToMiscellaneousDataConverter" />
+		
+		<!-- PositionData -->
+		<bean class="converters.PositionDataToStringConverter" />
+		<bean class="converters.StringToPositionDataConverter" />
+		
+		<!-- Application -->
+		<bean class="converters.ApplicationToStringConverter" />
+		<bean class="converters.StringToApplicationConverter" />
+		<!-- Answer -->
+		<bean class="converters.AnswerToStringConverter" />
+		<bean class="converters.StringToAnswerConverter" />
+		<!-- Message -->
+		<bean class="converters.MessageEntityToStringConverter" />
+		<bean class="converters.StringToMessageEntityConverter" />
+		<!-- Actor -->
+		<bean class="converters.ActorToStringConverter" />
+		<bean class="converters.StringToActorConverter" />
+	</util:list>
+
+</beans>
+		
