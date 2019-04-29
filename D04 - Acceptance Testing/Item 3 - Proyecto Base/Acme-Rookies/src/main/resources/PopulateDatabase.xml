@@ -686,6 +686,7 @@
 			<ref bean="company1" />
 		</property>
 		<property name="cancel" value="false" />
+		<property name="auditor" ref="auditor1" />
 	</bean>
 
 	<bean id="position2" class="domain.Position">
@@ -726,6 +727,7 @@
 			<ref bean="company1" />
 		</property>
 		<property name="cancel" value="false" />
+
 	</bean>
 
 	<bean id="position4" class="domain.Position">
@@ -746,6 +748,7 @@
 			<ref bean="company1" />
 		</property>
 		<property name="cancel" value="false" />
+		<property name="auditor" ref="auditor2" />
 	</bean>
 
 

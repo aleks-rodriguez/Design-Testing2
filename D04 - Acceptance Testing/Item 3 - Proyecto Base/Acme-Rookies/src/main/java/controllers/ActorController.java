@@ -2,6 +2,8 @@
 package controllers;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -194,7 +196,12 @@ public class ActorController extends BasicController {
 		Actor actor;
 		actor = this.actorService.findByUserAccount(LoginService.getPrincipal().getId());
 
-		result = new ModelAndView(new ExportActorDataPDFController(), "actor", actor);
+		Map<String, Object> map;
+		map = new HashMap<String, Object>();
+
+		map.put("actor", actor);
+
+		result = new ModelAndView(new ExportActorDataPDFController(), map);
 
 		return result;
 	}

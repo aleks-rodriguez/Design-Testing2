@@ -47,6 +47,7 @@ public class Position extends DomainEntity {
 	private boolean	finalMode;
 	private boolean	cancel;
 	private Company	company;
+	private Auditor	auditor;
 
 
 	@OneToOne(cascade = {
@@ -158,6 +159,15 @@ public class Position extends DomainEntity {
 
 	public void setCancel(final boolean cancel) {
 		this.cancel = cancel;
+	}
+
+	@ManyToOne(optional = true)
+	public Auditor getAuditor() {
+		return this.auditor;
+	}
+
+	public void setAuditor(final Auditor auditor) {
+		this.auditor = auditor;
 	}
 
 }
