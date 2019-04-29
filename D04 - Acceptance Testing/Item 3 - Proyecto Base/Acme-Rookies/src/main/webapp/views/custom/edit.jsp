@@ -25,6 +25,7 @@
 	<acme:textbox code="custom.banner" path="banner" />
 	<acme:textarea code="custom.message" path="message" />
 	<acme:textbox code="custom.prefix" path="phonePrefix" />
+	<acme:textbox code="custom.vat" path="vat" />
 	<acme:select_range end="24" begin="1" code="custom.hoursFinder"
 		path="hoursFinder" />
 	<acme:select_range end="100" begin="10" code="custom.resultFinder"

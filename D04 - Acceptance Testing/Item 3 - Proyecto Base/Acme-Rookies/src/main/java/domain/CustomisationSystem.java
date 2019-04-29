@@ -28,6 +28,7 @@ public class CustomisationSystem extends DomainEntity {
 	private Integer				hoursFinder;
 	private Integer				resultFinder;
 	private Integer				phonePrefix;
+	private Double				vat;
 
 
 	@NotBlank
@@ -90,6 +91,15 @@ public class CustomisationSystem extends DomainEntity {
 
 	public void setPhonePrefix(final Integer phonePrefix) {
 		this.phonePrefix = phonePrefix;
+	}
+
+	@Range(min = 0, max = 1)
+	public Double getVat() {
+		return this.vat;
+	}
+
+	public void setVat(final Double vat) {
+		this.vat = vat;
 	}
 
 }

@@ -16,6 +16,7 @@ public class CustomForm {
 	private Integer	hoursFinder;
 	private Integer	resultFinder;
 	private Integer	phonePrefix;
+	private Double	vat;
 
 
 	@NotBlank
@@ -87,5 +88,14 @@ public class CustomForm {
 
 	public void setPhonePrefix(final Integer phonePrefix) {
 		this.phonePrefix = phonePrefix;
+	}
+
+	@Range(min = 10, max = 100)
+	public Double getVat() {
+		return this.vat;
+	}
+
+	public void setVat(final Double vat) {
+		this.vat = vat;
 	}
 }

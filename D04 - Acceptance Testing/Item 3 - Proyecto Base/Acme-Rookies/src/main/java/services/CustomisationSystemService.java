@@ -89,6 +89,7 @@ public class CustomisationSystemService extends AbstractService {
 		form.setSystemName(c.getSystemName());
 		form.setSpamwordsEnglish(c.getSpamwords().get("en"));
 		form.setSpamwordsSpanish(c.getSpamwords().get("es"));
+		form.setVat(c.getVat());
 
 		return form;
 	}
@@ -102,7 +103,7 @@ public class CustomisationSystemService extends AbstractService {
 		form.setPhonePrefix(c.getPhonePrefix());
 		form.setResultFinder(c.getResultFinder());
 		form.setSystemName(c.getSystemName());
-
+		form.setVat(c.getVat());
 		Map<String, String> spamWords;
 		spamWords = new HashMap<String, String>();
 

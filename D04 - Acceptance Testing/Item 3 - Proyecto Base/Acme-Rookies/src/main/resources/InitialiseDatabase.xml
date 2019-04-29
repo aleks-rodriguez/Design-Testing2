@@ -50,6 +50,7 @@
 	<bean id="customisationsys1" class="domain.CustomisationSystem">
 		<property name="systemName" value="Acme-Rookies" />
 		<property name="banner" value="https://i.imgur.com/7b8lu4b.png" />
+		<property name="vat" value="0.21" />
 		<property name="message"
 			value="Welcome to Acme-Rookies! We're IT rookies' favourite job marketplace!.  ¡Bienvenidos a Acme-Rookies! ¡Somos el mercado de trabajo favorito de los profesionales de las TICs!"/>
 		<property name="spamwords">

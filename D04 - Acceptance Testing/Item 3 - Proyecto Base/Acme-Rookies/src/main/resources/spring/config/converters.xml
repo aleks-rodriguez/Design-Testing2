@@ -77,6 +77,26 @@
 		<!-- Actor -->
 		<bean class="converters.ActorToStringConverter" />
 		<bean class="converters.StringToActorConverter" />
+		
+		<!-- Item -->
+		<bean class="converters.ItemToStringConverter" />
+		<bean class="converters.StringToItemConverter" />
+		
+		<!-- Provider -->
+		<bean class="converters.ProviderToStringConverter" />
+		<bean class="converters.StringToProviderConverter" />
+		
+		<!-- Auditor -->
+		<bean class="converters.AuditorToStringConverter" />
+		<bean class="converters.StringToAuditorConverter" />
+		
+		<!-- Audit -->
+		<bean class="converters.AuditToStringConverter" />
+		<bean class="converters.StringToAuditConverter" />
+		
+		<!-- Sponsorship -->
+		<bean class="converters.SponsorshipToStringConverter" />
+		<bean class="converters.StringToSponsorshipConverter" />
 	</util:list>
 
 </beans>
