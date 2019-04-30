@@ -9,6 +9,7 @@ import javax.persistence.InheritanceType;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
@@ -17,6 +18,7 @@ import org.hibernate.validator.constraints.SafeHtml;
 public class Company extends Actor {
 
 	private String	commercialName;
+	private Double	score;
 
 
 	@SafeHtml
@@ -28,5 +30,14 @@ public class Company extends Actor {
 
 	public void setCommercialName(final String commercialName) {
 		this.commercialName = commercialName;
+	}
+
+	@Range(min = 0, max = 1)
+	public Double getScore() {
+		return this.score;
+	}
+
+	public void setScore(final Double score) {
+		this.score = score;
 	}
 }

@@ -43,15 +43,15 @@
 	</display:column>
 
 	<jstl:if test="${publica}">
-	<display:column titleKey="position.show">
-		<a href="position/edit.do?id=${row.id}"> <jstl:if
-				test="${row.finalMode}">
-				<spring:message code="position.show" />
-			</jstl:if> <jstl:if test="${!row.finalMode}">
-				<spring:message code="position.edit" />
-			</jstl:if>
-		</a>
-	</display:column>
+		<display:column titleKey="position.show">
+			<a href="position/edit.do?id=${row.id}"> <jstl:if
+					test="${row.finalMode}">
+					<spring:message code="position.show" />
+				</jstl:if> <jstl:if test="${!row.finalMode}">
+					<spring:message code="position.edit" />
+				</jstl:if>
+			</a>
+		</display:column>
 	</jstl:if>
 
 	<security:authorize access="hasRole('ROOKIE')">
@@ -64,20 +64,33 @@
 	</security:authorize>
 
 	<security:authorize access="hasRole('COMPANY')">
-	
-	<jstl:if test="${publica}">
-	<display:column titleKey="position.application.list">
+
+		<jstl:if test="${publica}">
+			<display:column titleKey="position.application.list">
+				<jstl:if test="${row.finalMode}">
+
+					<a href="application/company/list.do?position=${row.id}"><spring:message
+							code="position.application.list" /></a>
+				</jstl:if>
+			</display:column>
+		</jstl:if>
+
+	</security:authorize>
+	<security:authorize access="hasRole('AUDITOR')">
+		<display:column titleKey="position.assign">
 			<jstl:if test="${row.finalMode}">
-			
-				<a href="application/company/list.do?position=${row.id}"><spring:message
-						code="position.application.list" /></a>
+				<a href="position/auditor/assign.do?position=${row.id}"><spring:message
+						code="position.assign" /></a>
 			</jstl:if>
 		</display:column>
-	</jstl:if>
-	
 	</security:authorize>
-
 </display:table>
+
+<security:authorize access="hasRole('AUDITOR')">
+	<p>
+		<jstl:out value="${message} " />
+	</p>
+</security:authorize>
 
 <security:authorize access="hasRole('COMPANY')">
 

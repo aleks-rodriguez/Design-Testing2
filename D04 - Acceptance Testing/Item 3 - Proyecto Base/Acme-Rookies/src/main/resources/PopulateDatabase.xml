@@ -439,6 +439,7 @@
 		<property name="spammer" value="false" />
 	</bean>
 	<bean id="company1" class="domain.Company">
+		<property name="score" value="0.0" />
 		<property name="name" value="Company1" />
 		<property name="surname" value="Company1" />
 		<property name="photo" value="" />
@@ -470,6 +471,7 @@
 		<property name="spammer" value="false" />
 	</bean>
 	<bean id="company2" class="domain.Company">
+		<property name="score" value="0.0" />
 		<property name="name" value="Company2" />
 		<property name="surname" value="Company2" />
 		<property name="photo" value="" />
@@ -512,7 +514,7 @@
 
 	<bean id="customisationsys1" class="domain.CustomisationSystem">
 		<property name="systemName" value="Acme-Rookies" />
-		<property name="banner" value="https://i.imgur.com/7b8lu4b.png" />
+		<property name="banner" value="https://imgur.com/mAif546" />
 		<property name="vat" value="0.21" />
 		<property name="message"
 			value="Welcome to Acme-Rookies! We're IT rookie's favourite job marketplace!.  ¡Bienvenidos a Acme-Rookies! ¡Somos el mercado de trabajo favorito de los profesionales de las TICs!" />
@@ -1223,6 +1225,7 @@
 		<property name="target" value="https://www.google.com" />
 		<property name="position" ref="position1" />
 		<property name="provider" ref="provider1" />
+		<property name="flat_rate" value="0.20" />
 	</bean>
 	<bean id="sponsorship2" class="domain.Sponsorship">
 		<property name="creditCard" ref="creditcard5" />
@@ -1230,6 +1233,7 @@
 		<property name="target" value="https://www.google.com" />
 		<property name="position" ref="position1" />
 		<property name="provider" ref="provider1" />
+		<property name="flat_rate" value="0.20" />
 	</bean>
 
 	<bean id="box32" class="domain.Box">

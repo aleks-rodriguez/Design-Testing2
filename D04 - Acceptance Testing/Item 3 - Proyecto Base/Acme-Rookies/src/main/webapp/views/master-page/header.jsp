@@ -24,7 +24,7 @@
 		<!-- Admin -->
 		<!-- Do not forget the "fNiv" class for the first level links !! -->
 		<security:authorize access="hasRole('ADMIN')">
-		<li><a class="fNiv"><spring:message
+			<li><a class="fNiv"><spring:message
 						code="master.page.administrator.listActor" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -41,11 +41,11 @@
 								code="master.page.administrator.customAction" /></a></li>
 				</ul></li>
 			<li><a href="customisation/administrator/dashboard.do"><spring:message
-								code="master.page.dashboard" /></a></li>
+						code="master.page.dashboard" /></a></li>
 			<li><a href="actor/createAdmin.do"><spring:message
 						code="master.page.actor.admin" /></a></li>
 
-				
+
 		</security:authorize>
 
 		<!-- Company -->
@@ -73,26 +73,39 @@
 		<security:authorize access="hasRole('ROOKIE')">
 			<li><a class="fNiv" href="curricula/rookie/list.do"><spring:message
 						code="master.page.rookie.curricula" /></a></li>
-									<li><a class="fNiv"><spring:message
+			<li><a class="fNiv"><spring:message
 						code="master.page.application" /></a>
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="application/rookie/list.do"><spring:message
 								code="master.page.application.list" /></a></li>
-				</ul>
-			</li>
+				</ul></li>
 		</security:authorize>
+
+		<!-- Auditor -->
+
+		<security:authorize access="hasRole('AUDITOR')">
+			<li><a class="fNiv" href="audit/auditor/listPosition.do"><spring:message
+						code="master.page.audit.positions" /></a></li>
+		</security:authorize>
+
+		<!-- Provider -->
+
+		<security:authorize access="hasRole('PROVIDER')">
+
+		</security:authorize>
+
 
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message
 						code="master.page.login" /></a></li>
-		
 
-		<li><a href="actor/createRookie.do"><spring:message
-			code="master.page.actor.rookie" /></a></li>
-		<li><a href="actor/createCompany.do"><spring:message
-			code="master.page.actor.company" /></a></li>
-			</security:authorize>
+
+			<li><a href="actor/createRookie.do"><spring:message
+						code="master.page.actor.rookie" /></a></li>
+			<li><a href="actor/createCompany.do"><spring:message
+						code="master.page.actor.company" /></a></li>
+		</security:authorize>
 		<li><a class="fNiv" href="position/finder.do"><spring:message
 					code="master.page.position.finder" /></a></li>
 		<li><a class="fNiv" href="position/listPositions.do"><spring:message
@@ -101,7 +114,7 @@
 					code="master.page.company.listPublic" /></a></li>
 		<li><a class="fNiv" href="about-us/terms.do"><spring:message
 					code="master.page.terms" /></a></li>
-					
+
 		<security:authorize access="isAuthenticated()">
 			<li><a class="fNiv"> <spring:message
 						code="master.page.profile" /> (<security:authentication

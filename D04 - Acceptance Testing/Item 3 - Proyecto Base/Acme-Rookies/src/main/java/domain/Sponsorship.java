@@ -8,6 +8,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -23,6 +24,7 @@ public class Sponsorship extends DomainEntity {
 	private String		target;
 	private Position	position;
 	private Provider	provider;
+	private Double		flat_rate;
 
 
 	@Valid
@@ -72,6 +74,15 @@ public class Sponsorship extends DomainEntity {
 
 	public void setProvider(final Provider provider) {
 		this.provider = provider;
+	}
+
+	@Min(0)
+	public Double getFlat_rate() {
+		return this.flat_rate;
+	}
+
+	public void setFlat_rate(final Double flat_rate) {
+		this.flat_rate = flat_rate;
 	}
 
 }

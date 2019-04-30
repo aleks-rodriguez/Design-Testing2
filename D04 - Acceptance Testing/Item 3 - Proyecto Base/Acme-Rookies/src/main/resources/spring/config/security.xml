@@ -31,9 +31,10 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/styles/**"
 			access="permitAll" />
-	<security:intercept-url pattern="/actor/**"
+		<security:intercept-url pattern="/actor/**"
 			access="permitAll" />
-
+		<security:intercept-url pattern="/audit/**"
+			access="permitAll" />
 		<security:intercept-url pattern="/views/misc/index.jsp"
 			access="permitAll" />
 
@@ -48,9 +49,9 @@
 		<security:intercept-url pattern="/position/**"
 			access="permitAll" />
 		<security:intercept-url pattern="/box/**"
-			access="isAuthenticated()"  />
+			access="isAuthenticated()" />
 		<security:intercept-url pattern="/message/**"
-			access="isAuthenticated()"  />
+			access="isAuthenticated()" />
 		<!-- Administrator -->
 		<security:intercept-url pattern="/customisation/administrator/**"
 			access="hasRole('ADMIN')" />
@@ -86,6 +87,9 @@
 			access="hasRole('COMPANY')" />
 		<security:intercept-url pattern="/educationData/company/**"
 			access="hasRole('COMPANY')" />
+		<!-- Auditor -->
+		<security:intercept-url pattern="/audit/auditor/**"
+			access="hasRole('AUDITOR')" />
 		<!-- is Authenticated -->
 		<security:intercept-url pattern="/profile/**"
 			access="isAuthenticated()" />
