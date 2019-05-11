@@ -75,11 +75,20 @@
 	<acme:textbox code="actor.name" path="name" readonly="${view}" />
 	<acme:textbox code="actor.surname" path="surname" readonly="${view}" />
 	<acme:textbox code="actor.legalName" path="vat" readonly="${view}" />
+	<jstl:if test="${authority eq 'COMPANY'}">
+			<acme:textbox code="actor.commercialName" path="commercialName" readonly="${view}" />
+		</jstl:if>
+		<jstl:if test="${authority eq 'PROVIDER'}">
+			<acme:textbox code="actor.provider.make" path="make" readonly="${view}"/>
+		</jstl:if>
 	<acme:textbox code="actor.phone" path="phone" id="phone"
 		readonly="${view}" />
 	<acme:textbox code="actor.email" path="email" readonly="${view}" />
 	<acme:textbox code="actor.adress" path="adress" readonly="${view}" />
 	<acme:textbox code="actor.photo" path="photo" readonly="${view}" />
+	<jstl:if test="${authority eq 'COMPANY'}">
+	<spring:message code="actor.score"/><jstl:out value="${score}" />
+	</jstl:if>
 
 	<jstl:if test="${view eq 'false'}">
 		<acme:textbox code="actor.account.username" path="account.username" />
@@ -96,12 +105,8 @@
 			<spring:message code="actor.account.password2" />
 		</form:label>
 		<form:password path="password2" />
-		<jstl:if test="${authority eq 'COMPANY'}">
-			<acme:textbox code="actor.commercialName" path="commercialName" />
-		</jstl:if>
-
 	</jstl:if>
-
+	
 	<jstl:if test="${!view}">
 		<h3>
 			<spring:message code="actor.creditCard"></spring:message>
@@ -142,7 +147,7 @@
 		<h3>
 			<spring:message code="actor.delete"></spring:message>
 		</h3>
-		<a href="actor/delete.do?id=${actor.id}"><spring:message
+		<a  href="actor/delete.do" onclick="return confirm('<spring:message code = 'delete.confirm' />');"><spring:message
 				code="actor.delete.link"></spring:message></a>
 
 		<br>

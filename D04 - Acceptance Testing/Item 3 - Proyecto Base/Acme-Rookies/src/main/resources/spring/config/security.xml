@@ -35,6 +35,8 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/audit/**"
 			access="permitAll" />
+		<security:intercept-url pattern="/item/**"
+			access="permitAll" />
 		<security:intercept-url pattern="/views/misc/index.jsp"
 			access="permitAll" />
 
@@ -90,6 +92,9 @@
 		<!-- Auditor -->
 		<security:intercept-url pattern="/audit/auditor/**"
 			access="hasRole('AUDITOR')" />
+		<!-- Provider -->
+		<security:intercept-url pattern="/sponsorship/provider/**"
+			access="hasRole('PROVIDER')" />
 		<!-- is Authenticated -->
 		<security:intercept-url pattern="/profile/**"
 			access="isAuthenticated()" />

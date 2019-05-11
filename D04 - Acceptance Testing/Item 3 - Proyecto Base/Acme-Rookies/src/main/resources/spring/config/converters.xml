@@ -21,8 +21,8 @@
 		<bean class="converters.AdministratorToStringConverter" />
 		<bean class="converters.StringToAdministratorConverter" />
 		<!-- Rookie -->
-		<bean class="converters.RookieToStringConverter" />
-		<bean class="converters.StringToRookieConverter" />
+	    <bean class="converters.RookieToStringConverter" />
+		<bean class="converters.StringToRookieConverter" /> 	
 		<!-- Company -->
 		<bean class="converters.CompanyToStringConverter" />
 		<bean class="converters.StringToCompanyConverter" />

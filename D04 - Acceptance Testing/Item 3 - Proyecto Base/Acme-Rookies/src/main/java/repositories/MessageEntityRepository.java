@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import domain.Actor;
 import domain.Box;
-import domain.Rookie;
 import domain.MessageEntity;
+import domain.Rookie;
 
 @Repository
 public interface MessageEntityRepository extends JpaRepository<MessageEntity, Integer> {
@@ -40,4 +40,11 @@ public interface MessageEntityRepository extends JpaRepository<MessageEntity, In
 
 	@Query("select h from Rookie h where h.finder.minSalary <= ?1 OR h.finder.maxSalary >= ?1")
 	Collection<Rookie> findRookiesNotificationString(Double salary);
+
+	@Query("select m from MessageEntity m where m.subject = 'Notification of rebranding'")
+	MessageEntity findSystemConfigMessage();
+
+	@Query("select m from Actor a join a.boxes b join b.messageEntity m where a.id=?1")
+	Collection<MessageEntity> getMessagesByActor(int id);
+
 }

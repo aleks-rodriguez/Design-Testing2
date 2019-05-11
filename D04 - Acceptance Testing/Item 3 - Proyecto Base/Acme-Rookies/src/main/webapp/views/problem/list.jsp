@@ -52,8 +52,10 @@
 				</jstl:if>
 	</display:column>
 	<display:column titleKey="problem.delete">
+	<jstl:if test="${!row.finalMode}">
 		<a href="problem/company/delete.do?id=${row.id}"><spring:message
 				code="problem.delete" /></a>
+	</jstl:if>
 	</display:column>
 </display:table>
 

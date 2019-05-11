@@ -27,6 +27,10 @@ public class ProfileService {
 	private Validator			validator;
 
 
+	public void delete(final Collection<Profile> pro) {
+		this.profileRepository.delete(pro); //Este delete es el delete(Iterable) del repo
+	}
+
 	public Actor getActorByUser(final int id) {
 		return this.profileRepository.findActorByUserAccountId(id);
 	}

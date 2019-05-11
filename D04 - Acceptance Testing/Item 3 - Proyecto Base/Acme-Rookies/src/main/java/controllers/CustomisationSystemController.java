@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import security.Authority;
 import security.LoginService;
 import services.CustomisationSystemService;
+import services.MessageService;
 import forms.CustomForm;
 
 @Controller
@@ -21,6 +22,9 @@ public class CustomisationSystemController extends BasicController {
 
 	@Autowired
 	private CustomisationSystemService	serviceCustom;
+
+	@Autowired
+	private MessageService				serviceMessage;
 
 
 	@RequestMapping(value = "/custom", method = RequestMethod.GET)
@@ -33,6 +37,15 @@ public class CustomisationSystemController extends BasicController {
 	public ModelAndView edit(final CustomForm customForm, final BindingResult binding) {
 		Assert.isTrue(this.serviceCustom.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
 		return super.save(customForm, binding, "custom.commit.error", "custom/edit", "customisation/administrator/edit.do", "/", "redirect:/welcome/index.do");
+	}
+
+	@RequestMapping(value = "/notification", method = RequestMethod.GET)
+	public ModelAndView notification() {
+		ModelAndView result = null;
+		Assert.isTrue(this.serviceMessage.findSystemConfigMessage() == null, "You don't have to send the same message");
+		this.serviceMessage.createNotificationUpdateConfig();
+		result = this.custom(new ModelAndView("redirect:/welcome/index.do"));
+		return result;
 	}
 
 	@RequestMapping(value = "/spam", method = RequestMethod.GET)

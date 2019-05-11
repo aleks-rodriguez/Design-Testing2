@@ -182,7 +182,9 @@ public class CurriculaService extends AbstractService {
 		return save;
 
 	}
-
+	public void delete(final Collection<Curricula> curr) {
+		this.repository.delete(curr);//Este delete es el delete(Iterable) del repo
+	}
 	public void flush() {
 		this.repository.flush();
 	}

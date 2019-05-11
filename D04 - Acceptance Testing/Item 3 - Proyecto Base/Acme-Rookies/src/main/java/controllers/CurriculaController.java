@@ -80,7 +80,7 @@ public class CurriculaController extends BasicController {
 		Assert.isTrue(this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ROOKIE));
 		if (curricula.getId() != 0)
 			Assert.isTrue(this.service.findAllByRookie().contains(curricula), "You don't have permission to do this");
-		result = super.save(curricula, binding, "curricula.commit.error", "curricula/edit", "curricula/rookie/edit.do", "redirect:list.do", "redirect:list.do");
+		result = super.save(curricula, binding, "curricula.commit.error", "curricula/edit", "curricula/rookie/edit.do", "curricula/rookie/list.do", "redirect:list.do");
 		return result;
 	}
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")

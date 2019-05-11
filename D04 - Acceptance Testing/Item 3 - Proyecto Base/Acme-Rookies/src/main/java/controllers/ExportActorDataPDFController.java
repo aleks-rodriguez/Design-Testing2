@@ -21,10 +21,23 @@ import com.lowagie.text.pdf.PdfWriter;
 
 import domain.Actor;
 import domain.Administrator;
+import domain.Application;
+import domain.Audit;
+import domain.Auditor;
 import domain.Box;
 import domain.Company;
+import domain.CreditCard;
+import domain.Curricula;
+import domain.EducationData;
+import domain.Item;
 import domain.MessageEntity;
+import domain.MiscellaneousData;
+import domain.Position;
+import domain.PositionData;
+import domain.Problem;
+import domain.Provider;
 import domain.Rookie;
+import domain.Sponsorship;
 
 public class ExportActorDataPDFController extends AbstractPdfView {
 
@@ -39,6 +52,13 @@ public class ExportActorDataPDFController extends AbstractPdfView {
 		Table table;
 		table = new Table(1);
 		table.addCell(new Paragraph("Acme - Rookies\n"));
+
+		String value;
+		value = "";
+		final CreditCard cr = (CreditCard) model.get("credit");
+		value = " Cvv: " + cr.getCvv() + "\n Holder: " + cr.getHolder() + "\n Make: " + cr.getMake() + "\n Number: " + cr.getNumber() + "\n Expiration: " + cr.getExpiration() + "\n";
+		table.addCell("Credit Card: " + value + "\n");
+
 		if (this.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN)) {
 			Administrator admin;
 			admin = (Administrator) a;
@@ -47,10 +67,105 @@ public class ExportActorDataPDFController extends AbstractPdfView {
 			Company c;
 			c = (Company) a;
 			this.commonThings(table, c);
+
+			final Collection<Position> pos = (Collection<Position>) model.get("positions");
+			String m;
+			m = "";
+			for (final Position p : pos)
+				m += "\n" + " Title: " + p.getTitle() + ",\n Description: " + p.getDescription() + ",\n Profile Required: " + p.getProfileRequired() + ",\n Skills Required: " + p.getSkillsRequired() + ",\n Technologies: " + p.getTechnologies()
+					+ ",\n Salary: " + p.getSalary() + ",\n Deadline: " + p.getDeadline() + "\n";
+
+			table.addCell("Positions: " + m + "\n");
+
+			final Collection<Problem> pro = (Collection<Problem>) model.get("problems");
+			String g;
+			g = "";
+			for (final Problem p : pro)
+				g += "\n" + " Title: " + p.getTitle() + ",\n Attachments: " + p.getAttachments() + ",\n Hint: " + p.getHint() + ",\n Statement: " + p.getStatement() + ",\n FinalMode: " + p.getFinalMode() + "\n";
+
+			table.addCell("Problems: " + g + "\n");
 		} else if (this.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ROOKIE)) {
 			Rookie h;
 			h = (Rookie) a;
 			this.commonThings(table, h);
+
+			final Collection<Curricula> cur = (Collection<Curricula>) model.get("curricula");
+
+			String m;
+			m = "";
+			for (final Curricula p : cur) {
+				m += "\n" + " Full Name: " + p.getFullName() + ",\n Statament: " + p.getStatement() + ",\n Github Profile: " + p.getGithubProfile() + ",\n LinkedIn Profile: " + p.getLinkedInProfile() + ",\n Phone Number: " + p.getPhoneNumber() + "\n";
+
+				for (final MiscellaneousData md : p.getMiscellaneousData())
+					m += "\n Miscellaneous Data:" + "\n Text: " + md.getText() + ",\n Urls: " + md.getUrls() + "\n";
+				for (final PositionData pd : p.getPositionsData())
+					m += "\n Positions Data:" + "\n Title: " + pd.getTitle() + ",\n Description: " + pd.getDescription() + ",\n EndDate: " + pd.getEndDate() + ",\n StartDate: " + pd.getStartDate() + "\n";
+				for (final EducationData ed : p.getEducationData())
+					m += "\n Education Data:" + "\n Degree: " + ed.getDegree() + ",\n Institution: " + ed.getInstitution() + ",\n Mark: " + ed.getMark() + ",\n EndDate: " + ed.getEndDate() + ",\n StartDate: " + ed.getStartDate() + "\n";
+			}
+			table.addCell("Curriculas: " + m + "\n");
+
+			final Collection<Application> app = (Collection<Application>) model.get("apps");
+
+			String g;
+			g = "";
+			for (final Application p : app) {
+				g += "\n" + "\n Status: " + p.getStatus() + ",\n Application Moment: " + p.getApplicationMoment() + "\n";
+				if (p.getMoment() != null)
+					g += " Moment: " + p.getMoment();
+				if (p.getAnswer() != null)
+					g += ",\n Answer Explanation: " + p.getAnswer().getExplanation();
+				if (p.getAnswer() != null)
+					g += ",\n Answer Link: " + p.getAnswer().getLink();
+			}
+
+			table.addCell("Applications: " + g + "\n\n");
+
+		} else if (this.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.AUDITOR)) {
+			Auditor aud;
+			aud = (Auditor) a;
+			this.commonThings(table, aud);
+
+			final Collection<Audit> au = (Collection<Audit>) model.get("audits");
+
+			String m;
+			m = "";
+			for (final Audit audit : au)
+				m += "\n" + "\n Text: " + audit.getText() + ",\n Score: " + audit.getScore() + "\n Moment: " + audit.getMoment() + ",\n Position: " + audit.getPosition().getTitle() + "\n";
+
+			table.addCell("Audits: " + m + "\n\n");
+
+		} else if (this.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.PROVIDER)) {
+			Provider pro;
+			pro = (Provider) a;
+			this.commonThings(table, pro);
+
+			final Collection<Item> i = (Collection<Item>) model.get("items");
+
+			String m;
+			m = "";
+			for (final Item it : i)
+				m += "\n" + "\n Name: " + it.getName() + ",\n Description: " + it.getDescription() + "\n Pictures: " + it.getPictures() + ",\n Urls: " + it.getUrls() + "\n";
+
+			table.addCell("Items: " + m + "\n\n");
+
+			final Collection<Sponsorship> spo = (Collection<Sponsorship>) model.get("sponsorshipsAct");
+			String j;
+			j = "";
+			for (final Sponsorship spon : spo)
+				j += "\n" + "\n Banner URL: " + spon.getBanner() + ",\n Target URL: " + spon.getTarget() + "\n Flat Rate: " + spon.getFlat_rate() + ",\n Holder Credit Card Associated: " + spon.getCreditCard().getHolder()
+					+ ",\n Number Credit Card Associated: " + spon.getCreditCard().getNumber() + "\n";
+
+			table.addCell("Activate Sponsorships: " + j + "\n\n");
+
+			final Collection<Sponsorship> spod = (Collection<Sponsorship>) model.get("sponsorshipsDes");
+			String p;
+			p = "";
+			for (final Sponsorship spons : spod)
+				p += "\n" + "\n Banner URL: " + spons.getBanner() + ",\n Target URL: " + spons.getTarget() + "\n Flat Rate: " + spons.getFlat_rate() + ",\n Holder Credit Card Associated: " + spons.getCreditCard().getHolder()
+					+ ",\n Number Credit Card Associated: " + spons.getCreditCard().getNumber() + "\n";
+
+			table.addCell("Desactivate Sponsorships: " + p + "\n\n");
 		}
 
 		document.add(table);
@@ -63,12 +178,14 @@ public class ExportActorDataPDFController extends AbstractPdfView {
 			table.addCell("Boxes \n" + this.takeFields(a.getBoxes()) + "\n");
 
 			String m;
-			m = "Messages \n";
+			m = "\n";
 			for (final Box b : a.getBoxes()) {
 				m += "\n" + b.getName() + "\n";
 				Collection<MessageEntity> mess;
 				mess = b.getMessageEntity();
-				m += "\n" + this.takeFields(mess) + "\n";
+				for (final MessageEntity message : mess)
+					m += "\n" + " Sender: " + message.getSender().getName() + "\n Body: " + message.getBody() + "\n Priority: " + message.getPriority() + "\n Subject: " + message.getSubject() + "\n Tags: " + message.getTags() + "\n Moment Sent: "
+						+ message.getMomentsent() + "\n";
 			}
 			table.addCell("Messages \n" + m + "\n");
 			table.addCell("Account Values \n" + this.takeFields(a.getAccount()) + "\n");
@@ -117,7 +234,10 @@ public class ExportActorDataPDFController extends AbstractPdfView {
 				} catch (final IllegalAccessException e) {
 					e.printStackTrace();
 				}
-				res = res + name + " = " + value + "\n";
+				if (name.equals("creditCard") || name.equals("boxes"))
+					res = res;
+				else
+					res = res + name + " = " + value + "\n";
 
 			}
 		}

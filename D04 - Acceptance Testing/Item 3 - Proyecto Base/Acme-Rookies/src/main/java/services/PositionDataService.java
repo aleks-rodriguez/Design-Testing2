@@ -16,8 +16,8 @@ import org.springframework.validation.Validator;
 import repositories.PositionDataRepository;
 import security.LoginService;
 import domain.Curricula;
-import domain.Rookie;
 import domain.PositionData;
+import domain.Rookie;
 
 @Service
 @Transactional
@@ -160,5 +160,8 @@ public class PositionDataService extends AbstractService {
 		if (begin != null && end != null)
 			res = begin.before(end) && end.after(begin);
 		return res;
+	}
+	public void delete(final Collection<PositionData> pos) {
+		this.repository.delete(pos);//Este delete es el delete(Iterable) del repo
 	}
 }

@@ -11,6 +11,7 @@ import javax.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
@@ -19,9 +20,9 @@ import security.Authority;
 import security.LoginService;
 import domain.Actor;
 import domain.Box;
-import domain.Rookie;
 import domain.MessageEntity;
 import domain.Position;
+import domain.Rookie;
 
 @Service
 @Transactional
@@ -70,6 +71,10 @@ public class MessageService extends AbstractService {
 
 	public Collection<MessageEntity> getMessageOutBox(final int id) {
 		return this.messageRepository.getMessagesOutBox(id);
+	}
+
+	public Collection<MessageEntity> getMessagesByActor(final int accountId) {
+		return this.messageRepository.getMessagesByActor(accountId);
 	}
 
 	//Create
@@ -292,6 +297,29 @@ public class MessageService extends AbstractService {
 
 	}
 
+	public void createNotificationUpdateConfig() {
+		MessageEntity message;
+		message = new MessageEntity();
+		Assert.isTrue(this.actorService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
+		message.setSender(this.actorService.findByUserAccount(LoginService.getPrincipal().getId()));
+		message.setReceiver(this.messageRepository.getAllActorsMenosLoged(this.actorService.findByUserAccount(LoginService.getPrincipal().getId()).getId()));
+		message.setBody("Dear user, the system has experienced an upgrade that concerns the company's commercial name. Welcome to Acme Rookies, Inc.");
+		message.setMomentsent(new Date());
+		ArrayList<String> tags;
+		tags = new ArrayList<String>();
+		tags.add("Notification");
+		tags.add("Rebranding");
+		message.setTags(tags);
+		message.setSubject("Notification of rebranding");
+		message.setPriority("HIGH");
+		message.setBox(new ArrayList<Box>());
+		this.sendMessage(message);
+	}
+
+	public MessageEntity findSystemConfigMessage() {
+		return this.messageRepository.findSystemConfigMessage();
+	}
+
 	public void sendNotification(final Position saved) {
 		Actor c;
 		c = this.actorService.findByUserAccount(LoginService.getPrincipal().getId());
@@ -336,6 +364,10 @@ public class MessageService extends AbstractService {
 
 	public void flush() {
 		this.messageRepository.flush();
+	}
+
+	public void delete(final Collection<MessageEntity> col) {
+		this.messageRepository.delete(col);
 	}
 
 }

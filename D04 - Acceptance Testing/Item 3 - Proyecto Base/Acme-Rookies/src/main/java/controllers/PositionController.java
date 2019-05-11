@@ -20,13 +20,17 @@ import org.springframework.web.servlet.ModelAndView;
 import security.Authority;
 import security.LoginService;
 import services.ActorService;
+import services.AuditService;
 import services.FinderService;
 import services.MessageService;
 import services.PositionService;
+import services.ProblemService;
+import services.SponsorshipService;
 import domain.Company;
 import domain.Finder;
 import domain.Position;
 import domain.Rookie;
+import domain.Sponsorship;
 
 @Controller
 @RequestMapping(value = {
@@ -35,20 +39,29 @@ import domain.Rookie;
 public class PositionController extends BasicController {
 
 	@Autowired
-	private PositionService	service;
+	private PositionService		service;
 
 	@Autowired
-	private FinderService	serviceFinder;
+	private FinderService		serviceFinder;
 
 	@Autowired
-	private ActorService	serviceActor;
+	private ActorService		serviceActor;
 
 	@Autowired
-	private MessageService	serviceMess;
+	private SponsorshipService	sponsorshipService;
 
-	private boolean			duplicate;
-	private boolean			control	= true;
-	private Finder			oldRookieFinder;
+	@Autowired
+	private MessageService		serviceMess;
+
+	@Autowired
+	private AuditService		auditService;
+
+	@Autowired
+	private ProblemService		problemService;
+
+	private boolean				duplicate;
+	private boolean				control	= true;
+	private Finder				oldRookieFinder;
 
 
 	@RequestMapping(value = "/showCompany", method = RequestMethod.GET)
@@ -66,10 +79,11 @@ public class PositionController extends BasicController {
 			result.addObject("spammer", "Si");
 		else
 			result.addObject("spammer", "No");
+		result.addObject("score", super.homothetic(this.auditService.findAllScoresByCompanyId(c.getId())));
 		result.addObject("view", true);
+		result.addObject("authority", Authority.COMPANY);
 		return result;
 	}
-
 	/**
 	 * List de Companies
 	 */
@@ -88,7 +102,7 @@ public class PositionController extends BasicController {
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list() {
+	public ModelAndView list(@RequestParam(defaultValue = "0") final int company) {
 
 		Collection<Position> col;
 		col = new ArrayList<Position>();
@@ -101,6 +115,10 @@ public class PositionController extends BasicController {
 			} else
 				throw new IllegalArgumentException();
 		} catch (final IllegalArgumentException e) {
+			if (company != 0)
+				col = this.service.getPublicPositionsByCompany(company);
+			else
+				col = this.service.getPublicPositions();
 			requestURI = "position/listPositions.do";
 		}
 		ModelAndView result;
@@ -123,12 +141,22 @@ public class PositionController extends BasicController {
 			if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COMPANY)) {
 				Company c;
 				c = (Company) this.service.findByUserAccount(LoginService.getPrincipal().getId());
-				if (p.getCompany().equals(c))
+				if (p.getCompany().equals(c)) {
 					/**
 					 * When position search owns to logged user
 					 */
 					result = super.edit(p, "position/edit", "position/company/edit.do", "/position/company/list.do");
-				else
+					Collection<Sponsorship> col;
+					if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COMPANY)) {
+						col = this.sponsorshipService.getSponsorshipByPositionId(p.getId());
+						Sponsorship sponsorship;
+						if (col.size() > 0) {
+							sponsorship = super.randomizeSponsorships(col);
+							result.addObject("linkBanner", sponsorship.getBanner());
+							sponsorship.setFlat_rate(sponsorship.getFlat_rate() + this.sponsorshipService.getFlatRate());
+						}
+					}
+				} else
 					throw new IllegalArgumentException();
 			} else
 				throw new IllegalArgumentException();
@@ -136,11 +164,19 @@ public class PositionController extends BasicController {
 			/**
 			 * Same kind of actor but it is not his position
 			 */
-			if (p.isFinalMode())
+			if (p.isFinalMode()) {
 				result = super.show(p, "position/edit", "position/edit.do", "/position/list.do?company=" + p.getCompany().getId());
-			else
+				Collection<Sponsorship> col;
+				//			if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COMPANY)) {
+				col = this.sponsorshipService.getSponsorshipByPositionId(p.getId());
+				Sponsorship sponsorship;
+				if (col.size() > 0) {
+					sponsorship = super.randomizeSponsorships(col);
+					result.addObject("linkBanner", sponsorship.getBanner());
+					sponsorship.setFlat_rate(sponsorship.getFlat_rate() + this.sponsorshipService.getFlatRate());
+				}
+			} else
 				result = this.custom(new ModelAndView("redirect:/misc/403.jsp"));
-
 		}
 		return result;
 	}
@@ -228,27 +264,28 @@ public class PositionController extends BasicController {
 		res = new ArrayList<Position>();
 
 		try {
+
+			finder = this.serviceFinder.reconstruct(finder, binding);
+
 			if (finder.getSingleKey().equals("") && finder.getDeadline() == null && finder.getMinSalary() == null && finder.getMaxSalary() == null)
 				res = this.service.getPublicPositions();
 			else {
-				finder = this.serviceFinder.reconstruct(finder, binding);
-
-				if (finder.getId() == 0)
-					res = this.serviceFinder.findBySingleKey(finder.getSingleKey());
+				h = (Rookie) this.service.findByUserAccount(LoginService.getPrincipal().getId());
+				if (this.checkFinderProperties(this.oldRookieFinder, finder) && this.checkFinderTime(finder))
+					res = h.getFinder().getPositions();
 				else {
-					h = (Rookie) this.service.findByUserAccount(LoginService.getPrincipal().getId());
-					if (this.checkFinderProperties(this.oldRookieFinder, finder) && this.checkFinderTime(finder))
-						res = h.getFinder().getPositions();
-					else {
-						res = this.serviceFinder.findByLucene(finder.getSingleKey(), finder.getDeadline(), finder.getMinSalary(), finder.getMaxSalary());
-						this.serviceFinder.save(finder, res);
-					}
+					//res = this.serviceFinder.findByLucene(finder.getSingleKey(), finder.getDeadline(), finder.getMinSalary(), finder.getMaxSalary());
+					//if (res.isEmpty())
+					res = this.serviceFinder.searchWithRetain(finder.getSingleKey(), finder.getDeadline(), finder.getMinSalary(), finder.getMaxSalary());
+					this.serviceFinder.save(finder, res);
 				}
 			}
+
 		} catch (final ValidationException e) {
 			result = super.createAndEditModelAndView(finder, "position/find", "position/search.do", "/");
 		} catch (final Throwable oops) {
-			result = super.createAndEditModelAndView(finder, "finder.commit.error", "position/find", "position/search.do", "/");
+			if (finder.getId() == 0)
+				res = this.serviceFinder.findBySingleKey(finder.getSingleKey());
 		}
 
 		result = super.listModelAndView("positions", "position/list", res, "position/list.do");
@@ -286,6 +323,16 @@ public class PositionController extends BasicController {
 	@Override
 	public <T> ModelAndView deleteAction(final T e, final String nameResolver) {
 		ModelAndView result;
+
+		//		Collection<Problem> col;
+		//		col = this.problemService.getProblemByPositionId(((Position) e).getId());
+		//
+		//		for (final Problem problem : col) {
+		//			Collection<Position> colP;
+		//			colP = problem.getPosition();
+		//			colP.remove(e);
+		//			problem.setPosition(colP);
+		//		}
 
 		this.service.delete(((Position) e).getId());
 		result = new ModelAndView(nameResolver);

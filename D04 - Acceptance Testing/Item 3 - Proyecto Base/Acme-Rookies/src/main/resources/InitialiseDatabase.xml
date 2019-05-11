@@ -49,7 +49,7 @@
 
 	<bean id="customisationsys1" class="domain.CustomisationSystem">
 		<property name="systemName" value="Acme-Rookies" />
-		<property name="banner" value="https://imgur.com/mAif546" />
+		<property name="banner" value="https://i.imgur.com/RyOrQZ7.jpg" />
 		<property name="vat" value="0.21" />
 		<property name="flat_rate" value="0.20" />
 		<property name="message"

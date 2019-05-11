@@ -1,6 +1,8 @@
 
 package forms;
 
+import javax.validation.constraints.Min;
+
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -17,6 +19,7 @@ public class CustomForm {
 	private Integer	resultFinder;
 	private Integer	phonePrefix;
 	private Double	vat;
+	private Double	flat_rate;
 
 
 	@NotBlank
@@ -90,7 +93,7 @@ public class CustomForm {
 		this.phonePrefix = phonePrefix;
 	}
 
-	@Range(min = 10, max = 100)
+	@Range(min = 0, max = 1)
 	public Double getVat() {
 		return this.vat;
 	}
@@ -98,4 +101,14 @@ public class CustomForm {
 	public void setVat(final Double vat) {
 		this.vat = vat;
 	}
+
+	@Min(0)
+	public Double getFlat_rate() {
+		return this.flat_rate;
+	}
+
+	public void setFlat_rate(final Double flat_rate) {
+		this.flat_rate = flat_rate;
+	}
+
 }

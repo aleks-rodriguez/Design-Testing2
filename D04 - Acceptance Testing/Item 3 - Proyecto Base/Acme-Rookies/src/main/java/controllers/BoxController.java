@@ -53,11 +53,10 @@ public class BoxController extends BasicController {
 			colboxp = bo.getBoxes();
 			colboxp.add((Box) result.getModel().get("saved"));
 			bo.setBoxes(colboxp);
-			super.save(bo, binding, "box.commit.error", "box/edit", "box/edit.do", "redirect:list.do", "redirect:list.do");
+			this.boxService.save(bo);
 		}
 		return result;
 	}
-
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int id) {
 		ModelAndView result;
@@ -86,6 +85,7 @@ public class BoxController extends BasicController {
 		saved = this.boxService.save(box);
 		result = new ModelAndView(nameResolver);
 		result.addObject("saved", saved);
+		result.addObject("idSaved", saved.getId());
 		return result;
 	}
 

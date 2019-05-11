@@ -3,6 +3,7 @@ package domain;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -25,9 +26,11 @@ public class Sponsorship extends DomainEntity {
 	private Position	position;
 	private Provider	provider;
 	private Double		flat_rate;
+	private boolean		isActive;
 
 
 	@Valid
+	@Embedded
 	public CreditCard getCreditCard() {
 		return this.creditCard;
 	}
@@ -85,4 +88,11 @@ public class Sponsorship extends DomainEntity {
 		this.flat_rate = flat_rate;
 	}
 
+	public boolean getIsActive() {
+		return this.isActive;
+	}
+
+	public void setIsActive(final boolean isActive) {
+		this.isActive = isActive;
+	}
 }

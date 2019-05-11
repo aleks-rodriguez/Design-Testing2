@@ -16,8 +16,8 @@ import org.springframework.validation.Validator;
 import repositories.MiscellaneousDataRepository;
 import security.LoginService;
 import domain.Curricula;
-import domain.Rookie;
 import domain.MiscellaneousData;
+import domain.Rookie;
 
 @Service
 @Transactional
@@ -141,5 +141,8 @@ public class MiscellaneousDataService extends AbstractService {
 		h = (Rookie) this.repository.findActorByUserAccountId(LoginService.getPrincipal().getId());
 		Assert.isTrue(c.getRookie().equals(h), "You don't have permission to do this");
 		this.repository.delete(c.getMiscellaneousData());
+	}
+	public void delete(final Collection<MiscellaneousData> misc) {
+		this.repository.delete(misc);//Este delete es el delete(Iterable) del repo
 	}
 }

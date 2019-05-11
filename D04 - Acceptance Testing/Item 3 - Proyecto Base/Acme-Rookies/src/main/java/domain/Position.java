@@ -161,13 +161,5 @@ public class Position extends DomainEntity {
 		this.cancel = cancel;
 	}
 
-	@ManyToOne(optional = true)
-	public Auditor getAuditor() {
-		return this.auditor;
-	}
-
-	public void setAuditor(final Auditor auditor) {
-		this.auditor = auditor;
-	}
 
 }

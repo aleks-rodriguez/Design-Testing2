@@ -10,16 +10,17 @@
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <form:form action="${requestURI}" modelAttribute="audit">
+	<form:hidden path="id" />
 	<form:hidden path="position" />
-	<acme:textbox code="audit.moment" path="moment"
-		readonly="${view or audit.finalMode}" />
+	<acme:textbox code="audit.moment" path="moment" readonly="true" />
 	<acme:textarea code="audit.text" path="text"
 		readonly="${view or audit.finalMode}" />
 	<acme:textbox code="audit.score" path="score"
 		readonly="${view or audit.finalMode}" />
-	<form:checkbox path="finalMode" label="audit.finalMode"
-		disabled="${view or audit.finalMode}" />
-
+	<div>
+		<spring:message code="audit.finalMode" />
+		<form:checkbox path="finalMode" disabled="${view or audit.finalMode}" />
+	</div>
 	<jstl:if test="${!view and !audit.finalMode}">
 		<acme:submit name="save" code="audit.save" />
 		<jstl:if test="${audit.id != 0}">

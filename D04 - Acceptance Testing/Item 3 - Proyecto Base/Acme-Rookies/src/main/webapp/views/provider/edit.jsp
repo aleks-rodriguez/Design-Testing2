@@ -14,14 +14,15 @@
 <%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <form:form action="${requestURI}" modelAttribute="position">
 	<form:hidden path="id" />
+
 	<jsp:useBean id="now" class="java.util.Date" />
 	<fmt:formatDate var="today" value="${now}" pattern="yyyy/MM/dd" />
 	
@@ -47,7 +48,6 @@
 		</form:label>
 		<form:checkbox path="finalMode"
 			disabled="${view or position.finalMode}" />
-		
 		<jstl:if test="${!position.finalMode and !view}">
 			<acme:submit name="save" code="position.save" />
 			<jstl:if test="${position.id != 0}">
@@ -61,14 +61,7 @@
 			<spring:message code="position.isCancel" />
 		</jstl:if>
 	</security:authorize>
-	<div>
-	<jstl:if test="${not fn:containsIgnoreCase(fn:toLowerCase(linkBanner),'ipsum')}">
-	<img src="${linkBanner}">
-	</jstl:if>
-	</div>
-
 
 </form:form>
-
 
 <acme:cancel url="${requestCancel}" code="position.cancel" />

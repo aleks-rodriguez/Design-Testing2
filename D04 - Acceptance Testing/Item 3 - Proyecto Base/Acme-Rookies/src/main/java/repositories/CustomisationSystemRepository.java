@@ -70,4 +70,43 @@ public interface CustomisationSystemRepository extends JpaRepository<Customisati
 	@Query("select (((select count(e)*1.0 from Finder e where e.positions.size > 0)/count(f)*1.0)*1.0) from Finder f")
 	Double emptyNonEmptyFinders();
 
+	//LEVEL C
+	//The avg, min, max, std of the audit score of the positions stored in the system
+	@Query("select avg(1.0*(select count(a.score) from Audit a where a.position.id = p.id)), max(1.0*(select count(a.score) from Audit a where a.position.id = p.id)), min(1.0*(select count(a.score) from Audit a where a.position.id = p.id)), stddev(1.0*(select count(a.score) from Audit a where a.position.id = p.id)) from Position p")
+	Double[] minMaxAvgDttvOfAuditPerPosition();
+
+	//The avg, min, max, std of the audit score of the companies that are registered in the system
+	@Query("select avg(1.0*(select count(a.score) from Audit a join a.position p where p.company.id = c.id)), max(1.0*(select count(a.score) from Audit a join a.position p where p.company.id = c.id)), min(1.0*(select count(a.score) from Audit a join a.position p where p.company.id = c.id)),stddev(1.0*(select count(a.score) from Audit a join a.position p where p.company.id = c.id)) from Company c")
+	Double[] minMaxAvgDttvOfAuditPerCompany();
+
+	//The companies with the highest audit score
+	@Query("select distinct c.name from Audit a join a.position p join p.company c order by a.score DESC")
+	List<String> highestCompaniesAuditScore();
+
+	//The  average  salary  offered  by  the  positions  that  have  the  highest average audit score
+	@Query("select avg(a.position.salary) from Audit a group by a.position.salary having avg(1.0*a.score) = (select max(1.0*a.score) from Audit a))")
+	List<Double> averageSalaryMaxAverageAuditScore();
+	//LEVEL B
+
+	//The avg, min, max, std of the number of items per provider
+	@Query("select avg(1.0*(select count(i) from Item i where i.provider.id = p.id)), max(1.0*(select count(i) from Item i where i.provider.id = p.id)), min(1.0*(select count(i) from Item i where i.provider.id = p.id)), stddev(1.0*(select count(i) from Item i where i.provider.id = p.id)) from Provider p")
+	Double[] minMaxAvgDttvOfItemPerProvider();
+
+	//The top-5 providers in terms of total number of items provided
+	@Query("select i.provider.name from Item i group by i.provider.name order by count(i) DESC")
+	List<String> top5ProviderPerMaxItems();
+
+	//LEVEL A
+
+	//The avg, min, max, std of sponsorships per provider
+	@Query("select avg(1.0*(select count(s) from Sponsorship s where s.provider.id = p.id)), max(1.0*(select count(s) from Sponsorship s where s.provider.id = p.id)), min(1.0*(select count(s) from Sponsorship s where s.provider.id = p.id)), stddev(1.0*(select count(s) from Sponsorship s where s.provider.id = p.id)) from Provider p")
+	Double[] minMaxAvgDttvOfSponsorshipsPerProvider();
+
+	//The avg, min, max, std of sponsorships per position
+	@Query("select avg(1.0*(select count(s) from Sponsorship s where s.position.id = p.id)), max(1.0*(select count(s) from Sponsorship s where s.position.id = p.id)), min(1.0*(select count(s) from Sponsorship s where s.position.id = p.id)), stddev(1.0*(select count(s) from Sponsorship s where s.position.id = p.id)) from Position p")
+	Double[] minMaxAvgDttvOfSponsorshipsPerPosition();
+
+	//The providerswho have a number of sponsorships that is at least 10% above the average number of sponsorships per provider
+	@Query("select p.name from Provider p where (select count(s) from Sponsorship s where s.provider.id = p.id) >= (select avg(1.0*(select count(s) from Sponsorship s where s.provider.id = p.id)) + avg(1.0*(select count(s) from Sponsorship s where s.provider.id = p.id))*0.1 from Provider p)")
+	List<String> providersSponsorshipMoreThan10PerCent();
 }

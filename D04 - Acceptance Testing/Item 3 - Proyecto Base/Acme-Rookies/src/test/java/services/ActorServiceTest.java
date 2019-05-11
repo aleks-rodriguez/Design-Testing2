@@ -85,7 +85,7 @@ public class ActorServiceTest extends AbstractTest {
 			a.setAccount(this.actorService.userAccountAdapted("", "", Authority.COMPANY));
 			a.setProfiles(new ArrayList<Profile>());
 
-			this.actorService.save(null, null, a);
+			this.actorService.save(null, null, a, null, null);
 			if (email.equals("actorarrobaus.es"))
 				this.actorService.flushCompany();
 			this.unauthenticate();

@@ -15,6 +15,7 @@ public class ActorForm {
 	private String		authority;
 	private String		commercialName;
 	private String		vat;
+	private String		make;
 	private CreditCard	creditCard;
 
 
@@ -139,6 +140,14 @@ public class ActorForm {
 
 	public void setCreditCard(final CreditCard creditCard) {
 		this.creditCard = creditCard;
+	}
+
+	public String getMake() {
+		return make;
+	}
+
+	public void setMake(String make) {
+		this.make = make;
 	}
 
 }

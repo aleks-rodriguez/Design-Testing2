@@ -76,11 +76,15 @@
 		</jstl:if>
 
 	</security:authorize>
-	<security:authorize access="hasRole('AUDITOR')">
-		<display:column titleKey="position.assign">
+	<display:column titleKey="position.audits.list">
+		<a href="audit/auditor/list.do?position=${row.id}"><spring:message
+				code="position.audits.list" /></a>
+	</display:column>
+	<security:authorize access="hasRole('PROVIDER')">
+		<display:column titleKey="position.createSponsorship">
 			<jstl:if test="${row.finalMode}">
-				<a href="position/auditor/assign.do?position=${row.id}"><spring:message
-						code="position.assign" /></a>
+				<a href="sponsorship/provider/create.do?idPosition=${row.id}"><spring:message
+						code="position.createSponsorship" /></a>
 			</jstl:if>
 		</display:column>
 	</security:authorize>

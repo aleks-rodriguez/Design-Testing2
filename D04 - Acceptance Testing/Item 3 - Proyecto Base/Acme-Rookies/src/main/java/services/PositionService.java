@@ -121,24 +121,25 @@ public class PositionService extends AbstractService {
 			arg.setCompany(c);
 		else {
 			Assert.isTrue(arg.getCompany().equals(c));
-			Assert.isTrue(this.statusPrevious == false);
+			if (this.statusPrevious != null) {
+				Assert.isTrue(this.statusPrevious == false);
+
+				if (arg.isCancel())
+					Assert.isTrue(arg.isFinalMode() == true);
+
+				if (arg.isFinalMode())
+					Assert.isTrue(this.problemsByPosition(arg.getId()).size() >= 2);
+
+				Assert.isTrue(arg.getDeadline().after(new Date()));
+
+				Ticker saveT;
+				saveT = this.repositoryTicker.saveAndFlush(ticker);
+
+				arg.setTicker(saveT);
+
+			}
 		}
-
-		if (arg.isCancel())
-			Assert.isTrue(arg.isFinalMode() == true);
-
-		if (arg.isFinalMode())
-			Assert.isTrue(this.problemsByPosition(arg.getId()).size() >= 2);
-
-		Assert.isTrue(arg.getDeadline().after(new Date()));
-
-		Ticker saveT;
-		saveT = this.repositoryTicker.saveAndFlush(ticker);
-
-		arg.setTicker(saveT);
-
 		saved = this.repository.saveAndFlush(arg);
-
 		return saved;
 	}
 
@@ -204,4 +205,5 @@ public class PositionService extends AbstractService {
 	public void flush() {
 		this.repository.flush();
 	}
+
 }

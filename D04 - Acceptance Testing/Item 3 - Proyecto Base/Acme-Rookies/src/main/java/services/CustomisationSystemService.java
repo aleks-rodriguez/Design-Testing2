@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -90,6 +91,7 @@ public class CustomisationSystemService extends AbstractService {
 		form.setSpamwordsEnglish(c.getSpamwords().get("en"));
 		form.setSpamwordsSpanish(c.getSpamwords().get("es"));
 		form.setVat(c.getVat());
+		form.setFlat_rate(c.getFlat_rate());
 
 		return form;
 	}
@@ -104,6 +106,7 @@ public class CustomisationSystemService extends AbstractService {
 		form.setResultFinder(c.getResultFinder());
 		form.setSystemName(c.getSystemName());
 		form.setVat(c.getVat());
+		form.setFlat_rate(c.getFlat_rate());
 		Map<String, String> spamWords;
 		spamWords = new HashMap<String, String>();
 
@@ -119,10 +122,13 @@ public class CustomisationSystemService extends AbstractService {
 		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
 		Map<String, Double> result;
 		result = new HashMap<String, Double>();
-		if (this.repository.emptyNonEmptyFinders() == null)
+		if (this.repository.emptyNonEmptyFinders() == null || this.repository.averageSalaryMaxAverageAuditScore() == null) {
 			result.put("EmptyVsNotEmpty", 0.0);
-		else
+			result.put("averageSalaryMaxAverageAuditScore", 0.0);
+		} else {
 			result.put("EmptyVsNotEmpty", this.repository.emptyNonEmptyFinders());
+			result.put("averageSalaryMaxAverageAuditScore", this.calculateAverage(this.repository.averageSalaryMaxAverageAuditScore()));
+		}
 		return result;
 	}
 
@@ -135,6 +141,11 @@ public class CustomisationSystemService extends AbstractService {
 		result.put("MinMaxAvgDttvOfApplicationPerRookie", this.repository.minMaxAvgDttvOfApplicationPerRookie());
 		result.put("MinMaxAvgDttvOfSalary", this.repository.minMaxAvgDttvOfSalaries());
 		result.put("MinMaxAvgSttdvOfCurriculaPerRookie", this.repository.minMaxAvgDttvOfCurriculaPerRookie());
+		result.put("MinMaxAvgDttvOfAuditPerPosition", this.repository.minMaxAvgDttvOfAuditPerPosition());
+		result.put("MinMaxAvgDttvOfAuditPerCompany", this.repository.minMaxAvgDttvOfAuditPerCompany());
+		result.put("MinMaxAvgDttvOfItemPerProvider", this.repository.minMaxAvgDttvOfItemPerProvider());
+		result.put("MinMaxAvgDttvOfSponsorshipsPerProvider", this.repository.minMaxAvgDttvOfSponsorshipsPerProvider());
+		result.put("MinMaxAvgDttvOfSponsorshipsPerPosition", this.repository.minMaxAvgDttvOfSponsorshipsPerPosition());
 		return result;
 	}
 
@@ -144,9 +155,23 @@ public class CustomisationSystemService extends AbstractService {
 		result = new HashMap<String, List<String>>();
 		result.put("CompanyMorePositions", this.repository.findCompanyMorePositions());
 		result.put("RookiesMoreApplication", this.repository.findRookiesMoreApplications());
+		result.put("HighestCompaniesAuditScore", this.repository.highestCompaniesAuditScore());
+		if (this.repository.top5ProviderPerMaxItems().size() == 0)
+			result.put("Top5ProviderPerMaxItems", new ArrayList<String>());
+		else if (this.repository.top5ProviderPerMaxItems().size() == 1)
+			result.put("Top5ProviderPerMaxItems", this.repository.top5ProviderPerMaxItems().subList(0, 0));
+		else if (this.repository.top5ProviderPerMaxItems().size() == 2)
+			result.put("Top5ProviderPerMaxItems", this.repository.top5ProviderPerMaxItems().subList(0, 1));
+		else if (this.repository.top5ProviderPerMaxItems().size() == 3)
+			result.put("Top5ProviderPerMaxItems", this.repository.top5ProviderPerMaxItems().subList(0, 2));
+		else if (this.repository.top5ProviderPerMaxItems().size() == 4)
+			result.put("Top5ProviderPerMaxItems", this.repository.top5ProviderPerMaxItems().subList(0, 3));
+		else if (this.repository.top5ProviderPerMaxItems().size() >= 5)
+			result.put("Top5ProviderPerMaxItems", this.repository.top5ProviderPerMaxItems().subList(0, 4));
+
+		result.put("ProvidersSponsorshipMoreThan10PerCent", this.repository.providersSponsorshipMoreThan10PerCent());
 		return result;
 	}
-
 	public Map<String, String> BestWorstPositionSalary() {
 		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
 		Map<String, String> result;
@@ -177,4 +202,12 @@ public class CustomisationSystemService extends AbstractService {
 		return result;
 	}
 
+	public Double calculateAverage(final List<Double> values) {
+		Double sum = 0.0;
+		Double res = 0.0;
+		for (final Double val : values)
+			sum = sum + val;
+		res = sum / values.size();
+		return res;
+	}
 }

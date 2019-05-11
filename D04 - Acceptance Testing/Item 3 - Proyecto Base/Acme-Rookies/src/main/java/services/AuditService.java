@@ -37,11 +37,6 @@ public class AuditService extends AbstractService {
 	private boolean			auxFinalMode;
 
 
-	public boolean check(final int position) {
-		Auditor auditor;
-		auditor = (Auditor) this.repository.findActorByUserAccountId(LoginService.getPrincipal().getId());
-		return this.servicePos.findOne(position).getAuditor().getId() == auditor.getId();
-	}
 	public boolean checkAudit(final int audit) {
 		Auditor auditor;
 		auditor = (Auditor) this.repository.findActorByUserAccountId(LoginService.getPrincipal().getId());
@@ -63,6 +58,14 @@ public class AuditService extends AbstractService {
 
 	public Collection<Audit> findAuditsByPosition(final int id) {
 		return this.repository.findAuditsByPosition(id);
+	}
+
+	public Collection<Double> findAllScoresByCompanyId(final int idCompany) {
+		return this.repository.findAllScoresByCompanyId(idCompany);
+	}
+
+	public Collection<Audit> findAllAuditsByAuditor(final int auditorId) {
+		return this.repository.findAuditsByAuditor(auditorId);
 	}
 
 	public Audit findOne(final int id) {
@@ -106,6 +109,10 @@ public class AuditService extends AbstractService {
 
 		return saved;
 	}
+
+	public void save(final Collection<Audit> col) {
+		this.repository.save(col);
+	}
 	public void delete(final int id) {
 		Auditor auditor;
 		auditor = (Auditor) this.repository.findActorByUserAccountId(LoginService.getPrincipal().getId());
@@ -113,10 +120,12 @@ public class AuditService extends AbstractService {
 		audit = this.repository.findOne(id);
 
 		Assert.isTrue(super.findAuthority(auditor.getAccount().getAuthorities(), Authority.AUDITOR), "You are not authorized");
-		Assert.isTrue(!audit.isFinalMode(), "This audit is in finalMode - Esta auditoria no se puede modificar");
-		Assert.isTrue(this.repository.findAuditsByAuditor(auditor.getId()).contains(audit), "You can not edit this audit");
+		Assert.isTrue(audit.getAuditor().getId() == auditor.getId(), "You can not edit this audit");
 
-		this.repository.delete(id);
+		if (audit.isFinalMode())
+			throw new IllegalArgumentException();
+		else
+			this.repository.delete(audit);
 	}
 	public Audit reconstruct(final Audit audit, final BindingResult binding) {
 		Audit result;
@@ -136,18 +145,11 @@ public class AuditService extends AbstractService {
 
 		this.validator.validate(result, binding);
 
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
+			result.setFinalMode(false);
 			throw new ValidationException();
+		}
 		return result;
 
-	}
-
-	public void assign(final int position) {
-		Position p;
-		p = this.servicePos.findOne(position);
-		Assert.isTrue(p.getAuditor() == null, "position.assign");
-		Auditor auditor;
-		auditor = (Auditor) this.repository.findActorByUserAccountId(LoginService.getPrincipal().getId());
-		p.setAuditor(auditor);
 	}
 }

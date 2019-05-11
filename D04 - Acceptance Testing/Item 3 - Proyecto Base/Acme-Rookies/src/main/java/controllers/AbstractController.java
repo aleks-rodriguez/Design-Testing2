@@ -10,6 +10,7 @@
 
 package controllers;
 
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 import domain.CustomisationSystem;
+import domain.Sponsorship;
 
 @Controller
 public class AbstractController {
@@ -58,7 +60,7 @@ public class AbstractController {
 	}
 
 	public boolean checkPhone(String phone) {
-	    	boolean res;
+		boolean res;
 		res = false;
 
 		phone = phone.replace(("+" + System.getProperty("phonePrefix")).trim(), " ").trim();
@@ -144,4 +146,28 @@ public class AbstractController {
 		return makes;
 	}
 
+	public static Sponsorship randomizeSponsorships(final Collection<Sponsorship> sponsorships) {
+		final SecureRandom rnd = new SecureRandom();
+		final int i = rnd.nextInt(sponsorships.size());
+		return (Sponsorship) sponsorships.toArray()[i];
+	}
+
+	public static double homothetic(final Collection<Double> values) {
+		final int a = 0;
+		final int b = 1;
+
+		final double min = 0.0;
+		final double max = 10.0;
+
+		double res = 0.0;
+		double avg = 0.0;
+		if (values.isEmpty())
+			res = Double.NaN;
+		else
+			for (final double d : values)
+				avg = avg + d;
+		avg = avg / values.size();
+		res = a + ((avg - min) * (b - a) * 1.0 / (max - min) * 1.0);
+		return res;
+	}
 }

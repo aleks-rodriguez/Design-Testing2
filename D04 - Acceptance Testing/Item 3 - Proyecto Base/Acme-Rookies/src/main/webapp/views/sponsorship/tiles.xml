@@ -15,15 +15,15 @@
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
        
 <tiles-definitions>
-
-	<definition name="sponsorship/edit" extends="master.page">	
-		<put-attribute name="title" value="Create sponsorship" />
-		<put-attribute name="body" value="/views/sponsorship/edit.jsp" />
-	</definition>
 	
 	<definition name="sponsorship/list" extends="master.page">	
-		<put-attribute name="title" value="List of sponsorships" />
+		<put-attribute name="title" value="Sponsorships list" />
 		<put-attribute name="body" value="/views/sponsorship/list.jsp" />
 	</definition>
 	
+	<definition name="sponsorship/edit" extends="master.page">	
+		<put-attribute name="title" value="Edit Sponsorship" />
+		<put-attribute name="body" value="/views/sponsorship/edit.jsp" />
+	</definition>
 </tiles-definitions>
+       

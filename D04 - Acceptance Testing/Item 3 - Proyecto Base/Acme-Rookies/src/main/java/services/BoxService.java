@@ -30,6 +30,10 @@ public class BoxService extends AbstractService {
 	private BoxRepository	boxRepository;
 
 
+	public Collection<String> getNamesFromBoxes(final int accountId) {
+		return this.boxRepository.getNamesFromBoxes(accountId);
+	}
+
 	public Collection<Box> save(final Collection<Box> boxes) {
 		return this.boxRepository.save(boxes);
 	}
@@ -160,18 +164,17 @@ public class BoxService extends AbstractService {
 		Box result;
 		result = null;
 
+		if (this.boxRepository.getNamesFromBoxes(LoginService.getPrincipal().getId()).contains(box.getName()))
+			binding.rejectValue("name", "box.name.error");
+
 		if (box.getId() == 0)
-			if (this.boxRepository.getNamesFromBoxes(LoginService.getPrincipal().getId()).contains(box.getName()))
-				binding.rejectValue("name", "box.name.error");
-			else
-				result = box;
+			result = box;
 		else {
 			result = this.boxRepository.findOne(box.getId());
 
 			result.setName(box.getName());
 			result.setMessageEntity(box.getMessageEntity());
-			if (this.boxRepository.getNamesFromBoxes(LoginService.getPrincipal().getId()).contains(result.getName()))
-				binding.rejectValue("name", "box.name.error");
+
 		}
 
 		this.validator.validate(result, binding);
@@ -179,8 +182,10 @@ public class BoxService extends AbstractService {
 			throw new ValidationException();
 		return result;
 	}
-
 	public void flush() {
 		this.boxRepository.flush();
+	}
+	public void delete(final Collection<Box> boxes) {
+		this.boxRepository.delete(boxes); //Este delete es el delete(Iterable) del repo
 	}
 }

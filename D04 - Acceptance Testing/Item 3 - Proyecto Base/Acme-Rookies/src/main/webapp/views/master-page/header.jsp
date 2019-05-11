@@ -16,7 +16,8 @@
 	uri="http://www.springframework.org/security/tags"%>
 
 <div>
-	<a href="#"><img src="${banner}" alt="${systemName}" /></a>
+	<a href="#"><img src="${banner}" alt="${systemName}" height="150"
+		width="350" /></a>
 </div>
 
 <div>
@@ -34,17 +35,25 @@
 								code="master.page.administrator.listEnabled" /></a></li>
 				</ul></li>
 			<li><a class="fNiv"><spring:message
-						code="master.page.administrator.custom" /></a>
+						code="master.page.customise" /></a>
 				<ul>
 					<li class="arrow"></li>
 					<li><a href="customisation/administrator/custom.do"><spring:message
 								code="master.page.administrator.customAction" /></a></li>
+					<li><a href="customisation/administrator/dashboard.do"><spring:message
+								code="master.page.dashboard" /></a></li>
 				</ul></li>
-			<li><a href="customisation/administrator/dashboard.do"><spring:message
-						code="master.page.dashboard" /></a></li>
-			<li><a href="actor/createAdmin.do"><spring:message
-						code="master.page.actor.admin" /></a></li>
 
+			<li><a class="fNiv"><spring:message
+						code="master.page.actor.register" /></a>
+
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="actor/createAdmin.do"><spring:message
+								code="master.page.actor.admin" /></a></li>
+					<li><a href="actor/createAuditor.do"><spring:message
+								code="master.page.actor.auditor" /></a></li>
+				</ul></li>
 
 		</security:authorize>
 
@@ -92,7 +101,25 @@
 		<!-- Provider -->
 
 		<security:authorize access="hasRole('PROVIDER')">
-
+			<li><a class="fNiv"><spring:message
+						code="master.page.sponsorship" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="sponsorship/provider/listSponsorship.do"><spring:message
+								code="master.page.sponsorship.list" /></a></li>
+					<li><a href="sponsorship/provider/listDesactive.do"><spring:message
+								code="master.page.sponsorship.listD" /></a></li>
+				</ul></li>
+			<li><a class="fNiv" ><spring:message
+					code="master.page.item.items" /></a>
+					<ul>
+					<li class="arrow"></li>
+					<li><a href="item/create.do"><spring:message
+								code="master.page.item.create" /></a></li>
+					<li><a href="item/listPersonalItems.do"><spring:message
+								code="master.page.item.myItem" /></a></li>
+				</ul>
+			</li>
 		</security:authorize>
 
 
@@ -100,12 +127,24 @@
 			<li><a class="fNiv" href="security/login.do"><spring:message
 						code="master.page.login" /></a></li>
 
-
-			<li><a href="actor/createRookie.do"><spring:message
-						code="master.page.actor.rookie" /></a></li>
-			<li><a href="actor/createCompany.do"><spring:message
-						code="master.page.actor.company" /></a></li>
+			<li><a class="fNiv"><spring:message
+						code="master.page.actor.register" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="actor/createRookie.do"><spring:message
+								code="master.page.actor.rookie" /> </a></li>
+					<li><a href="actor/createCompany.do"><spring:message
+								code="master.page.actor.company" /></a></li>
+					<li><a href="actor/createProvider.do"><spring:message
+								code="master.page.actor.provider" /></a></li>
+				</ul></li>
+				
 		</security:authorize>
+		
+		<li><a class="fNiv" href="item/listProviders.do"><spring:message
+					code="master.page.providers.listPublic" /></a></li>		
+		<li><a class="fNiv" href="item/listItems.do"><spring:message
+					code="master.page.items.listPublic" /></a></li>
 		<li><a class="fNiv" href="position/finder.do"><spring:message
 					code="master.page.position.finder" /></a></li>
 		<li><a class="fNiv" href="position/listPositions.do"><spring:message

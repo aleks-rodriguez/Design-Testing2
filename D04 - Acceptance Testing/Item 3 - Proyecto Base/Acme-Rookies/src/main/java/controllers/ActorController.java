@@ -17,10 +17,19 @@ import org.springframework.web.servlet.ModelAndView;
 import security.Authority;
 import security.LoginService;
 import services.ActorService;
+import services.ApplicationService;
+import services.AuditService;
+import services.CurriculaService;
 import services.CustomisationSystemService;
+import services.ItemService;
+import services.PositionService;
+import services.ProblemService;
+import services.SponsorshipService;
 import domain.Actor;
 import domain.Administrator;
+import domain.Auditor;
 import domain.Company;
+import domain.Provider;
 import domain.Rookie;
 import forms.ActorForm;
 
@@ -33,6 +42,20 @@ public class ActorController extends BasicController {
 
 	@Autowired
 	private CustomisationSystemService	customService;
+	@Autowired
+	private PositionService				posService;
+	@Autowired
+	private ProblemService				problemService;
+	@Autowired
+	private ApplicationService			appService;
+	@Autowired
+	private CurriculaService			curriculumService;
+	@Autowired
+	private AuditService				auditService;
+	@Autowired
+	private ItemService					itemService;
+	@Autowired
+	private SponsorshipService			sponsorshipService;
 
 
 	@RequestMapping(value = "/listSpammers", method = RequestMethod.GET)
@@ -103,16 +126,41 @@ public class ActorController extends BasicController {
 		model.addObject("prefix", System.getProperty("phonePrefix"));
 		return model;
 	}
-
+	@RequestMapping(value = "/createProvider", method = RequestMethod.GET)
+	public ModelAndView createProvider() {
+		ModelAndView model;
+		final ActorForm a = this.actorService.map(this.actorService.createActor(Authority.PROVIDER), Authority.PROVIDER);
+		model = super.create(a, "actor/edit", "actor/edit.do", "redirect:../welcome.do");
+		model.addObject("authority", Authority.PROVIDER);
+		model.addObject("view", false);
+		model.addObject("makes", super.creditCardMakes());
+		model.addObject("prefix", System.getProperty("phonePrefix"));
+		return model;
+	}
+	@RequestMapping(value = "/createAuditor", method = RequestMethod.GET)
+	public ModelAndView createAuditor() {
+		ModelAndView model;
+		final ActorForm a = this.actorService.map(this.actorService.createActor(Authority.AUDITOR), Authority.AUDITOR);
+		model = super.create(a, "actor/edit", "actor/edit.do", "redirect:../welcome.do");
+		model.addObject("authority", Authority.AUDITOR);
+		model.addObject("view", false);
+		model.addObject("makes", super.creditCardMakes());
+		model.addObject("prefix", System.getProperty("phonePrefix"));
+		return model;
+	}
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView saveEntity(@ModelAttribute("actor") final ActorForm actor, final BindingResult binding) {
 		ModelAndView result;
 		result = super.save(actor, binding, "actor.commit.error", "actor/edit", "actor/edit.do", "/actor/list.do", "redirect:../welcome.do");
+		result.addObject("makes", super.creditCardMakes());
+		result.addObject("authority", actor.getAuthority());
+		result.addObject("view", false);
+		result.addObject("prefix", System.getProperty("phonePrefix"));
 		return result;
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView deleteEntity(@RequestParam final int id) {
+	public ModelAndView deleteEntity() {
 		return super.delete(this.actorService.findByUserAccount(LoginService.getPrincipal().getId()), "actor.commit.error", "actor/edit", "j_spring_security_logout", "redirect:../welcome.do", "redirect:../j_spring_security_logout");
 
 	}
@@ -131,15 +179,23 @@ public class ActorController extends BasicController {
 		model.addObject("view", false);
 		model.addObject("prefix", System.getProperty("phonePrefix"));
 		model.addObject("spammer", this.actorService.checkSpammer(ac));
+		if (this.actorService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COMPANY))
+			model.addObject("score", super.homothetic(this.actorService.findAllScoresByCompany(ac.getId())));
 		return model;
 	}
 	@Override
 	public <T> ModelAndView saveAction(final T e, final BindingResult binding, final String nameResolver) {
 		ModelAndView result;
-		final ActorForm actor = (ActorForm) e;
+
+		ActorForm actor;
+		actor = (ActorForm) e;
+
 		Administrator admin = null;
 		Rookie rookie = null;
 		Company company = null;
+		Provider provider = null;
+		Auditor auditor = null;
+
 		if (actor.isTerms()) {
 			if (actor.getAuthority().equals(Authority.ADMIN))
 				admin = this.actorService.reconstructAdministrator(actor, binding);
@@ -147,9 +203,15 @@ public class ActorController extends BasicController {
 				rookie = this.actorService.reconstructRookie(actor, binding);
 			else if (actor.getAuthority().equals(Authority.COMPANY))
 				company = this.actorService.reconstructCompany(actor, binding);
+			else if (actor.getAuthority().equals(Authority.PROVIDER))
+				provider = this.actorService.reconstructProvider(actor, binding);
+			else if (actor.getAuthority().equals(Authority.AUDITOR))
+				auditor = this.actorService.reconstructAuditor(actor, binding);
 
 			if (!actor.getAuthority().equals(Authority.ADMIN) && actor.getEmail().matches("^([0-9a-zA-Z]([-.\\\\w]*[0-9a-zA-Z])+@)|([\\w\\s]+<[a-zA-Z0-9_!#$%&*+/=?`{|}~^.-]+@+>)$"))
 				result = super.createAndEditModelAndView(actor, "actor.wrong.email", "actor/edit", "actor/edit.do", "redirect://../welcome.do");
+			else if (actor.getAccount().getUsername().toLowerCase().replace(" ", "").trim().equals("loremipsum"))
+				result = super.createAndEditModelAndView(actor, "actor.wrong.username", "actor/edit", "actor/edit.do", "redirect://../welcome.do");
 			else if (!super.luhnAlgorithm(actor.getCreditCard().getNumber()) || actor.getCreditCard().getMake().equals("0"))
 				result = super.createAndEditModelAndView(actor, "actor.wrong.creditCard", "actor/edit", "actor/edit.do", "redirect://../welcome.do");
 			else if (actor.getCreditCard().getExpiration().before(new Date()) || actor.getCreditCard().getMake().equals("0"))
@@ -158,11 +220,15 @@ public class ActorController extends BasicController {
 				result = super.createAndEditModelAndView(actor, "actor.wrong.phone", "actor/edit", "actor/edit.do", "redirect://../welcome.do");
 			else if (actor.getAccount().getPassword().equals(actor.getPassword2()) && actor.getAccount().getPassword() != "" && actor.getPassword2() != "") {
 				if (actor.getAuthority().equals(Authority.ADMIN))
-					this.actorService.save(admin, null, null);
+					this.actorService.save(admin, null, null, null, null);
 				else if (actor.getAuthority().equals(Authority.ROOKIE))
-					this.actorService.save(null, rookie, null);
+					this.actorService.save(null, rookie, null, null, null);
 				else if (actor.getAuthority().equals(Authority.COMPANY))
-					this.actorService.save(null, null, company);
+					this.actorService.save(null, null, company, null, null);
+				else if (actor.getAuthority().equals(Authority.PROVIDER))
+					this.actorService.save(null, null, null, provider, null);
+				else if (actor.getAuthority().equals(Authority.AUDITOR))
+					this.actorService.save(null, null, null, null, auditor);
 				result = new ModelAndView("redirect:../j_spring_security_logout");
 			} else {
 				actor.setTerms(true);
@@ -174,10 +240,7 @@ public class ActorController extends BasicController {
 			result = super.createAndEditModelAndView(actor, "actor.terms", "actor/edit", "actor/edit.do", "redirect://../welcome.do");
 			actor.setTerms(false);
 		}
-		result.addObject("makes", super.creditCardMakes());
-		result.addObject("authority", actor.getAuthority());
-		result.addObject("view", false);
-		result.addObject("prefix", System.getProperty("phonePrefix"));
+
 		return result;
 	}
 	@Override
@@ -200,6 +263,22 @@ public class ActorController extends BasicController {
 		map = new HashMap<String, Object>();
 
 		map.put("actor", actor);
+		if (this.curriculumService.findAuthority(actor.getAccount().getAuthorities(), Authority.COMPANY)) {
+			map.put("positions", this.posService.getPositionsByCompany(actor.getId()));
+			map.put("problems", this.problemService.getProblemByCompanyId(actor.getId()));
+		}
+		if (this.curriculumService.findAuthority(actor.getAccount().getAuthorities(), Authority.ROOKIE)) {
+			map.put("curricula", this.curriculumService.findAllByRookie());
+			map.put("apps", this.appService.getApplicationByRookieId(actor.getId()));
+		}
+		if (this.curriculumService.findAuthority(actor.getAccount().getAuthorities(), Authority.AUDITOR))
+			map.put("audits", this.auditService.findAllAuditsByAuditor(actor.getId()));
+		if (this.curriculumService.findAuthority(actor.getAccount().getAuthorities(), Authority.PROVIDER)) {
+			map.put("items", this.itemService.getItemsByProvider(actor.getId()));
+			map.put("sponsorshipsAct", this.sponsorshipService.getSponsorshipActiveByProviderId(actor.getId()));
+			map.put("sponsorshipsDes", this.sponsorshipService.getSponsorshipDesactiveByProviderId(actor.getId()));
+		}
+		map.put("credit", this.actorService.getCreditcardByActor(this.actorService.findByUserAccount(LoginService.getPrincipal().getId()).getId()));
 
 		result = new ModelAndView(new ExportActorDataPDFController(), map);
 

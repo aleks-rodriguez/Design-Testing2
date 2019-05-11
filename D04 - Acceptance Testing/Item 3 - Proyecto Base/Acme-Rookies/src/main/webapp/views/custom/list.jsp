@@ -57,8 +57,46 @@
 		<td>${marcadorNumericoArray.get("MinMaxAvgSttdvOfCurriculaPerRookie")[1]}</td>
 		<td>${marcadorNumericoArray.get("MinMaxAvgSttdvOfCurriculaPerRookie")[3]}</td>
 	</tr>
-
-
+	
+	<tr>
+		<td><spring:message code="custom.AuditPerPosition" /></td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfAuditPerPosition")[2]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfAuditPerPosition")[0]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfAuditPerPosition")[1]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfAuditPerPosition")[3]}</td>
+	</tr>
+	
+	<tr>
+		<td><spring:message code="custom.AuditPerCompany" /></td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfAuditPerCompany")[2]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfAuditPerCompany")[0]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfAuditPerCompany")[1]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfAuditPerCompany")[3]}</td>
+	</tr>
+	
+	<tr>
+		<td><spring:message code="custom.ItemPerProvider" /></td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfItemPerProvider")[2]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfItemPerProvider")[0]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfItemPerProvider")[1]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfItemPerProvider")[3]}</td>
+	</tr>
+	
+	<tr>
+		<td><spring:message code="custom.SponsorshipsPerProvider" /></td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfSponsorshipsPerProvider")[2]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfSponsorshipsPerProvider")[0]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfSponsorshipsPerProvider")[1]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfSponsorshipsPerProvider")[3]}</td>
+	</tr>
+	
+		<tr>
+		<td><spring:message code="custom.SponsorshipsPerPosition" /></td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfSponsorshipsPerPosition")[2]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfSponsorshipsPerPosition")[0]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfSponsorshipsPerPosition")[1]}</td>
+		<td>${marcadorNumericoArray.get("MinMaxAvgDttvOfSponsorshipsPerPosition")[3]}</td>
+	</tr>
 
 	<tr>
 		<td><spring:message code="custom.NumberOfResultFinder" /></td>
@@ -129,6 +167,62 @@
 		<td>${marcadorNumerico.get("EmptyVsNotEmpty")}</td>
 	</tr>
 
+
+</table>
+
+<table border=1>
+
+	<tr>
+		<th></th>
+		<th><spring:message code="custom.auditScore" /></th>
+	</tr>
+
+	<tr>
+		<td><spring:message code="custom.HighestCompaniesAuditScore" /></td>
+		<td>${CompanyRookies.get("HighestCompaniesAuditScore")}</td>
+	</tr>
+
+</table>
+
+<table border=1>
+
+	<tr>
+		<th></th>
+		<th><spring:message code="custom.maxItems" /></th>
+	</tr>
+
+	<tr>
+		<td><spring:message code="custom.Top5ProviderPerMaxItems" /></td>
+		<td>${CompanyRookies.get("Top5ProviderPerMaxItems")}</td>
+	</tr>
+
+</table>
+
+<table border=1>
+
+	<tr>
+		<th></th>
+		<th><spring:message code="custom.SponsorshipMoreThan10" /></th>
+	</tr>
+
+	<tr>
+		<td><spring:message code="custom.ProvidersSponsorshipMoreThan10PerCent" /></td>
+		<td>${CompanyRookies.get("ProvidersSponsorshipMoreThan10PerCent")}</td>
+	</tr>
+
+</table>
+
+<table border=1>
+
+	<tr>
+		<th></th>
+		<th><spring:message code="custom.AverageSalary" /></th>
+	</tr>
+
+	<tr>
+		<td><spring:message code="custom.averageSalaryMaxAverageAuditScore" /></td>
+		<td>${marcadorNumerico.get("averageSalaryMaxAverageAuditScore")}</td>
+	</tr>
 
 </table>
 

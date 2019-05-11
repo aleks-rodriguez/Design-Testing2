@@ -34,6 +34,9 @@ import domain.Ticker;
 public class FinderService extends AbstractService {
 
 	@Autowired
+	private PositionService		servicePosition;
+
+	@Autowired
 	private FinderRepository	repository;
 
 	@Autowired
@@ -143,6 +146,21 @@ public class FinderService extends AbstractService {
 		aux.setCreationDate(new Date());
 	}
 
+	public List<Position> searchWithRetain(final String s, final Date deadlineDate, final Double minSalary, final Double maxSalary) {
+		List<Position> result;
+
+		result = new ArrayList<Position>(this.servicePosition.getPublicPositions());
+
+		if (s != "" || s != null)
+			result.retainAll(this.repository.findBySingleKey(s));
+		if (deadlineDate != null)
+			result.retainAll(this.repository.findByDate(deadlineDate));
+		if (minSalary != null && maxSalary != null)
+			result.retainAll(this.repository.findBySalary(minSalary, maxSalary));
+
+		return result;
+	}
+
 	private List<Position> fullTextSearch(final String s, final Date deadlineDate, final Double minSalary, final Double maxSalary) throws Throwable {
 		List<Position> result;
 		final HibernatePersistenceProvider provider = new HibernatePersistenceProvider();
@@ -183,5 +201,7 @@ public class FinderService extends AbstractService {
 		entityManagerFactory.close();
 		return result;
 	}
-
+	public void delete(final Finder f) {
+		this.repository.delete(f);
+	}
 }

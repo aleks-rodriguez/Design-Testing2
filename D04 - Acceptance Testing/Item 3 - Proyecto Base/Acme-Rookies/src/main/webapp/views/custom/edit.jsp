@@ -26,6 +26,7 @@
 	<acme:textarea code="custom.message" path="message" />
 	<acme:textbox code="custom.prefix" path="phonePrefix" />
 	<acme:textbox code="custom.vat" path="vat" />
+	<acme:textbox code="custom.flat_rate" path="flat_rate" />
 	<acme:select_range end="24" begin="1" code="custom.hoursFinder"
 		path="hoursFinder" />
 	<acme:select_range end="100" begin="10" code="custom.resultFinder"
@@ -33,6 +34,10 @@
 	<acme:textarea code="custom.spamWordsEnglish" path="spamwordsEnglish" />
 	<acme:textarea code="custom.spamWordsSpanish" path="spamwordsSpanish" />
 	<acme:submit name="save" code="custom.save" />
+	<br>
+	<br>
+		<a href="customisation/administrator/notification.do"><spring:message code="custom.notification" /></a>
+	<br>
 </form:form>
 
 <acme:cancel url="${requestCancel}" code="custom.cancel" />

@@ -159,4 +159,7 @@ public class EducationDataService extends AbstractService {
 			res = begin.before(end) && end.after(begin);
 		return res;
 	}
+	public void delete(final Collection<EducationData> edu) {
+		this.repository.delete(edu);//Este delete es el delete(Iterable) del repo
+	}
 }
