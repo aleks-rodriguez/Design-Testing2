@@ -74,10 +74,10 @@ public abstract class BasicController extends AbstractController {
 			result = this.createAndEditModelAndView(e, error, nameView, requestURI, requestCancel);
 			result.addObject("view", false);
 			if (e instanceof Position)
-				((Position) e).setTicker(null);
+				result.addObject("duplicate", true);
 			if (e instanceof ActorForm)
 				result.addObject("makes", super.creditCardMakes());
-			result.addObject("duplicate", true);
+			
 		}
 
 		return result;
