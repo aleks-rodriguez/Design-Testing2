@@ -87,7 +87,9 @@
 	<acme:textbox code="actor.adress" path="adress" readonly="${view}" />
 	<acme:textbox code="actor.photo" path="photo" readonly="${view}" />
 	<jstl:if test="${authority eq 'COMPANY'}">
+	<jstl:if test="${actor.id != 0}">
 	<spring:message code="actor.score"/><jstl:out value="${score}" />
+	</jstl:if>
 	</jstl:if>
 
 	<jstl:if test="${view eq 'false'}">

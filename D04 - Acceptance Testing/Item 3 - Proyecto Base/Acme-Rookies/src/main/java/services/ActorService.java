@@ -609,7 +609,7 @@ public class ActorService extends AbstractService {
 		return t;
 	}
 
-	private CreditCard fakeCreditCard() {
+	public CreditCard fakeCreditCard() {
 		CreditCard c;
 		c = this.createCreditCard();
 		c.setCvv(999);

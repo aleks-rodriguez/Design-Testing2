@@ -57,6 +57,7 @@ public class ProblemController extends BasicController {
 		col = this.problemService.getProblemByCompanyId(a.getId());
 
 		Assert.isTrue(col.contains(problem), "You don't have permission to do this");
+		Assert.isTrue(problem.getFinalMode() == false, "You can not update a position in finalMode");
 		String requestCancel = "";
 
 		if (this.positionService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COMPANY))
@@ -74,6 +75,17 @@ public class ProblemController extends BasicController {
 	public ModelAndView show(@RequestParam final int id) {
 		ModelAndView result;
 
+		Company a;
+		a = this.problemService.findCompanyByUserAccountId(LoginService.getPrincipal().getId());
+
+		Problem problem;
+		problem = this.problemService.findOne(id);
+
+		Collection<Problem> col;
+		col = this.problemService.getProblemByCompanyId(a.getId());
+
+		Assert.isTrue(col.contains(problem), "You don't have permission to do this");
+
 		String requestCancel = "";
 		if (this.positionService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COMPANY))
 			requestCancel = "/problem/company/list.do";
@@ -84,6 +96,7 @@ public class ProblemController extends BasicController {
 		if (this.positionService.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COMPANY))
 			result.addObject("position", this.positionService.getPositionsByCompany(this.problemService.findCompanyByUserAccountId(LoginService.getPrincipal().getId()).getId()));
 		result.addObject("position2", this.problemService.findOne(id).getPosition());
+
 		return result;
 	}
 
@@ -110,6 +123,7 @@ public class ProblemController extends BasicController {
 		col = this.problemService.getProblemByCompanyId(a.getId());
 
 		Assert.isTrue(col.contains(problem), "You don't have permission to do this");
+		Assert.isTrue(problem.getFinalMode() == false, "You can not delete a position in finalMode");
 		ModelAndView result;
 		result = super.delete(this.problemService.findOne(id), "problem.commit.error", "problem/edit", "problem/edit.do", "redirect:list.do", "redirect:list.do");
 		return result;

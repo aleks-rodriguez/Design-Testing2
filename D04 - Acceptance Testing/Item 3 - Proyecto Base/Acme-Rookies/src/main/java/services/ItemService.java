@@ -112,19 +112,18 @@ public class ItemService extends AbstractService {
 			result.setPictures(item.getPictures());
 			result.setUrls(item.getUrls());
 		}
-		this.checkCollection("urls", result.getUrls(), binding);
-		this.checkCollection("pictures", result.getPictures(), binding);
+		this.checkCollection("urls", result.getUrls(), binding, false);
+		this.checkCollection("pictures", result.getPictures(), binding, true);
 		this.validator.validate(result, binding);
 		if (binding.hasErrors())
 			throw new ValidationException();
 		return result;
 	}
 
-	public void checkCollection(final String attribute, final Collection<String> col, final BindingResult binding) {
-
-		if (col.isEmpty())
-			binding.rejectValue(attribute, "item.notblank");
-
+	public void checkCollection(final String attribute, final Collection<String> col, final BindingResult binding, final Boolean optional) {
+		if (optional == false)
+			if (col.isEmpty())
+				binding.rejectValue(attribute, "item.notblank");
 	}
 
 	public void flush() {

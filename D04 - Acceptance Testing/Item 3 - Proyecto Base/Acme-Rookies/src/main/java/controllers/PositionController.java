@@ -24,7 +24,6 @@ import services.AuditService;
 import services.FinderService;
 import services.MessageService;
 import services.PositionService;
-import services.ProblemService;
 import services.SponsorshipService;
 import domain.Company;
 import domain.Finder;
@@ -55,9 +54,6 @@ public class PositionController extends BasicController {
 
 	@Autowired
 	private AuditService		auditService;
-
-	@Autowired
-	private ProblemService		problemService;
 
 	private boolean				duplicate;
 	private boolean				control	= true;
@@ -98,7 +94,21 @@ public class PositionController extends BasicController {
 		ModelAndView result;
 		result = super.listModelAndView("positions", "position/list", this.service.getPublicPositions(), "position/listPositions.do");
 		result.addObject("publica", false);
+		try {
+			if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.PROVIDER)) {
+				Collection<Position> colP;
+				colP = this.service.findPositionWithSponsorshipByProviderId(this.serviceActor.findByUserAccount(LoginService.getPrincipal().getId()).getId());
+				result.addObject("spo", colP);
+			} else if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ROOKIE)) {
+				Collection<Position> colP2;
+				colP2 = this.service.findPositionWithApplyByRookieId(this.serviceActor.findByUserAccount(LoginService.getPrincipal().getId()).getId());
+				result.addObject("appl", colP2);
+			}
+		} catch (final Throwable oops) {
+
+		}
 		return result;
+
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -124,6 +134,19 @@ public class PositionController extends BasicController {
 		ModelAndView result;
 		result = super.listModelAndView("positions", "position/list", col, requestURI);
 		result.addObject("publica", true);
+		try {
+			if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.PROVIDER)) {
+				Collection<Position> colP;
+				colP = this.service.findPositionWithSponsorshipByProviderId(this.serviceActor.findByUserAccount(LoginService.getPrincipal().getId()).getId());
+				result.addObject("spo", colP);
+			} else if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ROOKIE)) {
+				Collection<Position> colP2;
+				colP2 = this.service.findPositionWithApplyByRookieId(this.serviceActor.findByUserAccount(LoginService.getPrincipal().getId()).getId());
+				result.addObject("appl", colP2);
+			}
+		} catch (final Throwable oops) {
+
+		}
 		return result;
 	}
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -264,32 +287,34 @@ public class PositionController extends BasicController {
 		res = new ArrayList<Position>();
 
 		try {
-
+			h = (Rookie) this.service.findByUserAccount(LoginService.getPrincipal().getId());
 			finder = this.serviceFinder.reconstruct(finder, binding);
 
-			if (finder.getSingleKey().equals("") && finder.getDeadline() == null && finder.getMinSalary() == null && finder.getMaxSalary() == null)
+			if (this.checkFinderProperties(this.oldRookieFinder, finder) && this.checkFinderTime(finder))
+				res = h.getFinder().getPositions();
+			else if (finder.getSingleKey().equals("") && finder.getDeadline() == null && finder.getMinSalary() == null && finder.getMaxSalary() == null)
 				res = this.service.getPublicPositions();
 			else {
-				h = (Rookie) this.service.findByUserAccount(LoginService.getPrincipal().getId());
-				if (this.checkFinderProperties(this.oldRookieFinder, finder) && this.checkFinderTime(finder))
-					res = h.getFinder().getPositions();
-				else {
-					//res = this.serviceFinder.findByLucene(finder.getSingleKey(), finder.getDeadline(), finder.getMinSalary(), finder.getMaxSalary());
-					//if (res.isEmpty())
-					res = this.serviceFinder.searchWithRetain(finder.getSingleKey(), finder.getDeadline(), finder.getMinSalary(), finder.getMaxSalary());
-					this.serviceFinder.save(finder, res);
-				}
+				res = this.serviceFinder.searchWithRetain(finder.getSingleKey(), finder.getDeadline(), finder.getMinSalary(), finder.getMaxSalary());
+				this.serviceFinder.save(finder, res);
 			}
+			result = super.listModelAndView("positions", "position/list", res, "position/list.do");
 
 		} catch (final ValidationException e) {
 			result = super.createAndEditModelAndView(finder, "position/find", "position/search.do", "/");
-		} catch (final Throwable oops) {
-			if (finder.getId() == 0)
+		} catch (final ClassCastException cce) {
+			if (finder.getSingleKey().equals(""))
+				res = this.service.getPublicPositions();
+			else
 				res = this.serviceFinder.findBySingleKey(finder.getSingleKey());
+			result = super.listModelAndView("positions", "position/list", res, "position/list.do");
+		} catch (final Throwable oops) {
+			if (finder.getSingleKey().equals(""))
+				res = this.service.getPublicPositions();
+			else
+				res = this.serviceFinder.findBySingleKey(finder.getSingleKey());
+			result = super.listModelAndView("positions", "position/list", res, "position/list.do");
 		}
-
-		result = super.listModelAndView("positions", "position/list", res, "position/list.do");
-
 		return result;
 	}
 
@@ -300,8 +325,8 @@ public class PositionController extends BasicController {
 		Finder aux;
 		h = (Rookie) this.service.findByUserAccount(LoginService.getPrincipal().getId());
 		aux = h.getFinder();
-		this.serviceFinder.clear(aux);
-		result = super.edit(this.serviceFinder.findOne(aux), "position/find", "position/search.do", "redirect:../welcome.do");
+		aux = this.serviceFinder.clear(aux);
+		result = super.edit(aux, "position/find", "position/search.do", "redirect:../welcome.do");
 		return result;
 	}
 

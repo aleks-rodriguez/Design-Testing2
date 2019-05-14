@@ -35,4 +35,10 @@ public interface PositionRepository extends JpaRepository<Position, Integer> {
 
 	@Query("select c from Company c")
 	Collection<Company> findAllCompanies();
+
+	@Query("select p from Sponsorship s join s.position p where s.provider.id = ?1")
+	Collection<Position> findPositionWithSponsorshipByProviderId(int id);
+
+	@Query("select p from Application s join s.position p where s.rookie.id = ?1")
+	Collection<Position> findPositionWithApplyByRookieId(int id);
 }

@@ -78,8 +78,10 @@ public class PositionServiceTest extends AbstractTest {
 			}
 		};
 
-		for (int i = 0; i < objects.length; i++)
+		for (int i = 0; i < objects.length; i++) {
+			System.out.println("test" + i);
 			this.templateCreation((String) objects[i][0], objects[i][1], (Class<?>) objects[i][2]);
+		}
 	}
 
 	protected void templateCreation(final String username, final Object param, final Class<?> expected) {
@@ -139,14 +141,16 @@ public class PositionServiceTest extends AbstractTest {
 			}, { // Edition in Final Mode. Negative Test Case.
 				"company1", super.getEntityId("position1"), IllegalArgumentException.class, ""
 			}, { //Hacking trying to see a position from other company which mode is draft. Negative Test Case
-				"company2", super.getEntityId("position3"), IllegalArgumentException.class, ""
+				"company1", super.getEntityId("position3"), IllegalArgumentException.class, ""
 			}, {
 				// Set final mode with two problems assigned. Positive Test Case.
-				"company1", super.getEntityId("position3"), null, "two"
+				"company2", super.getEntityId("position3"), null, "two"
 			}
 		};
-		for (int i = 0; i < objects.length; i++)
+		for (int i = 0; i < objects.length; i++) {
+			System.out.println("test2" + i);
 			this.templateEdition((String) objects[i][0], (int) objects[i][1], (Class<?>) objects[i][2], (String) objects[i][3]);
+		}
 	}
 
 	protected void templateEdition(final String auth, final int position, final Class<?> expected, final String param) {

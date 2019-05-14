@@ -1248,6 +1248,7 @@
 			<ref bean="provider1" />
 		</property>
 		<property name="flat_rate" value="0.20" />
+		<property name="isActive" value = "true"/>
 	</bean>
 	<bean id="sponsorship2" class="domain.Sponsorship">
 		<property name="creditCard" ref="creditcard5" />

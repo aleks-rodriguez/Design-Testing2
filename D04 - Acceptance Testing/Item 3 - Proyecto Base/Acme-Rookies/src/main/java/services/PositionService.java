@@ -37,11 +37,19 @@ public class PositionService extends AbstractService {
 	@Autowired
 	private Validator			validator;
 
-	private Boolean				statusPrevious;
+	private boolean				statusPrevious;
 
 
 	public Company showCompanyByPosition(final int id) {
 		return this.repository.showCompanyByPosition(id);
+	}
+
+	public Collection<Position> findPositionWithSponsorshipByProviderId(final int id) {
+		return this.repository.findPositionWithSponsorshipByProviderId(id);
+	}
+
+	public Collection<Position> findPositionWithApplyByRookieId(final int id) {
+		return this.repository.findPositionWithApplyByRookieId(id);
 	}
 
 	public Collection<Company> findAllCompanies() {
@@ -121,25 +129,24 @@ public class PositionService extends AbstractService {
 			arg.setCompany(c);
 		else {
 			Assert.isTrue(arg.getCompany().equals(c));
-			if (this.statusPrevious != null) {
-				Assert.isTrue(this.statusPrevious == false);
-
-				if (arg.isCancel())
-					Assert.isTrue(arg.isFinalMode() == true);
-
-				if (arg.isFinalMode())
-					Assert.isTrue(this.problemsByPosition(arg.getId()).size() >= 2);
-
-				Assert.isTrue(arg.getDeadline().after(new Date()));
-
-				Ticker saveT;
-				saveT = this.repositoryTicker.saveAndFlush(ticker);
-
-				arg.setTicker(saveT);
-
-			}
+			Assert.isTrue(this.statusPrevious == false);
 		}
+
+		if (arg.isCancel())
+			Assert.isTrue(arg.isFinalMode() == true);
+
+		if (arg.isFinalMode())
+			Assert.isTrue(this.problemsByPosition(arg.getId()).size() >= 2);
+
+		Assert.isTrue(arg.getDeadline().after(new Date()));
+
+		Ticker saveT;
+		saveT = this.repositoryTicker.saveAndFlush(ticker);
+
+		arg.setTicker(saveT);
+
 		saved = this.repository.saveAndFlush(arg);
+
 		return saved;
 	}
 
@@ -159,6 +166,7 @@ public class PositionService extends AbstractService {
 				res.setSalary(aux.getSalary());
 				res.setSkillsRequired(aux.getSkillsRequired());
 				res.setTitle(aux.getTitle());
+				res.setTechnologies(aux.getTechnologies());
 			} else
 				throw new ValidationException();
 		}

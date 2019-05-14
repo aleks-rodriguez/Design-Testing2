@@ -26,54 +26,52 @@ import utilities.AbstractTest;
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
-public class DashboardServiceTest extends AbstractTest {
+public class ItemServiceTest extends AbstractTest {
 
 	@Autowired
-	ActorService				actorService;
+	ActorService	actorService;
 
 	@Autowired
-	CustomisationSystemService	customService;
+	ItemService		itemService;
 
 
 	/*
 	 * TEST 1
-	 * Requirement tested: An actor who is authenticated as an administrator must be able to display a dashboard
-	 * - Analysis of sentence coverage of CustomisationSystemService: 47.3%
-	 * Total instructions: 581; Covered Instructions: 275
+	 * Requirement tested: An actor who is authenticated as an provider can delete his or her items.
+	 * - Analysis of sentence coverage of ItemService: 14.7%
+	 * Total instructions: 197; Covered Instructions: 29
 	 * 
-	 * - Analysis of data coverage: 0%
+	 * - Analysis of data coverage: 50.0%%
+	 * Attribute: name| Bad value: false | Normal value: Yes | Coverage: 50% |
+	 * Attribute: description| Bad value: false | Normal value: Yes | Coverage: 50% |
+	 * Attribute: urls| Bad value: - | Normal value: Yes | Coverage: 50% |
+	 * Attribute: pictures| Bad value: - | Normal value: Yes | Coverage: 50% |
 	 */
 
 	@Test
 	public void test1() {
 		final Object testingData[][] = {
 			{
-				//Positive test
-				"admin1", null
-			}, {
 				//Negative test
-				"rookie1", IllegalArgumentException.class
+				"provider1", "item1", null
+			}, {
+				//Positive test
+				"provider2", "item1", NullPointerException.class
 			}
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.template1((String) testingData[i][0], (Class<?>) testingData[i][1]);
+			this.template1((String) testingData[i][0], super.getEntityId((String) testingData[i][1]), (Class<?>) testingData[i][2]);
 	}
 
-	protected void template1(final String username, final Class<?> expected) {
+	protected void template1(final String username, final int itemId, final Class<?> expected) {
 		Class<?> caught;
 		caught = null;
 
 		try {
 			this.authenticate(username);
 
-			this.customService.BestWorstPositionSalary();
-
-			this.customService.marcadorNumericoArray();
-
-			this.customService.CompanyRookies();
-
-			this.customService.marcadorNumerico();
+			this.itemService.delete(itemId);
 
 			this.unauthenticate();
 
@@ -82,4 +80,5 @@ public class DashboardServiceTest extends AbstractTest {
 		}
 		super.checkExceptions(expected, caught);
 	}
+
 }

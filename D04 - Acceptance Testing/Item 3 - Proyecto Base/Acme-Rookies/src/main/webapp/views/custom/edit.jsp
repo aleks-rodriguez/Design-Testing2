@@ -35,9 +35,11 @@
 	<acme:textarea code="custom.spamWordsSpanish" path="spamwordsSpanish" />
 	<acme:submit name="save" code="custom.save" />
 	<br>
+	<jstl:if test="${!noti}">
 	<br>
 		<a href="customisation/administrator/notification.do"><spring:message code="custom.notification" /></a>
 	<br>
+	</jstl:if>
 </form:form>
 
 <acme:cancel url="${requestCancel}" code="custom.cancel" />

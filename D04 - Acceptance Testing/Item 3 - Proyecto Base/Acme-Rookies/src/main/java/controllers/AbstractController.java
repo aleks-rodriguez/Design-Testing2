@@ -149,6 +149,7 @@ public class AbstractController {
 	public static Sponsorship randomizeSponsorships(final Collection<Sponsorship> sponsorships) {
 		final SecureRandom rnd = new SecureRandom();
 		final int i = rnd.nextInt(sponsorships.size());
+		System.out.println(sponsorships.size());
 		return (Sponsorship) sponsorships.toArray()[i];
 	}
 

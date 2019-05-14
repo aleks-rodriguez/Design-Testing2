@@ -29,14 +29,22 @@ public class CustomisationSystemController extends BasicController {
 
 	@RequestMapping(value = "/custom", method = RequestMethod.GET)
 	public ModelAndView custom() {
+		ModelAndView result;
 		Assert.isTrue(this.serviceCustom.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
-		return super.edit(this.serviceCustom.fromCustomisationSystemToObjetForm(this.serviceCustom.findUnique()), "custom/edit", "customisation/administrator/edit.do", "/");
+		result = super.edit(this.serviceCustom.fromCustomisationSystemToObjetForm(this.serviceCustom.findUnique()), "custom/edit", "customisation/administrator/edit.do", "/");
+		if (this.serviceMessage.findSystemConfigMessage() != null)
+			result.addObject("noti", true);
+		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView edit(final CustomForm customForm, final BindingResult binding) {
+		ModelAndView result;
 		Assert.isTrue(this.serviceCustom.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
-		return super.save(customForm, binding, "custom.commit.error", "custom/edit", "customisation/administrator/edit.do", "/", "redirect:/welcome/index.do");
+		result = super.save(customForm, binding, "custom.commit.error", "custom/edit", "customisation/administrator/edit.do", "/", "redirect:/welcome/index.do");
+		if (this.serviceMessage.findSystemConfigMessage() != null)
+			result.addObject("noti", true);
+		return result;
 	}
 
 	@RequestMapping(value = "/notification", method = RequestMethod.GET)

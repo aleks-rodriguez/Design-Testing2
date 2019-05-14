@@ -72,11 +72,11 @@ public interface CustomisationSystemRepository extends JpaRepository<Customisati
 
 	//LEVEL C
 	//The avg, min, max, std of the audit score of the positions stored in the system
-	@Query("select avg(1.0*(select count(a.score) from Audit a where a.position.id = p.id)), max(1.0*(select count(a.score) from Audit a where a.position.id = p.id)), min(1.0*(select count(a.score) from Audit a where a.position.id = p.id)), stddev(1.0*(select count(a.score) from Audit a where a.position.id = p.id)) from Position p")
+	@Query("select avg(1.0*(select avg(a.score) from Audit a where a.position.id = p.id)), max(1.0*(select avg(a.score) from Audit a where a.position.id = p.id)), min(1.0*(select avg(a.score) from Audit a where a.position.id = p.id)), stddev(1.0*(select avg(a.score) from Audit a where a.position.id = p.id)) from Position p")
 	Double[] minMaxAvgDttvOfAuditPerPosition();
 
 	//The avg, min, max, std of the audit score of the companies that are registered in the system
-	@Query("select avg(1.0*(select count(a.score) from Audit a join a.position p where p.company.id = c.id)), max(1.0*(select count(a.score) from Audit a join a.position p where p.company.id = c.id)), min(1.0*(select count(a.score) from Audit a join a.position p where p.company.id = c.id)),stddev(1.0*(select count(a.score) from Audit a join a.position p where p.company.id = c.id)) from Company c")
+	@Query("select avg(1.0*(select avg(a.score) from Audit a join a.position p where p.company.id = c.id)), max(1.0*(select avg(a.score) from Audit a join a.position p where p.company.id = c.id)), min(1.0*(select avg(a.score) from Audit a join a.position p where p.company.id = c.id)),stddev(1.0*(select avg(a.score) from Audit a join a.position p where p.company.id = c.id)) from Company c")
 	Double[] minMaxAvgDttvOfAuditPerCompany();
 
 	//The companies with the highest audit score

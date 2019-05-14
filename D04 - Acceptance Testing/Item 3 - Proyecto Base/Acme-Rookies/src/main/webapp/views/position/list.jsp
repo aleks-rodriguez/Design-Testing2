@@ -18,6 +18,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <display:table name="positions" id="row" requestURI="${requestURI}"
 	pagesize="5" class="displaytag">
@@ -42,7 +43,7 @@
 		<jstl:out value="${row.description}" />
 	</display:column>
 
-	<jstl:if test="${publica}">
+<%-- 	<jstl:if test="${publica}"> --%>
 		<display:column titleKey="position.show">
 			<a href="position/edit.do?id=${row.id}"> <jstl:if
 					test="${row.finalMode}">
@@ -52,13 +53,15 @@
 				</jstl:if>
 			</a>
 		</display:column>
-	</jstl:if>
+<%-- 	</jstl:if> --%>
 
 	<security:authorize access="hasRole('ROOKIE')">
 		<display:column titleKey="position.application">
 			<jstl:if test="${row.deadline ge now}">
+			<jstl:if test="${!fn:contains(appl, row)}">
 				<a href="application/rookie/create.do?idPosition=${row.id}"><spring:message
 						code="position.application.create" /></a>
+			</jstl:if>
 			</jstl:if>
 		</display:column>
 	</security:authorize>
@@ -83,9 +86,11 @@
 	<security:authorize access="hasRole('PROVIDER')">
 		<display:column titleKey="position.createSponsorship">
 			<jstl:if test="${row.finalMode}">
+ 			<jstl:if test="${!fn:contains(spo, row)}">
 				<a href="sponsorship/provider/create.do?idPosition=${row.id}"><spring:message
 						code="position.createSponsorship" /></a>
 			</jstl:if>
+ 			</jstl:if>
 		</display:column>
 	</security:authorize>
 </display:table>

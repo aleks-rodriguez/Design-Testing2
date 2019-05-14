@@ -140,6 +140,7 @@ public class ApplicationController extends BasicController {
 		}
 
 		result = super.show(a, "application/edit", requestURI, requestCancel);
+		result.addObject("idCurr", this.applicationService.findOne(idApplication).getCurricula().getId());
 		return result;
 	}
 

@@ -161,5 +161,4 @@ public class Position extends DomainEntity {
 		this.cancel = cancel;
 	}
 
-
 }

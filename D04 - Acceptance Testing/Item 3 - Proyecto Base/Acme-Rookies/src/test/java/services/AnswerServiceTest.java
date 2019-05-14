@@ -51,10 +51,10 @@ public class AnswerServiceTest extends AbstractTest {
 		final Object testingData[][] = {
 			{
 				//Positive test 
-				"rookie1", "application4", null
+				"rookie1", "application1", null
 			}, {
 				//Negative test
-				"company1", "application4", IllegalArgumentException.class
+				"company1", "application1", IllegalArgumentException.class
 			}
 		};
 
