@@ -1,0 +1,924 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+
+<!-- * PopulateDatabase.xml * * Copyright (C) 2019 Universidad de Sevilla 
+	* * The use of this project is hereby constrained to the conditions of the 
+	* TDG Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+	"> 
+
+	<!-- Util beans -->
+ 	<bean id="dateFormat" class="java.text.SimpleDateFormat">
+		<constructor-arg value="yyyy/MM/dd" />
+	</bean>
+
+	<bean id="hourDateFormat" class="java.text.SimpleDateFormat">
+		<constructor-arg value="yyyy/MM/dd'T'HH:mm'Z'" />
+	</bean>
+
+	<!-- Boxes -->
+
+	<bean id="box1" class="domain.Box">
+		<property name="name" value="In Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box2" class="domain.Box">
+		<property name="name" value="Out Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box3" class="domain.Box">
+		<property name="name" value="Spam Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box4" class="domain.Box">
+		<property name="name" value="Trash Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box5" class="domain.Box">
+		<property name="name" value="Notification Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="box6" class="domain.Box">
+		<property name="name" value="In Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box7" class="domain.Box">
+		<property name="name" value="Out Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box8" class="domain.Box">
+		<property name="name" value="Spam Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box9" class="domain.Box">
+		<property name="name" value="Trash Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box10" class="domain.Box">
+		<property name="name" value="Notification Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="box11" class="domain.Box">
+		<property name="name" value="In Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box12" class="domain.Box">
+		<property name="name" value="Out Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box13" class="domain.Box">
+		<property name="name" value="Spam Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box14" class="domain.Box">
+		<property name="name" value="Trash Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box15" class="domain.Box">
+		<property name="name" value="Notification Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box16" class="domain.Box">
+		<property name="name" value="In Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box17" class="domain.Box">
+		<property name="name" value="Out Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box18" class="domain.Box">
+		<property name="name" value="Spam Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box19" class="domain.Box">
+		<property name="name" value="Trash Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box20" class="domain.Box">
+		<property name="name" value="Notification Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="box21" class="domain.Box">
+		<property name="name" value="In Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box22" class="domain.Box">
+		<property name="name" value="Out Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box23" class="domain.Box">
+		<property name="name" value="Spam Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box24" class="domain.Box">
+		<property name="name" value="Trash Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box25" class="domain.Box">
+		<property name="name" value="Notification Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="box26" class="domain.Box">
+		<property name="name" value="Box" />
+		<property name="fromSystem" value="false" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+		<bean id="box27" class="domain.Box">
+		<property name="name" value="In Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box28" class="domain.Box">
+		<property name="name" value="Out Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box29" class="domain.Box">
+		<property name="name" value="Spam Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box30" class="domain.Box">
+		<property name="name" value="Trash Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box31" class="domain.Box">
+		<property name="name" value="Notification Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="box32" class="domain.Box">
+		<property name="name" value="In Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box33" class="domain.Box">
+		<property name="name" value="Out Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box34" class="domain.Box">
+		<property name="name" value="Spam Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box35" class="domain.Box">
+		<property name="name" value="Trash Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box36" class="domain.Box">
+		<property name="name" value="Notification Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="box37" class="domain.Box">
+		<property name="name" value="In Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box38" class="domain.Box">
+		<property name="name" value="Out Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box39" class="domain.Box">
+		<property name="name" value="Spam Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box40" class="domain.Box">
+		<property name="name" value="Trash Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box41" class="domain.Box">
+		<property name="name" value="Notification Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="box42" class="domain.Box">
+		<property name="name" value="In Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box43" class="domain.Box">
+		<property name="name" value="Out Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box44" class="domain.Box">
+		<property name="name" value="Spam Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box45" class="domain.Box">
+		<property name="name" value="Trash Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean>
+	<bean id="box47" class="domain.Box">
+		<property name="name" value="Notification Box" />
+		<property name="fromSystem" value="true" />
+		<property name="messageEntity">
+			<list>
+			</list>
+		</property>
+		<property name="boxes">
+			<list>
+			</list>
+		</property>
+	</bean> 
+
+
+	<!-- User accounts -->
+
+	<bean id="userAccount1" class="security.UserAccount">
+		<property name="username" value="admin1" />
+		<property name="password" value="e00cf25ad42683b3df678c61f42c6bda" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ADMIN" />
+				</bean>
+			</list>
+		</property>
+		<property name="enabled" value="true" />
+	</bean>
+	<bean id="userAccount2" class="security.UserAccount">
+		<property name="username" value="student1" />
+		<property name="password" value="5e5545d38a68148a2d5bd5ec9a89e327" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="STUDENT" />
+				</bean>
+			</list>
+		</property>
+		<property name="enabled" value="true" />
+	</bean>
+	<bean id="userAccount3" class="security.UserAccount">
+		<property name="username" value="student2" />
+		<property name="password" value="213ee683360d88249109c2f92789dbc3" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="STUDENT" />
+				</bean>
+			</list>
+		</property>
+		<property name="enabled" value="true" />
+	</bean>
+	<bean id="userAccount4" class="security.UserAccount">
+		<property name="username" value="collaborator1" />
+		<property name="password" value="94b6660cdbf78a3043faf009b2db12f8" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="COLLABORATOR" />
+				</bean>
+			</list>
+		</property>
+		<property name="enabled" value="true" />
+	</bean>
+	<bean id="userAccount5" class="security.UserAccount">
+		<property name="username" value="collaborator2" />
+		<property name="password" value="149806650009ef0a0cd66237d700b1e7" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="COLLABORATOR" />
+				</bean>
+			</list>
+		</property>
+		<property name="enabled" value="true" />
+	</bean>
+	
+	<bean id="userAccount6" class="security.UserAccount">
+		<property name="username" value="member1" />
+		<property name="password" value="c7764cfed23c5ca3bb393308a0da2306" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="MEMBER" />
+				</bean>
+			</list>
+		</property>
+		<property name="enabled" value="true" />
+	</bean>
+	<bean id="userAccount7" class="security.UserAccount">
+		<property name="username" value="member2" />
+		<property name="password" value="88ed421f060aadcacbd63f28d889797f" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="MEMBER" />
+				</bean>
+			</list>
+		</property>
+		<property name="enabled" value="true" />
+	</bean>
+
+	<bean id="userAccount8" class="security.UserAccount">
+		<property name="username" value="sponsor1" />
+		<property name="password" value="42c63ad66d4dc07ed17753772bef96d6" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="SPONSOR" />
+				</bean>
+			</list>
+		</property>
+		<property name="enabled" value="true" />
+	</bean>
+	<bean id="userAccount9" class="security.UserAccount">
+		<property name="username" value="sponsor2" />
+		<property name="password" value="3dc67f80a03324e01b1640f45d107485" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="SPONSOR" />
+				</bean>
+			</list>
+		</property>
+		<property name="enabled" value="true" />
+	</bean> 
+	
+	
+	<bean id="administrator1" class="domain.Administrator">
+		<property name="name" value="Admin1" />
+		<property name="surname" value="Admin1" />
+		<property name="photo" value="" />
+		<property name="email" value="admin&lt;admin@gmail.com&gt;" />
+		<property name="phone" value="955582516" />
+		<property name="adress" value="" />
+		<property name="vat" value="0.21" />
+		<property name="creditCard">
+			<ref bean="creditcard1" />
+		</property>
+		<property name="profiles">
+			<list>
+				<ref bean="profile1" />
+				<ref bean="profile2" />
+			</list>
+		</property>
+		<property name="account">
+			<ref bean="userAccount1" />
+		</property>
+		<property name="boxes">
+			<list>
+				<ref bean="box1" />
+				<ref bean="box2" />
+				<ref bean="box3" />
+				<ref bean="box4" />
+				<ref bean="box5" />
+			</list>
+		</property>
+		<property name="spammer" value="false" />
+	</bean>
+	
+	<bean id="profile1" class="domain.Profile">
+		<property name="nick" value="DP1010" />
+		<property name="socialNetworkName" value="LinkedIn" />
+		<property name="link" value="https://www.linkedin/DP1010" />
+	</bean>
+	<bean id="profile2" class="domain.Profile">
+		<property name="nick" value="DP1011" />
+		<property name="socialNetworkName" value="Tuenti" />
+		<property name="link" value="https://www.tuenti/DP1011" />
+	</bean>
+
+	<bean id="customisationsys1" class="domain.CustomisationSystem">
+		<property name="systemName" value="DEL5-Student Representation" />
+		<property name="banner" value="https://i.imgur.com/RyOrQZ7.jpg" />
+		<property name="message"
+			value="Welcome to DEL5!" />
+		<property name="spamwords">
+
+			<map>
+				<entry key="en">
+					<value>sex, cialis, one millon, you´ve been selected, Nigeria
+					</value>
+				</entry>
+				<entry key="es">
+					<value>sexo, un millon, ha sido seleccionado, viagra</value>
+				</entry>
+			</map>
+
+		</property>
+
+		<property name="phonePrefix" value="34" />
+		<property name="hoursFinder" value="24" />
+		<property name="resultFinder" value="10" />
+		<property name="creditCardMakes">
+		<list>
+		</list>
+		</property>
+	</bean>
+
+	<bean id="creditcard1" class="domain.CreditCard">
+		<property name="holder" value="John Doe" />
+		<property name="make" value="VISA" />
+		<property name="number" value="1111222233334444" />
+		<property name="expiration">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2018/12/15" />
+			</bean>
+		</property>
+		<property name="cvv" value="134" />
+	</bean>
+
+
+	<bean id="creditcard2" class="domain.CreditCard">
+		<property name="holder" value="John Doe" />
+		<property name="make" value="MASTERCARD" />
+		<property name="number" value="1111222233334444" />
+		<property name="expiration">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2017/12/15" />
+			</bean>
+		</property>
+		<property name="cvv" value="138" />
+	</bean>
+
+
+	<bean id="creditcard3" class="domain.CreditCard">
+		<property name="holder" value="John Doe" />
+		<property name="make" value="FLY" />
+		<property name="number" value="1111222233334444" />
+		<property name="expiration">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2017/12/15" />
+			</bean>
+		</property>
+		<property name="cvv" value="182" />
+	</bean>
+
+	<bean id="creditcard4" class="domain.CreditCard">
+		<property name="holder" value="John Doe" />
+		<property name="make" value="FLY" />
+		<property name="number" value="1111222233334444" />
+		<property name="expiration">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2017/12/15" />
+			</bean>
+		</property>
+		<property name="cvv" value="182" />
+	</bean>
+
+	<bean id="creditcard5" class="domain.CreditCard">
+		<property name="holder" value="John Doe" />
+		<property name="make" value="MASTERCARD" />
+		<property name="number" value="1111222233334444" />
+		<property name="expiration">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2017/12/15" />
+			</bean>
+		</property>
+		<property name="cvv" value="182" />
+	</bean>
+
+	<bean id="creditcard6" class="domain.CreditCard">
+		<property name="holder" value="John Doe" />
+		<property name="make" value="MASTERCARD" />
+		<property name="number" value="1111222233334444" />
+		<property name="expiration">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2017/12/15" />
+			</bean>
+		</property>
+		<property name="cvv" value="182" />
+	</bean>
+
+	<bean id="creditcard7" class="domain.CreditCard">
+		<property name="holder" value="John Doe" />
+		<property name="make" value="MASTERCARD" />
+		<property name="number" value="1111222233334444" />
+		<property name="expiration">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2017/12/15" />
+			</bean>
+		</property>
+		<property name="cvv" value="182" />
+
+	</bean>
+
+	<bean id="creditcard8" class="domain.CreditCard">
+		<property name="holder" value="John Doe" />
+		<property name="make" value="MASTERCARD" />
+		<property name="number" value="1111222233334444" />
+		<property name="expiration">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2017/12/15" />
+			</bean>
+		</property>
+		<property name="cvv" value="182" />
+	</bean>
+
+	<bean id="creditcard9" class="domain.CreditCard">
+		<property name="holder" value="John Doe" />
+		<property name="make" value="MASTERCARD" />
+		<property name="number" value="1111222233334444" />
+		<property name="expiration">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2017/12/15" />
+			</bean>
+		</property>
+		<property name="cvv" value="182" />
+	</bean>
+	
+	<bean id="comment1" class="domain.Comment">
+	<property name="description" value="Comment1"></property>
+	<property name="attacments" value="comment,one"></property>
+	<property name="proclaim" ref="proclaim1"></property>
+	</bean>
+	
+	<bean id="comment2" class="domain.Comment">
+	<property name="description" value="Comment2"></property>
+	<property name="attacments" value="comment,two"></property>
+	<property name="proclaim" ref="proclaim1"></property>
+	</bean>
+	
+	<bean id="comment3" class="domain.Comment">
+	<property name="description" value="Comment3"></property>
+	<property name="attacments" value="comment,three"></property>
+	<property name="proclaim" ref="proclaim2"></property>
+	</bean>
+	
+	<bean id="ticker1" class="domain.Ticker">
+	<property name="ticker" value="PROC-0001"></property>
+	</bean>
+	
+	<bean id="ticker2" class="domain.Ticker">
+	<property name="ticker" value="PROC-0010"></property>
+	</bean>
+	
+	<bean id="ticker3" class="domain.Ticker">
+	<property name="ticker" value="PROC-0011"></property>
+	</bean>
+
+<!-- 	<bean id="sponsorship1" class="domain.Sponsorship">
+		<property name="creditCard" ref="creditcard4" />
+		<property name="banner" value="https://www.google.es" />
+		<property name="target" value="https://www.google.com" />
+	</bean>
+	
+	<bean id="sponsorship2" class="domain.Sponsorship">
+		<property name="creditCard" ref="creditcard5" />
+		<property name="banner" value="https://www.google.es" />
+		<property name="target" value="https://www.google.com" />
+	</bean>  -->
+</beans>
