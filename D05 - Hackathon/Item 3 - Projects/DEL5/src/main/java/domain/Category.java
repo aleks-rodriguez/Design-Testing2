@@ -2,16 +2,13 @@
 package domain;
 
 import java.util.Collection;
-import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -22,7 +19,6 @@ import org.hibernate.validator.constraints.NotBlank;
 public class Category extends DomainEntity {
 
 	private String					name;
-	private Map<String, String>		otherlanguages;
 	private Collection<Category>	categories;
 
 
@@ -42,17 +38,6 @@ public class Category extends DomainEntity {
 
 	public void setCategories(final Collection<Category> categories) {
 		this.categories = categories;
-	}
-
-	//Position 0 is for spanish
-	@ElementCollection(targetClass = String.class)
-	@MapKeyColumn(name = "lang")
-	public Map<String, String> getOtherlanguages() {
-		return this.otherlanguages;
-	}
-
-	public void setOtherlanguages(final Map<String, String> otherlanguages) {
-		this.otherlanguages = otherlanguages;
 	}
 
 }

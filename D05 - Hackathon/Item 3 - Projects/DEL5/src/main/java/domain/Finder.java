@@ -12,7 +12,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Min;
 
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,10 +22,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Finder extends DomainEntity {
 
 	private String					singleKey;
-	private Date					deadline;
-	private Double					minSalary;
-	private Double					maxSalary;
+	private Date					registeredDate;
 	private Date					creationDate;
+	private String					proclaimType;
 	private Collection<Proclaim>	proclaims;
 
 
@@ -47,32 +45,6 @@ public class Finder extends DomainEntity {
 	public void setSingleKey(final String singleKey) {
 		this.singleKey = singleKey;
 	}
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	public Date getDeadline() {
-		return this.deadline;
-	}
-
-	public void setDeadline(final Date deadline) {
-		this.deadline = deadline;
-	}
-
-	@Min(value = 0)
-	public Double getMinSalary() {
-		return this.minSalary;
-	}
-
-	public void setMinSalary(final Double minSalary) {
-		this.minSalary = minSalary;
-	}
-	@Min(value = 0)
-	public Double getMaxSalary() {
-		return this.maxSalary;
-	}
-
-	public void setMaxSalary(final Double maxSalary) {
-		this.maxSalary = maxSalary;
-	}
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy/MM/dd'T'HH:mm'Z'")
@@ -82,6 +54,25 @@ public class Finder extends DomainEntity {
 
 	public void setCreationDate(final Date creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	@SafeHtml
+	public String getProclaimType() {
+		return this.proclaimType;
+	}
+
+	public void setProclaimType(final String proclaimType) {
+		this.proclaimType = proclaimType;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	public Date getRegisteredDate() {
+		return this.registeredDate;
+	}
+
+	public void setRegisteredDate(final Date registeredDate) {
+		this.registeredDate = registeredDate;
 	}
 
 }

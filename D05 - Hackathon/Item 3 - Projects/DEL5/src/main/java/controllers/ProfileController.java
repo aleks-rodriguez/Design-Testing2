@@ -3,14 +3,12 @@ package controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import security.LoginService;
 import services.ProfileService;
 import domain.Profile;
 
@@ -24,7 +22,9 @@ public class ProfileController extends BasicController {
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
-		return super.listModelAndView("profiles", "profile/list", this.service.getActorByUser(LoginService.getPrincipal().getId()).getProfiles(), "profile/list.do");
+		//		return super.listModelAndView("profiles", "profile/list", this.service.getActorByUser(LoginService.getPrincipal().getId()).getProfiles(), "profile/list.do");
+
+		return null;
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -47,8 +47,8 @@ public class ProfileController extends BasicController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView saveEntity(final Profile profile, final BindingResult binding) {
 		ModelAndView result;
-		if (profile.getId() != 0)
-			Assert.isTrue(this.service.getActorByUser(LoginService.getPrincipal().getId()).getProfiles().contains(profile), "You don't have permission to do this");
+		//		if (profile.getId() != 0)
+		//			Assert.isTrue(this.service.getActorByUser(LoginService.getPrincipal().getId()).getProfiles().contains(profile), "You don't have permission to do this");
 		result = super.save(profile, binding, "profile.commit.error", "profile/edit", "profile/edit.do", "/profile/list.do", "redirect:list.do");
 		return result;
 	}
@@ -56,7 +56,7 @@ public class ProfileController extends BasicController {
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView deleteEntity(@RequestParam final int id) {
 		ModelAndView result;
-		Assert.isTrue(this.service.getActorByUser(LoginService.getPrincipal().getId()).getProfiles().contains(this.service.findOne(id)), "You don't have permission to do this");
+		//		Assert.isTrue(this.service.getActorByUser(LoginService.getPrincipal().getId()).getProfiles().contains(this.service.findOne(id)), "You don't have permission to do this");
 		result = super.delete(this.service.findOne(id), "profile.commit.error", "profile/edit", "profile/edit.do", "/profile/list.do", "redirect:list.do");
 		return result;
 	}

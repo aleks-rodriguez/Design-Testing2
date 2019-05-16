@@ -38,7 +38,7 @@ public class CustomisationSystemService extends AbstractService {
 		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
 		Actor a;
 		a = this.repository.findActorByUserAccountId(idActor);
-		a.setSpammer(true);
+		a.setSuspicious(true);
 	}
 
 	@Cacheable(value = "cust")

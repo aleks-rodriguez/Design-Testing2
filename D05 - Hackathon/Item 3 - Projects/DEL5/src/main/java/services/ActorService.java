@@ -24,7 +24,6 @@ import domain.Actor;
 import domain.Administrator;
 import domain.Box;
 import domain.CreditCard;
-import domain.Profile;
 import forms.ActorForm;
 
 @Service
@@ -47,9 +46,9 @@ public class ActorService extends AbstractService {
 		return this.adminRepository.getActorsSpammer();
 	}
 
-	public CreditCard getCreditcardByActor(final int id) {
-		return this.adminRepository.getCreditcardByActor(id);
-	}
+	//	public CreditCard getCreditcardByActor(final int id) {
+	//		return this.adminRepository.getCreditcardByActor(id);
+	//	}
 
 	public Collection<Actor> getActorEmabled() {
 		return this.adminRepository.getActorsEnabled();
@@ -96,16 +95,15 @@ public class ActorService extends AbstractService {
 		return passEncoded;
 	}
 	public <T extends Actor> void setBasicProperties(final T actor, final String auth) {
-		actor.setProfiles(new ArrayList<Profile>());
-		actor.setAdress("");
+		//		actor.setProfiles(new ArrayList<Profile>());
+		actor.setAddress("");
 		actor.setBoxes(new ArrayList<Box>());
 		actor.setEmail("");
 		actor.setName("");
 		actor.setPhone("");
 		actor.setPhoto("");
 		actor.setSurname("");
-		actor.setSpammer(false);
-		actor.setCreditCard(this.createCreditCard());
+		actor.setSuspicious(false);
 		actor.setAccount(this.userAccountAdapted("", "", auth));
 	}
 
@@ -237,13 +235,11 @@ public class ActorService extends AbstractService {
 	public <T extends Actor> void setToActor(final T result, final ActorForm actor) {
 
 		result.setName(actor.getName());
-		result.setAdress(actor.getAdress());
+		result.setAddress(actor.getAdress());
 		result.setPhone(actor.getPhone());
 		result.setPhoto(actor.getPhoto());
 		result.setSurname(actor.getSurname());
 		result.setEmail(actor.getEmail());
-		result.setVat(actor.getVat());
-		result.setCreditCard(actor.getCreditCard());
 
 		if (result.getAccount().getId() == 0) {
 			if (actor.getAccount().getPassword().equals(actor.getPassword2()))
@@ -290,7 +286,7 @@ public class ActorService extends AbstractService {
 			//				form.setMake("");
 		} else {
 			form.setId(a.getId());
-			form.setAdress(a.getAdress());
+			form.setAdress(a.getAddress());
 			form.setAuthority(auth);
 			form.setEmail(a.getEmail());
 			form.setSurname(a.getSurname());
@@ -299,8 +295,6 @@ public class ActorService extends AbstractService {
 			form.setAccount(this.userAccountAdapted(a.getAccount().getUsername(), "", auth));
 			form.setPhoto(a.getPhoto());
 			form.setName(a.getName());
-			form.setVat(a.getVat());
-			form.setCreditCard(a.getCreditCard());
 			//			if (auth.equals(Authority.COMPANY)) {
 			//				final Company c = (Company) a;
 			//				form.setCommercialName(c.getCommercialName());
@@ -425,7 +419,7 @@ public class ActorService extends AbstractService {
 	//		return result;
 	//	}
 
-	public void delete(final int actorId) {
+	public void delete(final int actorId) { //FIXME ESTE ES EL METODO ANTIGUO, HAY QUE CAMBIARLO POR EL ULTIMO DE ROOKIES
 		Assert.notNull(LoginService.getPrincipal().getUsername());
 		Administrator admin;
 		//		final Rookie rookie;
@@ -441,7 +435,6 @@ public class ActorService extends AbstractService {
 			admin.setSurname("anonymous");
 			admin.setPhone("000000000");
 			admin.setEmail("anonymous@email.anon");
-			admin.setVat("anonymous");
 			admin.setPhoto("http://anon.anon");
 			this.adminRepository.save(admin);
 		}

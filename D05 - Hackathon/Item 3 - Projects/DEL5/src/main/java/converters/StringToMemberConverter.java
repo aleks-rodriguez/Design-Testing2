@@ -28,10 +28,8 @@ public class StringToMemberConverter implements Converter<String, Member> {
 				result = null;
 			else {
 				id = Integer.valueOf(text);
-				System.out.println(id);
 				result = this.memberRepository.findOne(id);
 			}
-			System.out.println(result);
 		} catch (final Throwable opps) {
 			throw new IllegalArgumentException(opps);
 		}

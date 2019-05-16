@@ -30,7 +30,6 @@ public class StringToStudentConverter implements Converter<String, Student> {
 				id = Integer.valueOf(text);
 				result = this.studentRepository.findOne(id);
 			}
-			System.out.println(result);
 		} catch (final Throwable opps) {
 			throw new IllegalArgumentException(opps);
 		}

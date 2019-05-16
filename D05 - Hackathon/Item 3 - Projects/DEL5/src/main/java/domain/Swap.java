@@ -21,8 +21,8 @@ public class Swap extends DomainEntity {
 	private String			status;
 	private String			description;
 	private Organization	organization;
-	private Collaborator	isReceiver;
-	private Collaborator	isSender;
+	private Collaborator	receiver;
+	private Collaborator	sender;
 
 
 	@NotBlank
@@ -64,21 +64,21 @@ public class Swap extends DomainEntity {
 	}
 
 	@ManyToOne
-	public Collaborator getIsReceiver() {
-		return this.isReceiver;
+	public Collaborator getReceiver() {
+		return this.receiver;
 	}
 
-	public void setIsReceiver(final Collaborator isReceiver) {
-		this.isReceiver = isReceiver;
+	public void setReceiver(final Collaborator receiver) {
+		this.receiver = receiver;
 	}
 
 	@ManyToOne
-	public Collaborator getIsSender() {
-		return this.isSender;
+	public Collaborator getSender() {
+		return this.sender;
 	}
 
-	public void setIsSender(final Collaborator isSender) {
-		this.isSender = isSender;
+	public void setSender(final Collaborator sender) {
+		this.sender = sender;
 	}
 
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import domain.Actor;
 import domain.Administrator;
-import domain.CreditCard;
 
 @Repository
 public interface AdministratorRepository extends JpaRepository<Administrator, Integer> {
@@ -21,12 +20,12 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	@Query("select a from Administrator a")
 	ArrayList<Administrator> findFirstAdmin();
 
-	@Query("select a from Actor a where a.spammer = true")
+	@Query("select a from Actor a where a.suspicious = true")
 	Collection<Actor> getActorsSpammer();
 
 	@Query("select a from Actor a where a.account.enabled = false")
 	Collection<Actor> getActorsEnabled();
 
-	@Query("select a.creditCard from Actor a where a.id = ?1")
-	CreditCard getCreditcardByActor(int id);
+	//	@Query("select a.creditCard from Actor a where a.id = ?1")
+	//	CreditCard getCreditcardByActor(int id);
 }

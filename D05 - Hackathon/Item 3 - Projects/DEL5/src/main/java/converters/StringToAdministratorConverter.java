@@ -28,10 +28,8 @@ public class StringToAdministratorConverter implements Converter<String, Adminis
 				result = null;
 			else {
 				id = Integer.valueOf(text);
-				System.out.println(id);
 				result = this.administratorRepository.findOne(id);
 			}
-			System.out.println(result);
 		} catch (final Throwable opps) {
 			throw new IllegalArgumentException(opps);
 		}

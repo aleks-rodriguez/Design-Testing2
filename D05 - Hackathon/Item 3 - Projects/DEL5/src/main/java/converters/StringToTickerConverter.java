@@ -32,7 +32,6 @@ public class StringToTickerConverter implements Converter<String, Ticker> {
 					result.setTicker(text);
 				}
 			}
-			System.out.println(result);
 		} catch (final Throwable opps) {
 			throw new IllegalArgumentException(opps);
 		}

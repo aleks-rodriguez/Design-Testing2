@@ -28,10 +28,8 @@ public class StringToProfileConverter implements Converter<String, Profile> {
 				result = null;
 			else {
 				id = Integer.valueOf(text);
-				System.out.println(id);
 				result = this.profileRepository.findOne(id);
 			}
-			System.out.println(result);
 		} catch (final Throwable opps) {
 			throw new IllegalArgumentException(opps);
 		}

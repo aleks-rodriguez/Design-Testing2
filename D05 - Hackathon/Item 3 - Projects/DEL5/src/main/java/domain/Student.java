@@ -10,6 +10,6 @@ import javax.persistence.InheritanceType;
 @Entity
 @Access(AccessType.PROPERTY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Student extends DomainEntity {
+public class Student extends Actor {
 
 }

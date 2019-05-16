@@ -6,7 +6,6 @@ import java.util.Collection;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -28,18 +27,16 @@ import security.UserAccount;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Actor extends DomainEntity {
 
-	private String				name;
-	private String				surname;
-	private String				photo;
-	private String				email;
-	private String				phone;
-	private String				adress;
-	private String				vat;
-	private CreditCard			creditCard;
-	private Collection<Profile>	profiles;
-	private UserAccount			account;
-	private Collection<Box>		boxes;
-	private boolean				spammer;
+	private String			name;
+	private String			surname;
+	private String			middlename;
+	private String			photo;
+	private String			email;
+	private String			phone;
+	private String			address;
+	private UserAccount		account;
+	private Collection<Box>	boxes;
+	private boolean			suspicious;
 
 
 	@NotNull
@@ -53,23 +50,6 @@ public abstract class Actor extends DomainEntity {
 	}
 	public void setAccount(final UserAccount account) {
 		this.account = account;
-	}
-
-	@OneToMany
-	public Collection<Profile> getProfiles() {
-		return this.profiles;
-	}
-
-	public void setProfiles(final Collection<Profile> profiles) {
-		this.profiles = profiles;
-	}
-
-	public boolean isSpammer() {
-		return this.spammer;
-	}
-
-	public void setSpammer(final boolean spammer) {
-		this.spammer = spammer;
 	}
 
 	@NotBlank
@@ -91,6 +71,13 @@ public abstract class Actor extends DomainEntity {
 		this.surname = surname;
 	}
 
+	public String getMiddlename() {
+		return this.middlename;
+	}
+
+	public void setMiddlename(final String middlename) {
+		this.middlename = middlename;
+	}
 	@URL
 	public String getPhoto() {
 		return this.photo;
@@ -119,32 +106,12 @@ public abstract class Actor extends DomainEntity {
 		this.phone = phone;
 	}
 	@SafeHtml
-	public String getAdress() {
-		return this.adress;
+	public String getAddress() {
+		return this.address;
 	}
 
-	public void setAdress(final String adress) {
-		this.adress = adress;
-	}
-
-	@NotBlank
-	@SafeHtml
-	public String getVat() {
-		return this.vat;
-	}
-
-	public void setVat(final String vat) {
-		this.vat = vat;
-	}
-
-	@Embedded
-	@Valid
-	public CreditCard getCreditCard() {
-		return this.creditCard;
-	}
-
-	public void setCreditCard(final CreditCard creditCard) {
-		this.creditCard = creditCard;
+	public void setAddress(final String address) {
+		this.address = address;
 	}
 
 	@OneToMany
@@ -154,6 +121,14 @@ public abstract class Actor extends DomainEntity {
 
 	public void setBoxes(final Collection<Box> boxes) {
 		this.boxes = boxes;
+	}
+
+	public boolean isSuspicious() {
+		return this.suspicious;
+	}
+
+	public void setSuspicious(final boolean suspicious) {
+		this.suspicious = suspicious;
 	}
 
 }

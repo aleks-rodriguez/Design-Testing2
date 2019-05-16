@@ -28,10 +28,8 @@ public class StringToSponsorshipConverter implements Converter<String, Sponsorsh
 				result = null;
 			else {
 				id = Integer.valueOf(text);
-				System.out.println(id);
 				result = this.rookieRepository.findOne(id);
 			}
-			System.out.println(result);
 		} catch (final Throwable opps) {
 			throw new IllegalArgumentException(opps);
 		}

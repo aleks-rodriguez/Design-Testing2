@@ -14,18 +14,18 @@ import org.hibernate.validator.constraints.SafeHtml;
 @Access(AccessType.PROPERTY)
 public class StudentCard {
 
-	private String	center;
+	private String	centre;
 	private int		code;
 
 
 	@SafeHtml
 	@NotBlank
-	public String getCenter() {
-		return this.center;
+	public String getCentre() {
+		return this.centre;
 	}
 
-	public void setCenter(final String center) {
-		this.center = center;
+	public void setCentre(final String centre) {
+		this.centre = centre;
 	}
 	@Min(value = 4)
 	@Max(value = 4)

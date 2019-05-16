@@ -1,14 +1,11 @@
 
 package services;
 
-import java.util.Collection;
-
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
@@ -38,7 +35,7 @@ public class ProfileService {
 		Profile profile;
 		profile = this.profileRepository.findOne(id);
 
-		Assert.isTrue(a.getProfiles().contains(profile), "You don´t have access");
+		//		Assert.isTrue(a.getProfiles().contains(profile), "You don´t have access");
 
 		return profile;
 	}
@@ -57,23 +54,23 @@ public class ProfileService {
 		Actor a;
 		a = this.profileRepository.findActorByUserAccountId(LoginService.getPrincipal().getId());
 
-		Collection<Profile> profiles;
-		profiles = a.getProfiles();
+		//		Collection<Profile> profiles;
+		//		profiles = a.getProfiles();
 
 		Profile modify;
 
 		if (p.getId() == 0)
 			modify = this.profileRepository.save(p);
-		else {
-			Assert.isTrue(profiles.contains(p));
+		else
+			//			Assert.isTrue(profiles.contains(p));
 			modify = this.profileRepository.save(p);
-		}
 
-		if (!profiles.contains(p)) {
-			profiles.add(modify);
-			a.setProfiles(profiles);
-		}
-
+		/*
+		 * if (!profiles.contains(p)) {
+		 * profiles.add(modify);
+		 * a.setProfiles(profiles);
+		 * }
+		 */
 		return modify;
 	}
 	public void deleteProfile(final int id) {
@@ -84,17 +81,18 @@ public class ProfileService {
 		Profile profile;
 		profile = this.profileRepository.findOne(id);
 
-		Collection<Profile> pro;
-		pro = a.getProfiles();
-
-		Assert.isTrue(pro.contains(profile));
-
-		if (pro.contains(profile)) {
-			pro.remove(profile);
-			a.setProfiles(pro);
-			this.profileRepository.delete(profile);
-		}
-
+		/*
+		 * Collection<Profile> pro;
+		 * pro = a.getProfiles();
+		 * 
+		 * Assert.isTrue(pro.contains(profile));
+		 * 
+		 * if (pro.contains(profile)) {
+		 * pro.remove(profile);
+		 * a.setProfiles(pro);
+		 * this.profileRepository.delete(profile);
+		 * }
+		 */
 	}
 	public Profile reconstruct(final Profile profile, final BindingResult binding) {
 		Profile result;

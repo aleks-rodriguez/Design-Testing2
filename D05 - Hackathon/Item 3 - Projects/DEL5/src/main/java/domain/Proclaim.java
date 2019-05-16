@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -30,12 +31,14 @@ public class Proclaim extends DomainEntity {
 	private String				attachments;
 	private boolean				finalMode;
 	private String				status;
+	private String				law;
 	private String				reason;
 	private boolean				closed;
 	private Student				student;
 	private Collection<Member>	members;
 	private Category			category;
 	private Ticker				ticker;
+	private StudentCard			studentCard;
 
 
 	@ManyToOne(optional = false)
@@ -56,7 +59,7 @@ public class Proclaim extends DomainEntity {
 		this.members = members;
 	}
 
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	public Category getCategory() {
 		return this.category;
 	}
@@ -132,7 +135,6 @@ public class Proclaim extends DomainEntity {
 		this.status = status;
 	}
 
-	@NotBlank
 	@SafeHtml
 	public String getReason() {
 		return this.reason;
@@ -148,6 +150,24 @@ public class Proclaim extends DomainEntity {
 
 	public void setClosed(final boolean closed) {
 		this.closed = closed;
+	}
+
+	@SafeHtml
+	public String getLaw() {
+		return this.law;
+	}
+
+	public void setLaw(final String law) {
+		this.law = law;
+	}
+
+	@Embedded
+	public StudentCard getStudentCard() {
+		return this.studentCard;
+	}
+
+	public void setStudentCard(final StudentCard studentCard) {
+		this.studentCard = studentCard;
 	}
 
 }
