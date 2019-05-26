@@ -1,51 +1,78 @@
 
 package controllers;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import security.Authority;
+import security.LoginService;
 import services.CategoryService;
 import domain.Category;
 
 @Controller
 @RequestMapping("/category/administrator")
-public class CategoryController extends AbstractController {
+public class CategoryController extends BasicController {
 
 	@Autowired
 	private CategoryService	serviceCategory;
 
 
-	public CategoryController() {
-		super();
-	}
-
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list(@CookieValue(value = "language", required = false) String lang) {
+	public ModelAndView list() {
 		ModelAndView result;
-		result = new ModelAndView("category/list");
-		result.addObject("categories", this.serviceCategory.findAll());
-		if (lang == null || lang == "")
-			lang = "en";
-		result.addObject("lang", lang);
-		result.addObject("requestURI", "category/administrator/list.do");
+		Assert.isTrue(this.serviceCategory.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN));
+		result = super.listModelAndView("categories", "category/list", this.serviceCategory.findAll(), "category/administrator/list.do");
+		result.addObject("colRep", this.serviceCategory.getCategoryInMoreThan2Proclaims());
 		return result;
 	}
+
+	//	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	//	public ModelAndView list(@CookieValue(value = "language", required = false) String lang) {
+	//		ModelAndView result;
+	//		result = new ModelAndView("category/list");
+	//		result.addObject("categories", this.serviceCategory.findAll());
+	//		if (lang == null || lang == "")
+	//			lang = "en";
+	//		result.addObject("lang", lang);
+	//		result.addObject("requestURI", "category/administrator/list.do");
+	//		return result;
+	//	}
+
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create(@RequestParam(defaultValue = "0") final int parent) {
+		Assert.isTrue(this.serviceCategory.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN), "You must be an admin");
 		ModelAndView result;
-
-		result = new ModelAndView("category/edit");
-		result.addObject("category", this.serviceCategory.createCategory());
+		result = super.create(this.serviceCategory.createCategory(), "category/edit", "category/administrator/edit.do", "/category/administrator/list.do");
 		result.addObject("parent", parent);
-		result.addObject("requestURI", "category/administrator/edit.do?parent=" + parent + "&check=true");
 		return result;
 	}
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView edit(@RequestParam(defaultValue = "0") final int parent, final Category category, final BindingResult binding) {
+		Assert.isTrue(this.serviceCategory.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN), "You must be an admin");
+		ModelAndView result;
+		result = super.save(category, binding, "category.commit.error", "category/edit", "category/administrator/edit.do", "redirect:list.do", "redirect:list.do");
+		result.addObject("parent", parent);
+		if (parent != 0) {
+			Collection<Category> colC;
+			Category cat;
+			cat = this.serviceCategory.findOne(parent);
+			colC = cat.getCategories();
+			colC.add((Category) result.getModel().get("saved"));
+			cat.setCategories(colC);
+			this.serviceCategory.save(cat);
+		}
+		return result;
+	}
+
 	/*
 	 * @RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	 * public ModelAndView edit(@RequestParam final boolean check, @RequestParam final int parent, @Valid final Category category, final BindingResult binding) {
@@ -71,16 +98,27 @@ public class CategoryController extends AbstractController {
 	 * return result;
 	 * }
 	 *///Updating a warranty
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int parent) {
+
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int id) {
+		Assert.isTrue(this.serviceCategory.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ADMIN), "You must be an admin");
 		ModelAndView result;
 		Category aux;
-		aux = this.serviceCategory.findOne(parent);
+		aux = this.serviceCategory.findOne(id);
 		Assert.notNull(aux);
-		result = this.createEditModelAndView(aux);
-		result.addObject("requestURI", "category/administrator/edit.do?parent=" + parent + "&check=false");
+		result = super.edit(this.serviceCategory.findOne(id), "category/edit", "category/administrator/edit.do", "category/administrator/list.do");
+		result.addObject("category", aux);
 		return result;
 	}
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(final int cat) {
+		ModelAndView result;
+		Assert.isTrue(this.serviceCategory.findAllProclaimsByCategory(cat).size() <= 2, "You can not delete this category because more than 2 proclaims are assocciate with it");
+		result = super.delete(this.serviceCategory.findOne(cat), "category.commit.error", "category/edit", "category/administrator/edit.do", "redirect:list.do", "redirect:list.do");
+		return result;
+	}
+
 	//Delete a category
 	/*
 	 * @RequestMapping(value = "/delete", method = RequestMethod.GET)
@@ -97,19 +135,29 @@ public class CategoryController extends AbstractController {
 	 * 
 	 * return result;
 	 * }
-	 */protected ModelAndView createEditModelAndView(final Category category) {
-		ModelAndView result;
-		result = this.createEditModelAndView(category, null);
+	 */
 
+	@Override
+	public <T> ModelAndView saveAction(final T e, final BindingResult binding, final String nameResolver) {
+		ModelAndView result;
+		Category category;
+		category = (Category) e;
+		category = this.serviceCategory.recontract(category, binding);
+		Category saved;
+		saved = this.serviceCategory.save(category);
+		result = new ModelAndView(nameResolver);
+		result.addObject("saved", saved);
 		return result;
 	}
-	protected ModelAndView createEditModelAndView(final Category category, final String message) {
+
+	@Override
+	public <T> ModelAndView deleteAction(final T e, final String nameResolver) {
 		ModelAndView result;
-
-		result = new ModelAndView("category/edit");
-		result.addObject("category", category);
-		result.addObject("message", message);
-
+		Category category;
+		category = (Category) e;
+		if (this.serviceCategory.findAllProclaimsByCategory(category.getId()).size() <= 2)
+			this.serviceCategory.deleteCategory(category.getId());
+		result = new ModelAndView(nameResolver);
 		return result;
 	}
 }

@@ -34,4 +34,16 @@ public interface MessageEntityRepository extends JpaRepository<MessageEntity, In
 	@Query("select a from Actor a where a.account.id <> ?1")
 	Collection<Actor> getAllActorsMenosLoged(int id);
 
+	//	@Query("select h from Rookie h where h.finder.singleKey LIKE ?1 OR h.finder.singleKey LIKE ?2 OR h.finder.singleKey LIKE ?3 OR h.finder.singleKey LIKE ?4 OR h.finder.singleKey LIKE ?5")
+	//	Collection<Rookie> findRookiesNotificationString(String title, String description, String skills, String technologies, String profile);
+	//
+	//	@Query("select h from Rookie h where h.finder.minSalary <= ?1 OR h.finder.maxSalary >= ?1")
+	//	Collection<Rookie> findRookiesNotificationString(Double salary);
+
+	@Query("select m from MessageEntity m where m.subject = 'Notification of rebranding'")
+	MessageEntity findSystemConfigMessage();
+
+	//	@Query("select m from Actor a join a.boxes b join b.messageEntity m where a.id=?1")
+	//	Collection<MessageEntity> getMessagesByActor(int id);
+
 }

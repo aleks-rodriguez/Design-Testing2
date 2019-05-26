@@ -12,6 +12,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -23,6 +24,7 @@ public class Category extends DomainEntity {
 
 
 	@NotBlank
+	@SafeHtml
 	public String getName() {
 		return this.name;
 	}

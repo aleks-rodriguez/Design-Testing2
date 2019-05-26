@@ -17,40 +17,21 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <security:authorize access="hasRole('ADMIN')">
-	<form:form action="${requestURI}"
+	<form:form action="category/administrator/edit.do?parent=${parent}"
 		modelAttribute="category">
 
 		<form:hidden path="id" />
-		<form:hidden path="version" />
-		<jstl:if test="${category.id != 0}">
-			<form:hidden path="categories" />
-		</jstl:if>
-		<form:label path="name">
-			<spring:message code="category.name" />
-		</form:label>
-		<form:input path="name" />
-		<form:errors cssClass="error" path="name"></form:errors>
-		<br />
-		<form:label path="otherlanguages">
-			<spring:message code="category.otherlanguages" />
-		</form:label>
-		<form:textarea path="otherlanguages" />
-		<form:errors cssClass="error" path="otherlanguages"></form:errors>
-		<spring:message code="category.other.note" />
-		<br />
-
-
-		<input type="submit" name="save"
-			value="<spring:message code="category.save" />" />
-		<jstl:if test="${category.id != 0}">
-			<input type="submit" name="delete"
-				value="<spring:message code="category.delete" />" />
-		</jstl:if>
+		
+		<acme:textbox code="category.name" path="name" />
+		<br>	
+		<acme:submit name="save" code="category.save" />
+		
 	</form:form>
-
+	
 	<input type="submit" name="cancel"
-		value="<spring:message code ="warranty.cancel"/>"
+		value="<spring:message code ="category.cancel"/>"
 		onclick="javascript: relativeRedir('category/administrator/list.do');" />
 </security:authorize>

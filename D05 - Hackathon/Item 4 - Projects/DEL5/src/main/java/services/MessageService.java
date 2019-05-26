@@ -32,9 +32,6 @@ public class MessageService extends AbstractService {
 	@Autowired
 	private BoxService				boxService;
 
-	@Autowired
-	private ActorService			actorService;
-
 
 	//Queries del repository
 	public Collection<MessageEntity> getMessagesByBox(final int id) {
@@ -83,7 +80,6 @@ public class MessageService extends AbstractService {
 	//Save
 	public MessageEntity sendMessage(final MessageEntity mess) {
 		MessageEntity saved;
-		final Boolean a = mess.getReceiver().containsAll(this.messageRepository.getAllActorsMenosLoged(LoginService.getPrincipal().getId()));
 		if (mess.getReceiver().containsAll(this.messageRepository.getAllActorsMenosLoged(LoginService.getPrincipal().getId()))) {
 			Collection<String> tags;
 			tags = mess.getTags();
@@ -119,7 +115,6 @@ public class MessageService extends AbstractService {
 			spam = super.spamTags(saved.getTags());
 		this.received(saved, spam);
 		sender.setSuspicious(sender.isSuspicious() || super.checkSpammer(sender));
-
 		return saved;
 
 	}
@@ -230,6 +225,8 @@ public class MessageService extends AbstractService {
 			result.setTags(message.getTags());
 			if (super.checkScript(result.getTags()))
 				binding.rejectValue("tags", "tags.error");
+			if (result.getPriority().equals("NONE"))
+				binding.rejectValue("priority", "priority.error");
 			if (message.getReceiver() != null) {
 				if (message.getReceiver().contains(null))
 					result.setReceiver(new ArrayList<Actor>(message.getReceiver()).subList(1, message.getReceiver().size()));
@@ -256,37 +253,11 @@ public class MessageService extends AbstractService {
 
 	}
 
-	//Create Message for application change status
-
-	public void createMessageNotifyChangeStatusAply(final Actor a, final String status) {
-		MessageEntity message;
-		message = new MessageEntity();
-
-		message.setSender(this.actorService.findFirstAdmin()); //cambiar por un admin predeterminado
-		message.setBody("One of your applications change their status to " + status + ". Go to see it");
-		message.setMomentsent(new Date());
-		ArrayList<String> tags;
-		tags = new ArrayList<String>();
-		tags.add("Notification");
-		message.setTags(tags);
-		message.setSubject("Notification Change Status");
-		message.setPriority("NEUTRAL");
-		//		if (this.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ROOKIE)) {
-		//			final Collection<Box> col = new ArrayList<Box>();
-		//			col.add(this.boxService.getActorNotificationBox(a.getId()));
-		//			message.setBox(col);
-		//		} else
-		message.setBox(new ArrayList<Box>());
-		final Collection<Actor> actRec = new ArrayList<Actor>();
-		actRec.add(a);
-		message.setReceiver(actRec);
-
-		this.sendMessage(message);
-
-	}
-
 	public void flush() {
 		this.messageRepository.flush();
 	}
 
+	public void delete(final Collection<MessageEntity> col) {
+		this.messageRepository.delete(col);
+	}
 }

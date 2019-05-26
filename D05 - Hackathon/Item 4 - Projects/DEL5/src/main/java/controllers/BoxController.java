@@ -53,11 +53,10 @@ public class BoxController extends BasicController {
 			colboxp = bo.getBoxes();
 			colboxp.add((Box) result.getModel().get("saved"));
 			bo.setBoxes(colboxp);
-			super.save(bo, binding, "box.commit.error", "box/edit", "box/edit.do", "redirect:list.do", "redirect:list.do");
+			this.boxService.save(bo);
 		}
 		return result;
 	}
-
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int id) {
 		ModelAndView result;
@@ -86,18 +85,23 @@ public class BoxController extends BasicController {
 		saved = this.boxService.save(box);
 		result = new ModelAndView(nameResolver);
 		result.addObject("saved", saved);
+		result.addObject("idSaved", saved.getId());
 		return result;
 	}
 
 	@Override
 	public <T> ModelAndView deleteAction(final T e, final String nameResolver) {
-		ModelAndView result;
 		Box box;
+		boolean fail = false;
 		box = (Box) e;
-		if (!box.isFromSystem())
-			this.boxService.delete(box);
-		result = new ModelAndView(nameResolver);
-		return result;
+		try {
+			Assert.isTrue(this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId()).getBoxes().contains(box), "Don´t have access");
+			if (!box.isFromSystem())
+				this.boxService.delete(box);
+		} catch (final IllegalArgumentException exp) {
+			fail = true;
+		}
+		return fail ? new ModelAndView("403") : new ModelAndView(nameResolver);
 	}
 
 }
