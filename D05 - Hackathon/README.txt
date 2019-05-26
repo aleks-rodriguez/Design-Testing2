@@ -15,14 +15,31 @@ After you log in, you have to see
 on the left of the User Webpage
 a box which contains all the repositories. 
 For us, Design and Testing 2 created by Angel Delgado.
-You click on, and will you see 
+
+The previous repository has been used as files cloud system.
+
+The repository which contains the programming code and the management hold 
+along this deliverable can be found at:
+
+htttps://www.github.com/angel96/DEL5
+
+If any problem is detected when loggin in any, 
+please contact urgently if it is convenient with Angel Delgado.
+
+angdellun@alum.us.es
+
+You click on, and you will see 
 all the information related to the deliverable.
 
 Things to take into account before you see our deliverable:
 
-1. Make use of the provide Script SQL (create-acme-hackerrank.sql) to initialize Database.
+1. Make use of the provide Script SQL (create-del5.sql) to initialize Database.
 
-2. Hibernate Search doesn´t work properly in production due to the amount of threads used by Spring, 
-   Tomcat and Lucene at the same time. This does not happen in Developer or Pre Production.
-   Free clever cloud plan works with 5 max threads. When Tomcat and MySQL are both working, it is created more than 4 threads.
-   According to this reason, It´s necessary to use a bigger plan which lets our project to use the technology mentioned.
+2. Ticker generation has completely been changed respect to previous deliverables.
+   Now, it is given the possibility of being used by any entity without any extra implementation.
+
+2.1 String parameter from ticker entity is generated using a library called "Generex".
+    It receives as parameter a string which is the pattern of the strings we want to generate.
+
+3. This project has a cache function specially defined for CustomisationSystem and Proclaims.
+   If any modification is no appreciated at the moment, do not worry.
