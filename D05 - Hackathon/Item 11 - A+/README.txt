@@ -1,0 +1,1 @@
+This item has been done into the main project attached to this deliverable (Item 4). Packages API and API_SECURITY contain the necessary implementation.
