@@ -46,10 +46,13 @@ public class ProclaimController extends BasicController {
 
 	private Finder			oldMemberFinder;
 
+	private String			previousStatus;
+
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		Collection<Proclaim> proclaims = null;
+		ModelAndView result;
 
 		String requestURI = null;
 
@@ -62,17 +65,40 @@ public class ProclaimController extends BasicController {
 			requestURI = "proclaim/member/list.do";
 		}
 
-		return super.listModelAndView("proclaims", "proclaim/list", proclaims, requestURI);
+		result = super.listModelAndView("proclaims", "proclaim/list", proclaims, requestURI);
+
+		if (this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
+			result.addObject("boton", true);
+			result.addObject("finderColumns", true);
+		}
+		return result;
 	}
 	@RequestMapping(value = "/unassigned", method = RequestMethod.GET)
 	public ModelAndView unassignedList() {
 		Assert.isTrue(this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER));
-		return super.listModelAndView("proclaims", "proclaim/list", this.service.findNoAssigned(), "proclaim/member/unassigned.do").addObject("startAssignation", true);
+		ModelAndView result;
+		result = super.listModelAndView("proclaims", "proclaim/list", this.service.findNoAssigned(), "proclaim/member/unassigned.do").addObject("startAssignation", true);
+		Collection<Proclaim> col;
+		col = this.service.findProclaimAssigned(this.service.findByUserAccount(LoginService.getPrincipal().getId()).getId());
+		result.addObject("finderColumns", true);
+		result.addObject("ass", col);
+		return result;
+	}
+	@RequestMapping(value = "/closed", method = RequestMethod.GET)
+	public ModelAndView closedProclaimsList() {
+		Assert.isTrue(this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER));
+		ModelAndView result;
+		result = super.listModelAndView("proclaims", "proclaim/list", this.service.findAllByMemberClosed(), "proclaim/member/unassigned.do").addObject("startAssignation", true);
+		Collection<Proclaim> col;
+		col = this.service.findProclaimAssigned(this.service.findByUserAccount(LoginService.getPrincipal().getId()).getId());
+		result.addObject("finderColumns", true);
+		result.addObject("ass", col);
+		return result;
 	}
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		Assert.isTrue(this.service.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT));
-		return super.create(this.service.create(), "proclaim/edit", "proclaim/student/edit.do", "/proclaim/student/list.do").addAllObjects(this.model());
+		return super.create(this.service.create(), "proclaim/edit", "proclaim/student/edit.do", "/proclaim/student/list.do").addAllObjects(this.model()).addObject("view", false);
 	}
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int id) {
@@ -92,9 +118,11 @@ public class ProclaimController extends BasicController {
 			requestCancel = "/proclaim/member/list.do";
 		}
 
+		this.previousStatus = p.getStatus();
+
 		Assert.isTrue(this.checkAuthorities(p));
 
-		return super.edit(p, "proclaim/edit", requestURI, requestCancel).addAllObjects(this.model());
+		return super.edit(p, "proclaim/edit", requestURI, requestCancel).addAllObjects(this.model()).addObject("previousStatus", this.previousStatus);
 	}
 
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
@@ -115,7 +143,9 @@ public class ProclaimController extends BasicController {
 			requestCancel = "/proclaim/member/list.do";
 		}
 
-		return super.show(p, "proclaim/edit", requestURI, requestCancel).addAllObjects(this.model());
+		this.previousStatus = p.getStatus();
+
+		return super.show(p, "proclaim/edit", requestURI, requestCancel).addAllObjects(this.model()).addObject("previousStatus", this.previousStatus);
 	}
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(final Proclaim proclaim, final BindingResult binding) {
@@ -134,7 +164,10 @@ public class ProclaimController extends BasicController {
 			requestURI = "proclaim/member/edit.do";
 			requestCancel = "/proclaim/member/list.do";
 			nameResolver = "redirect:/proclaim/member/list.do";
-			result = super.save(proclaim, binding, "proclaim.commit.error", "proclaim/edit", requestURI, requestCancel, nameResolver).addAllObjects(this.model());
+
+			this.previousStatus = proclaim.getStatus();
+
+			result = super.save(proclaim, binding, "proclaim.commit.error", "proclaim/edit", requestURI, requestCancel, nameResolver).addAllObjects(this.model()).addObject("previousStatus", this.previousStatus);
 
 			if (binding.hasErrors()) {
 				boolean checkEnglish;
@@ -144,9 +177,8 @@ public class ProclaimController extends BasicController {
 					proclaim.setStatus("PENDING");
 				else
 					proclaim.setStatus("PENDIENTE");
-
-				proclaim.setFinalMode(true);
 			}
+			proclaim.setFinalMode(true);
 		}
 
 		return result;
@@ -238,9 +270,11 @@ public class ProclaimController extends BasicController {
 				else {
 					res = this.serviceFinder.searchWithRetain(finder.getSingleKey(), finder.getCategory(), finder.getRegisteredDate(), finder.isBeforeOrNot());
 					this.serviceFinder.save(finder, res);
+
 				}
 			}
 			result = super.listModelAndView("proclaims", "proclaim/list", res, "proclaim/member/list.do");
+			result.addObject("finderColumns", true);
 		} catch (final ValidationException e) {
 			result = super.createAndEditModelAndView(finder, "proclaim/find", "proclaim/search.do", "/").addObject("categories", this.model().get("categories"));
 		} catch (final Throwable oops) {
@@ -282,6 +316,12 @@ public class ProclaimController extends BasicController {
 			res &= f.getCategory().equals(search.getCategory());
 		if (f.getRegisteredDate() != null)
 			res &= f.getRegisteredDate().equals(search.getRegisteredDate());
+		if ((f.getCategory() == null && search.getCategory() != null) || (f.getCategory() != null && search.getCategory() == null))
+			res = false;
+		if ((f.getRegisteredDate() == null && search.getRegisteredDate() != null) || (f.getRegisteredDate() != null && search.getRegisteredDate() == null))
+			res = false;
+		if ((f.getSingleKey() == null && search.getSingleKey() != null) || (f.getSingleKey() != null && search.getSingleKey() == null))
+			res = false;
 		return res;
 	}
 	public Map<String, ?> model() {

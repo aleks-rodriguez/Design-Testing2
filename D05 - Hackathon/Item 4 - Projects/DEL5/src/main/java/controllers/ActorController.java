@@ -1,8 +1,13 @@
 
 package controllers;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,11 +18,21 @@ import org.springframework.web.servlet.ModelAndView;
 import security.Authority;
 import security.LoginService;
 import services.ActorService;
+import services.ComissionService;
+import services.CommentService;
 import services.CustomisationSystemService;
+import services.EventService;
+import services.NotesService;
+import services.PortfolioService;
+import services.ProclaimService;
+import services.ProfileService;
+import services.SponsorshipService;
+import services.SwapService;
 import domain.Actor;
 import domain.Administrator;
 import domain.Collaborator;
 import domain.Member;
+import domain.Profile;
 import domain.Sponsor;
 import domain.Student;
 import forms.ActorForm;
@@ -32,12 +47,40 @@ public class ActorController extends BasicController {
 	@Autowired
 	private CustomisationSystemService	customService;
 
+	@Autowired
+	private ProfileService				profileService;
+
+	@Autowired
+	private ComissionService			comissionService;
+
+	@Autowired
+	private ProclaimService				proclaimService;
+
+	@Autowired
+	private CommentService				commentService;
+
+	@Autowired
+	private NotesService				notesService;
+
+	@Autowired
+	private EventService				eventService;
+
+	@Autowired
+	private PortfolioService			portfolioService;
+
+	@Autowired
+	private SwapService					swapService;
+
+	@Autowired
+	private SponsorshipService			sponsorshipService;
+
 
 	@RequestMapping(value = "/listSpammers", method = RequestMethod.GET)
 	public ModelAndView listSpammers() {
 		ModelAndView result;
 		result = super.listModelAndView("actors", "actor/list", this.actorService.getActorSpammer(), "actor/list.do");
 		result.addObject("ban", true);
+		result.addObject("comis", true);
 		return result;
 	}
 
@@ -46,12 +89,14 @@ public class ActorController extends BasicController {
 		ModelAndView result;
 		result = super.listModelAndView("actors", "actor/list", this.actorService.getActorEmabled(), "actor/list.do");
 		result.addObject("ban", false);
+		result.addObject("comis", true);
 		return result;
 	}
 
 	@RequestMapping(value = "/ban", method = RequestMethod.GET)
 	public ModelAndView banActor(@RequestParam final int id) {
 		ModelAndView result;
+		Assert.isTrue(this.actorService.getActorsIdSpammer().contains(id), "You only can ban spammers actor");
 		this.customService.banActor(id);
 		result = new ModelAndView("redirect:listSpammers.do");
 		result.addObject("ban", true);
@@ -61,6 +106,7 @@ public class ActorController extends BasicController {
 	@RequestMapping(value = "/unban", method = RequestMethod.GET)
 	public ModelAndView unBanActor(@RequestParam final int id) {
 		ModelAndView result;
+		Assert.isTrue(this.actorService.getActorsIdEnabled().contains(id), "You only can unban ban actor");
 		this.customService.unBanActor(id);
 		result = new ModelAndView("redirect:listBan.do");
 		result.addObject("ban", false);
@@ -212,9 +258,51 @@ public class ActorController extends BasicController {
 	public <T> ModelAndView deleteAction(final T e, final String nameResolver) {
 		Actor a;
 		a = this.actorService.findByUserAccount(LoginService.getPrincipal().getId());
-		final Actor b = (Actor) e;
 		this.actorService.delete(a.getAccount().getId());
 		return new ModelAndView(nameResolver);
+	}
+	@RequestMapping(value = "/export", method = RequestMethod.GET)
+	public ModelAndView export() {
+		final ModelAndView result;
+
+		Actor actor;
+		actor = this.actorService.findByUserAccount(LoginService.getPrincipal().getId());
+
+		Map<String, Object> map;
+		map = new HashMap<String, Object>();
+
+		map.put("actor", actor);
+
+		Collection<Profile> col;
+		col = this.profileService.getProfilesByActorId(actor.getId());
+		map.put("profiless", this.profileService.getProfilesByActorId(actor.getId()));
+
+		if (this.actorService.findAuthority(actor.getAccount().getAuthorities(), Authority.MEMBER)) {
+			map.put("comissions", this.comissionService.getComissionsByMemberId(actor.getId()));
+			map.put("proclaims", this.proclaimService.findProclaimAssigned(actor.getId()));
+			map.put("commentsMember", this.commentService.getCommentsByActor(LoginService.getPrincipal().getId()));
+			map.put("notesMember", this.notesService.getNotesByActor(actor.getId()));
+		}
+		if (this.actorService.findAuthority(actor.getAccount().getAuthorities(), Authority.COLLABORATOR)) {
+			map.put("events", this.eventService.getEventsByCollaboratorId(actor.getId()));
+			map.put("portfolio", this.portfolioService.findPortfolioByActor(LoginService.getPrincipal().getId()));
+			map.put("swapR", this.swapService.getSwapsByCollaboratorId(actor.getId()));
+			map.put("swapP", this.swapService.getSwapsPendingByCollaboratorId(actor.getId()));
+			map.put("notesCollaborator", this.notesService.getNotesByActor(actor.getId()));
+		}
+		if (this.actorService.findAuthority(actor.getAccount().getAuthorities(), Authority.STUDENT)) {
+			map.put("pro", this.proclaimService.findAllByStudent());
+			map.put("commentsStudent", this.commentService.getCommentsByActor(LoginService.getPrincipal().getId()));
+			map.put("notesStudent", this.notesService.getNotesByActor(actor.getId()));
+		}
+		if (this.actorService.findAuthority(actor.getAccount().getAuthorities(), Authority.SPONSOR)) {
+			map.put("sponsorshipsAct", this.sponsorshipService.getSponsorshipActiveBySponsorId(actor.getId()));
+			map.put("sponsorshipsDes", this.sponsorshipService.getSponsorshipDesactiveBySponsorId(actor.getId()));
+		}
+
+		result = new ModelAndView(new ExportActorDataPDFController(), map);
+
+		return result;
 	}
 
 }

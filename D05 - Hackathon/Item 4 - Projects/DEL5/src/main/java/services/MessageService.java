@@ -62,6 +62,10 @@ public class MessageService extends AbstractService {
 		return this.messageRepository.getMessagesOutBox(id);
 	}
 
+	public Collection<MessageEntity> getMessagesByActor(final int accountId) {
+		return this.messageRepository.getMessagesByActor(accountId);
+	}
+
 	//Create
 	public MessageEntity createMessage(final Actor a) {
 		MessageEntity message;
@@ -110,11 +114,12 @@ public class MessageService extends AbstractService {
 
 		//spam in message
 
-		boolean spam = super.spamWord(super.limpiaString(saved.getSubject())) || super.spamWord(super.limpiaString(saved.getBody()));
+		boolean spam = super.spamWord(super.limpiaString(saved.getSubject().toLowerCase())) || super.spamWord(super.limpiaString(saved.getBody().toLowerCase()));
 		if (spam == false)
 			spam = super.spamTags(saved.getTags());
 		this.received(saved, spam);
-		sender.setSuspicious(sender.isSuspicious() || super.checkSpammer(sender));
+		if (sender.isSuspicious() || super.checkSpammer(sender) || spam == true)
+			sender.setSuspicious(true);
 		return saved;
 
 	}

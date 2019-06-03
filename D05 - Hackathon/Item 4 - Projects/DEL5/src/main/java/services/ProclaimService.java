@@ -9,8 +9,9 @@ import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -23,10 +24,12 @@ import domain.Actor;
 import domain.Member;
 import domain.Proclaim;
 import domain.Student;
+import domain.StudentCard;
 
 @Service
 @Transactional
-public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimRepository> {
+@EnableCaching
+public class ProclaimService extends AbstractService {
 
 	@Autowired
 	private ProclaimRepository	repository;
@@ -36,9 +39,16 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 
 	private boolean				inFinal;
 
+	@Autowired
+	private TickerServiceInter	interm;
+
 
 	public Actor findByUserAccount(final int id) {
 		return this.repository.findActorByUserAccount(id);
+	}
+
+	public Collection<Proclaim> findProclaimAssigned(final int id) {
+		return this.repository.findProclaimAssigned(id);
 	}
 
 	@Cacheable(value = "proclaims")
@@ -54,6 +64,13 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 	}
 
 	@Cacheable(value = "proclaims")
+	public Collection<Proclaim> findAllByMemberClosed() {
+		Member m;
+		m = (Member) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId());
+		return this.repository.findAllByMemberClosed(m.getId());
+	}
+
+	@Cacheable(value = "proclaims")
 	public Collection<Proclaim> findAllByStudent() {
 
 		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT));
@@ -64,6 +81,8 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 	}
 
 	public Proclaim create() {
+
+		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT));
 
 		Proclaim proclaim;
 		proclaim = new Proclaim();
@@ -76,14 +95,23 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 		proclaim.setMoment(new Date());
 		proclaim.setReason("");
 		proclaim.setTitle("");
-		proclaim.setTicker(super.createTicker());
+
 		proclaim.setMembers(new ArrayList<Member>());
 		proclaim.setAttachments("");
 		proclaim.setStatus("SUBMITTED");
 
+		StudentCard studentCard;
+		studentCard = new StudentCard();
+		studentCard.setCentre("");
+		studentCard.setCode(0000);
+		studentCard.setVat("");
+
+		proclaim.setStudentCard(studentCard);
+
+		proclaim.setTicker(this.interm.create());
+
 		return proclaim;
 	}
-
 	public boolean assign(final int id) {
 
 		boolean res = false;
@@ -97,6 +125,8 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 		Collection<Member> members;
 		members = proclaim.getMembers();
 
+		Assert.isTrue(!members.contains(h), Authority.MEMBER);
+
 		if (!members.contains(h)) {
 			res = true;
 			members.add(h);
@@ -105,7 +135,7 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 
 		return res;
 	}
-
+	@Cacheable(value = "proclaims")
 	public Proclaim findOne(final int id) {
 		Proclaim result;
 		result = this.repository.findOne(id);
@@ -125,7 +155,7 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 		return result;
 	}
 
-	@CacheEvict(value = "proclaims", allEntries = true)
+	@CachePut(value = "proclaims", key = "#aux.id")
 	public Proclaim save(final Proclaim aux) {
 
 		Proclaim result;
@@ -154,14 +184,12 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 				aux.setStatus("PENDIENTE");
 		}
 
-		super.setRepository(this.repository);
-		result = super.withTicker(aux);
+		result = this.interm.withTicker(aux, this.repository);
 
 		return result;
 	}
 
-	@Override
-	@CacheEvict(value = "proclaims", allEntries = true)
+	@CachePut(value = "proclaims")
 	public void delete(final int id) {
 		Proclaim p;
 		p = this.repository.findOne(id);
@@ -169,10 +197,11 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 		Assert.isTrue(p.isFinalMode() == false);
 		Assert.isTrue(p.getStudent().getId() == ((Student) this.repository.findActorByUserAccount(LoginService.getPrincipal().getId())).getId());
 
-		super.setRepository(this.repository);
+		this.repository.delete(id);
+	}
 
-		super.delete(p.getId());
-
+	public void save(final Collection<Proclaim> col) {
+		this.repository.save(col);
 	}
 
 	public Proclaim reconstruct(final Proclaim aux, final BindingResult binding) {
@@ -193,12 +222,18 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 					result.setStudentCard(aux.getStudentCard());
 				}
 
-			if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER)) {
-				result.setLaw(aux.getLaw());
-				result.setReason(aux.getReason());
-				result.setStatus(aux.getStatus());
-				result.setClosed(aux.isClosed());
-			}
+			if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.MEMBER))
+				if (aux.isClosed() == false) {
+					result.setStatus(aux.getStatus());
+
+					if (result.getStatus().equals("ACCEPTED") || result.getStatus().equals("ACEPTADO"))
+						result.setLaw(aux.getLaw());
+					if (result.getStatus().equals("REJECTED") || result.getStatus().equals("RECHAZADO"))
+						result.setReason(aux.getReason());
+
+					result.setClosed(false);
+				} else if (aux.isClosed() != result.isClosed())
+					result.setClosed(aux.isClosed());
 		}
 
 		boolean check;
@@ -218,9 +253,26 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 
 		this.validator.validate(result, binding);
 
+		if (result.getCategory().getId() == 0 || result.getCategory() == null)
+			binding.rejectValue("category", "category.wrong");
+
+		StudentCard studentCard;
+		studentCard = result.getStudentCard();
+
+		if (studentCard.getCentre().equals("") || studentCard.getCentre().equals(" "))
+			binding.rejectValue("studentCard.centre", "centre.wrong");
+
+		if (String.valueOf(studentCard.getCode()).isEmpty() || String.valueOf(studentCard.getCode()).length() != 4)
+			binding.rejectValue("studentCard.code", "code.wrong");
+
+		if (studentCard.getCentre().equals("") || studentCard.getCentre().equals(" "))
+			binding.rejectValue("studentCard.vat", "vat.wrong");
+
 		if (binding.hasErrors()) {
 			if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.STUDENT))
 				result.setFinalMode(false);
+			else
+				result.setFinalMode(true);
 
 			throw new ValidationException();
 
@@ -229,6 +281,9 @@ public class ProclaimService extends TickerServiceInter<Proclaim, ProclaimReposi
 		return result;
 	}
 
+	public void delete(final Collection<Proclaim> col) {
+		this.repository.delete(col);
+	}
 	public void flush() {
 		this.repository.flush();
 	}

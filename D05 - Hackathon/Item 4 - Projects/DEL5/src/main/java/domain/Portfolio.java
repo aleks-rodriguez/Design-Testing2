@@ -15,7 +15,6 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -27,7 +26,6 @@ public class Portfolio extends DomainEntity {
 	private Date							moment;
 	private String							fullName;
 	private String							address;
-	private String							photo;
 	private String							phone;
 	private Collection<WorkReport>			workReport;
 	private Collection<StudyReport>			studyReport;
@@ -71,16 +69,6 @@ public class Portfolio extends DomainEntity {
 
 	public void setAddress(final String address) {
 		this.address = address;
-	}
-
-	@URL
-	@SafeHtml
-	public String getPhoto() {
-		return this.photo;
-	}
-
-	public void setPhoto(final String photo) {
-		this.photo = photo;
 	}
 
 	@SafeHtml

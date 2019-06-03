@@ -1,31 +1,34 @@
 
 package services;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+
+import repositories.GenericRepository;
+
+import com.mifmif.common.regex.Generex;
 
 import domain.Ticker;
 import domain.Ticketable;
 
 @Service
-public class TickerServiceInter<K extends Ticketable, S extends JpaRepository<K, Integer>> extends AbstractService {
+public class TickerServiceInter {
 
 	@Autowired
-	private TickerService	serviceTicker;
-
-	S						repository;
+	private TickerService	service;
 
 
-	public void setRepository(final S repository) {
-		this.repository = repository;
+	public Ticker create() {
+		Ticker ticker;
+		ticker = new Ticker();
+		ticker.setTicker(new SimpleDateFormat("yyyyMMdd").format(new Date()) + "-" + new Generex("[a-zA-Z0-9]{6}").random().toUpperCase());
+		return ticker;
 	}
 
-	public Ticker createTicker() {
-		return this.serviceTicker.create();
-	}
-
-	public K withTicker(final K without) {
+	public <K extends Ticketable> K withTicker(final K without, final GenericRepository repository) {
 
 		K result = null;
 
@@ -39,7 +42,7 @@ public class TickerServiceInter<K extends Ticketable, S extends JpaRepository<K,
 				if (without.getId() != 0) {
 
 					K auxFromDB;
-					auxFromDB = this.repository.findOne(without.getId());
+					auxFromDB = (K) repository.findOne(without.getId());
 
 					boolean check;
 					check = auxFromDB.getTicker().getTicker().equals(without.getTicker().getTicker());
@@ -50,26 +53,28 @@ public class TickerServiceInter<K extends Ticketable, S extends JpaRepository<K,
 
 				if (without.getId() == 0) {
 					Ticker findByCode;
-					findByCode = this.serviceTicker.findTickerByCode(without.getTicker().getTicker());
+					findByCode = repository.findTickerByCode(without.getTicker().getTicker());
 
 					if (findByCode != null)
 						throw new IllegalArgumentException();
+					else {
+						findByCode = this.service.saveTicker(without.getTicker());
+						without.setTicker(findByCode);
+					}
 				}
 
-				result = this.repository.save(without);
+				result = (K) repository.save(without);
 				value = true;
-
 			} catch (final Throwable oops) {
 				value = false;
-				aux = this.serviceTicker.create();
+				aux = this.create();
 				without.setTicker(aux);
 			}
 		while (value == false);
 
 		return result;
 	}
-
-	public void delete(final int id) {
-		this.repository.delete(id);
+	public void deleteTicker(final int id) {
+		this.service.deleteTicker(id);
 	}
 }
