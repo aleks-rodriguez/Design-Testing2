@@ -162,5 +162,39 @@
 			</list>
 		</property>
 	</bean>
+	<bean id="category1" class="domain.Category">
+		<property name="name" value="Teachers Proclaims"></property>
+		<property name="categories">
+			<list></list>
+		</property>
+	</bean>
+
+	<bean id="category2" class="domain.Category">
+		<property name="name" value="Building Infraestructure"></property>
+		<property name="categories">
+			<list></list>
+		</property>
+	</bean>
+
+	<bean id="category3" class="domain.Category">
+		<property name="name" value="Proclaim"></property>
+		<property name="categories">
+			<list></list>
+		</property>
+	</bean>
+
+	<bean id="category4" class="domain.Category">
+		<property name="name" value="Teachers Schedule"></property>
+		<property name="categories">
+			<list></list>
+		</property>
+	</bean>
+
+	<bean id="category5" class="domain.Category">
+		<property name="name" value="Bullying"></property>
+		<property name="categories">
+			<list></list>
+		</property>
+	</bean>
 
 </beans>

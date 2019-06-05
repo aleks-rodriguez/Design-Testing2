@@ -133,11 +133,11 @@ public class MessageService extends AbstractService {
 		Collection<Box> boxes;
 
 		if (spam)
-			boxes = this.messageRepository.getBoxesFromActors("Spam Box", recipients, userlogged);
+			boxes = this.messageRepository.getBoxesFromActorsWithMe("Spam Box", recipients);
 		else if (saved.getTags().contains("Notification"))
-			boxes = this.messageRepository.getBoxesFromActors("Notification Box", recipients, userlogged);
+			boxes = this.messageRepository.getBoxesFromActorsWithMe("Notification Box", recipients);
 		else
-			boxes = this.messageRepository.getBoxesFromActors("In Box", recipients, userlogged);
+			boxes = this.messageRepository.getBoxesFromActorsWithMe("In Box", recipients);
 		Collection<Box> boxesMessage;
 		boxesMessage = saved.getBox();
 		boxesMessage.addAll(boxes);
@@ -222,12 +222,18 @@ public class MessageService extends AbstractService {
 
 		MessageEntity result;
 
+		Collection<String> tags;
+		tags = new ArrayList<>();
+
+		for (final String s : message.getTags())
+			tags.add(s.toLowerCase());
+
 		if (message.getId() == 0) {
 			result = this.createMessage(this.boxService.getActorByUserAccount(LoginService.getPrincipal().getId()));
 			result.setSubject(message.getSubject());
 			result.setBody(message.getBody());
 			result.setPriority(message.getPriority());
-			result.setTags(message.getTags());
+			result.setTags(tags);
 			if (super.checkScript(result.getTags()))
 				binding.rejectValue("tags", "tags.error");
 			if (result.getPriority().equals("NONE"))
@@ -244,7 +250,7 @@ public class MessageService extends AbstractService {
 			result.setSubject(message.getSubject());
 			result.setBody(message.getBody());
 			result.setPriority(message.getPriority());
-			result.setTags(message.getTags());
+			result.setTags(tags);
 			if (super.checkScript(result.getTags()))
 				binding.rejectValue("tags", "tags.error");
 		}

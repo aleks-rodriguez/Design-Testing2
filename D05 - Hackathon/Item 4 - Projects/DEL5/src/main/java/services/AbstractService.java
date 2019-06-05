@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.util.Assert;
 
 import security.Authority;
@@ -56,16 +59,17 @@ public class AbstractService {
 	}
 	public boolean spamWord(final Collection<String> contentMessage) {
 		boolean res = false;
+		String str;
+		str = "";
+		for (final String s : contentMessage)
+			str += s + " ";
 
 		Map<String, Boolean> result;
 		result = new HashMap<>();
 
-		for (String word : System.getProperty("spamwords").split(",")) {
-
-			if (word.startsWith(" "))
-				word = word.substring(1, word.length());
-
-			result.put(word, contentMessage.contains(word.toLowerCase()));
+		for (final String word : System.getProperty("spamwords").split(",")) {
+			result.put(word, contentMessage.contains(word.trim().toLowerCase()));
+			result.put(word, word.trim().equals(str.trim()));
 
 		}
 
@@ -74,7 +78,6 @@ public class AbstractService {
 				res = true;
 				break;
 			}
-
 		return res;
 	}
 
@@ -119,16 +122,23 @@ public class AbstractService {
 
 	public Boolean spamTags(final Collection<String> col) {
 		boolean res = false;
+		String str;
+		str = "";
+		for (final String s : col)
+			str += s + " ";
+
 		Map<String, Boolean> result;
 		result = new HashMap<>();
 
-		for (final String word : System.getProperty("spamwords").split(","))
-			result.put(word, col.contains(word.toLowerCase()));
-
+		for (final String word : System.getProperty("spamwords").split(",")) {
+			result.put(word, col.contains(word.trim().toLowerCase()));
+			result.put(word, word.trim().equals(str.trim()));
+		}
 		for (final Boolean b : result.values())
 			if (b) {
 				res = true;
 				break;
+
 			}
 		return res;
 	}
@@ -139,6 +149,20 @@ public class AbstractService {
 				if (a.substring(0, 8).equals("<script>"))
 					res = true;
 		return res;
+	}
+
+	public String getLanguageSystem() {
+		return LocaleContextHolder.getLocale().getLanguage();
+
+	}
+	public Set<String> statusByLang() {
+		Map<String, Set<String>> result;
+		result = new HashMap<String, Set<String>>();
+
+		result.put("en", new HashSet<>(Arrays.asList("PENDING", "SUBMITTED", "ACCEPTED", "REJECTED")));
+		result.put("es", new HashSet<>(Arrays.asList("PENDIENTE", "ENVIADO", "ACEPTADO", "RECHAZADO")));
+
+		return result.get(this.getLanguageSystem());
 	}
 
 }
