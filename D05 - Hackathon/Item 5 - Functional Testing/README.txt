@@ -1,3 +1,5 @@
+Functional Tests are implemented in the project with their respective coverage.
+
 ProclaimServiceTest, in case 02, has been divided into two different junit test case.
 One for positive, and another for negative.
 If both were together, they would throw a NullPointerException that has no sense.
