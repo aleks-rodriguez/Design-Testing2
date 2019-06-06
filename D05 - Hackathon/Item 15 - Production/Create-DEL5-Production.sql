@@ -2,10 +2,10 @@
 drop database if exists `bkxhklah2kxoe4btxvim`;
 create database `bkxhklah2kxoe4btxvim`;
 use `bkxhklah2kxoe4btxvim`;
-
+		
 -- MySQL dump 10.13  Distrib 5.5.29, for Win64 (x86)
 --
--- Host: localhost    Database: del5
+-- Host: localhost    Database: DEL5
 -- ------------------------------------------------------
 -- Server version	5.5.29
 
@@ -41,7 +41,7 @@ CREATE TABLE `actor_boxes` (
 
 LOCK TABLES `actor_boxes` WRITE;
 /*!40000 ALTER TABLE `actor_boxes` DISABLE KEYS */;
-INSERT INTO `actor_boxes` VALUES (20,21),(20,22),(20,23),(20,24),(20,25);
+INSERT INTO `actor_boxes` VALUES (22,23),(22,24),(22,25),(22,26),(22,27);
 /*!40000 ALTER TABLE `actor_boxes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -76,7 +76,7 @@ CREATE TABLE `administrator` (
 
 LOCK TABLES `administrator` WRITE;
 /*!40000 ALTER TABLE `administrator` DISABLE KEYS */;
-INSERT INTO `administrator` VALUES (20,0,'','admin<admin@gmail.com>',NULL,'Admin1','955582516','','Admin1','\0',16);
+INSERT INTO `administrator` VALUES (22,0,'','admin<admin@gmail.com>',NULL,'Admin1','955582516','','Admin1','\0',17);
 /*!40000 ALTER TABLE `administrator` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -102,7 +102,7 @@ CREATE TABLE `box` (
 
 LOCK TABLES `box` WRITE;
 /*!40000 ALTER TABLE `box` DISABLE KEYS */;
-INSERT INTO `box` VALUES (21,0,'','In Box'),(22,0,'','Out Box'),(23,0,'','Spam Box'),(24,0,'','Trash Box'),(25,0,'','Notification Box');
+INSERT INTO `box` VALUES (23,0,'','In Box'),(24,0,'','Out Box'),(25,0,'','Spam Box'),(26,0,'','Trash Box'),(27,0,'','Notification Box');
 /*!40000 ALTER TABLE `box` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,7 +153,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (26,0,'Teachers Proclaims'),(27,0,'Building Infraestructure'),(28,0,'Proclaim'),(29,0,'Teachers Schedule'),(30,0,'Bullying');
+INSERT INTO `category` VALUES (28,0,'Teachers Proclaims'),(29,0,'Building Infraestructure'),(30,0,'Proclaim'),(31,0,'Teachers Schedule'),(32,0,'Bullying');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -310,7 +310,7 @@ CREATE TABLE `customisation_system` (
 
 LOCK TABLES `customisation_system` WRITE;
 /*!40000 ALTER TABLE `customisation_system` DISABLE KEYS */;
-INSERT INTO `customisation_system` VALUES (19,0,'https://i.imgur.com/eDCGHR9.png','VISA,MCARD,AMEX,DINNERS,FLY',24,'Welcome to DEL5! The best website for student rights defense. ¡Bienvenidos a DEL5! El mejor lugar para la defensa de los derechos de los estudiantes','34',10,'DEL5-Student Representation');
+INSERT INTO `customisation_system` VALUES (21,0,'https://i.imgur.com/eDCGHR9.png','VISA,MCARD,AMEX,DINNERS,FLY',24,'Welcome to DEL5! The best website for student rights defense. ¡Bienvenidos a DEL5! El mejor lugar para la defensa de los derechos de los estudiantes','34',10,'DEL5-Student Representation');
 /*!40000 ALTER TABLE `customisation_system` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -336,7 +336,7 @@ CREATE TABLE `customisation_system_spamwords` (
 
 LOCK TABLES `customisation_system_spamwords` WRITE;
 /*!40000 ALTER TABLE `customisation_system_spamwords` DISABLE KEYS */;
-INSERT INTO `customisation_system_spamwords` VALUES (19,'sex, cialis, one millon, you´ve been selected, Nigeria\n					','en'),(19,'sexo, un millon, ha sido seleccionado, viagra','es');
+INSERT INTO `customisation_system_spamwords` VALUES (21,'sex, cialis, one millon, you have been selected, Nigeria','en'),(21,'sexo, un millon, ha sido seleccionado, viagra','es');
 /*!40000 ALTER TABLE `customisation_system_spamwords` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -870,7 +870,7 @@ CREATE TABLE `profile` (
 
 LOCK TABLES `profile` WRITE;
 /*!40000 ALTER TABLE `profile` DISABLE KEYS */;
-INSERT INTO `profile` VALUES (17,1,'https://www.linkedin/DP1010','DP1010','LinkedIn',20),(18,1,'https://www.tuenti/DP1011','DP1011','Tuenti',20);
+INSERT INTO `profile` VALUES (19,1,'https://www.linkedin/DP1010','DP1010','LinkedIn',22),(20,1,'https://www.tuenti/DP1011','DP1011','Tuenti',22);
 /*!40000 ALTER TABLE `profile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1093,7 +1093,7 @@ CREATE TABLE `user_account` (
 
 LOCK TABLES `user_account` WRITE;
 /*!40000 ALTER TABLE `user_account` DISABLE KEYS */;
-INSERT INTO `user_account` VALUES (16,0,'','e00cf25ad42683b3df678c61f42c6bda','admin1');
+INSERT INTO `user_account` VALUES (17,0,'','e00cf25ad42683b3df678c61f42c6bda','admin1'),(18,0,'\0','jg9f0d7sn8sn40vjs93vs9vnw9vos387','anonymous');
 /*!40000 ALTER TABLE `user_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1118,7 +1118,7 @@ CREATE TABLE `user_account_authorities` (
 
 LOCK TABLES `user_account_authorities` WRITE;
 /*!40000 ALTER TABLE `user_account_authorities` DISABLE KEYS */;
-INSERT INTO `user_account_authorities` VALUES (16,'ADMIN');
+INSERT INTO `user_account_authorities` VALUES (17,'ADMIN'),(18,'ANONYMOUS');
 /*!40000 ALTER TABLE `user_account_authorities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1160,5 +1160,5 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-06-05  0:03:55
+-- Dump completed on 2019-06-06 13:06:21
 commit;
