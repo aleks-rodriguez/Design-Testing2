@@ -8,10 +8,12 @@
   * D02 - Mar 28, 2019 (Terminado)
   * D03 - Apr 25, 2019 (Terminado)
   * D04 - May 16, 2019 (Terminado)
-  * D05 - Hackathon (In process)
+  * D05 - Hackathon (Terminado)
     * Ideas must be delivered before Apr 22, 2019 (Hecho)
     * Idea Public Presentation. May 17, 2019 (Theory Class) (Hecho)
-    * Delivery of. Jun 6, 2019
+    * Delivery of. Jun 6, 2019 (Hecho)
+  * D06 - Control Check
+	* June 24th, 2019
 	
   ## Repositorios alternativos
   
@@ -30,6 +32,7 @@
   * VirtualBox (S.O virtual: Windows XP Profesional x64)
   * Astah
   * Eclipse Indigo
+  * JMeter
   
   ## Componentes del grupo
   
@@ -48,11 +51,11 @@
   * D01 - Mar 7, 2019 (Finished)
   * D02 - Mar 28, 2019 (Finished)
   * D03 - Apr 25, 2019 (Finished)
-  * D04 - May 16, 2019
-  * D05 - Hackathon
-    * Antes del 22 de Abril se debe de enviar una bateria de ideas (HECHO)
-    * El 17 de mayo se presentará la idea publicamente en clase de teoría
-    * Entregable. 6 de Junio de 2019.
+  * D04 - May 16, 2019 (Finished)
+  * D05 - Hackathon (Finished)
+    * Antes del 22 de Abril se debe de enviar una bateria de ideas (Done)
+    * El 17 de mayo se presentará la idea publicamente en clase de teoría (Done)
+    * Entregable. 6 de Junio de 2019. (Done)
 	
   ## Alternative Repositories
   
@@ -71,6 +74,7 @@
   * VirtualBox (Virtual O.S: Windows XP Professional x64)
   * Astah
   * Eclipse Indigo
+  * JMeter
   
   ## Members Team
   
