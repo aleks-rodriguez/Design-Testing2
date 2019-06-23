@@ -3,17 +3,17 @@ package repositories;
 
 import java.util.Collection;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import ticketable.GenericRepository;
 import domain.Actor;
 import domain.Company;
 import domain.Position;
 import domain.Problem;
 
 @Repository
-public interface PositionRepository extends JpaRepository<Position, Integer> {
+public interface PositionRepository extends GenericRepository<Position> {
 
 	@Query("select a from Actor a where a.account.id = ?1")
 	Actor findActorByUserAccountId(int id);

@@ -4,7 +4,6 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 
 import javax.validation.ValidationException;
 
@@ -55,8 +54,6 @@ public class PositionController extends BasicController {
 	@Autowired
 	private AuditService		auditService;
 
-	private boolean				duplicate;
-	private boolean				control	= true;
 	private Finder				oldRookieFinder;
 
 
@@ -220,20 +217,7 @@ public class PositionController extends BasicController {
 		position.setFinalMode(res ? position.isFinalMode() : false);
 
 		if (position.getDeadline().after(new Date()))
-			do {
-				result = super.save(position, binding, "position.commit.error", "position/edit", "position/company/edit.do", "/position/company/list.do", "redirect:list.do");
-				if (this.control) {
-
-					Map<String, Object> map;
-					map = result.getModel();
-					if (map.containsKey("duplicate"))
-						this.duplicate = (boolean) map.get("duplicate");
-					else
-						this.duplicate = false;
-
-				} else
-					this.duplicate = false;
-			} while (this.duplicate == true);
+			result = super.save(position, binding, "position.commit.error", "position/edit", "position/company/edit.do", "/position/company/list.do", "redirect:list.do");
 		else
 			result = super.createAndEditModelAndView(position, "deadline.future", "position/edit", "position/company/edit.do", "/position/company/list.do");
 
@@ -337,9 +321,8 @@ public class PositionController extends BasicController {
 		p = (Position) e;
 		p = this.service.reconstruct(p, binding);
 		Position position;
-		position = this.service.save(p, this.duplicate);
-		this.control = false;
-		if (this.duplicate == false && position.isFinalMode())
+		position = this.service.save(p);
+		if (position.isFinalMode())
 			this.serviceMess.sendNotification(position);
 		result = new ModelAndView(nameResolver);
 		return result;

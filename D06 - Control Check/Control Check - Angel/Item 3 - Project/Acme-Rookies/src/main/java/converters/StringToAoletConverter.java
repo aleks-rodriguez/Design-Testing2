@@ -7,30 +7,28 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import ticketable.Ticker;
-import ticketable.TickerRepository;
+import repositories.AoletRepository;
+import domain.Aolet;
 
 @Component
 @Transactional
-public class StringToTickerConverter implements Converter<String, Ticker> {
+public class StringToAoletConverter implements Converter<String, Aolet> {
 
 	@Autowired
-	TickerRepository	tickerRepository;
+	AoletRepository	repository;
 
 
 	@Override
-	public Ticker convert(final String text) {
-		Ticker result;
+	public Aolet convert(final String text) {
+		Aolet result;
+		int id;
 
 		try {
 			if (StringUtils.isEmpty(text))
 				result = null;
 			else {
-				result = this.tickerRepository.findTickerByCode(text);
-				if (result == null) {
-					result = new Ticker();
-					result.setTicker(text);
-				}
+				id = Integer.valueOf(text);
+				result = this.repository.findOne(id);
 			}
 		} catch (final Throwable opps) {
 			throw new IllegalArgumentException(opps);

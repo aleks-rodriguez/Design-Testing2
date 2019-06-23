@@ -21,11 +21,12 @@ import repositories.AuditorRepository;
 import repositories.CompanyRepository;
 import repositories.ProviderRepository;
 import repositories.RookieRepository;
-import repositories.TickerRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import security.UserAccountRepository;
+import ticketable.Ticker;
+import ticketable.TickerRepository;
 import domain.Actor;
 import domain.Administrator;
 import domain.Audit;
@@ -42,7 +43,6 @@ import domain.Profile;
 import domain.Provider;
 import domain.Rookie;
 import domain.Sponsorship;
-import domain.Ticker;
 import forms.ActorForm;
 
 @Service
@@ -580,7 +580,7 @@ public class ActorService extends AbstractService {
 			this.tickerRepository.delete(p.getTicker());
 			p.setTicker(this.fakeTicker());
 			p.setTitle("loremIpsum");
-			this.posService.save(p, false);
+			this.posService.save(p);
 		}
 	}
 	private Actor deleteCommon(final Actor a) {

@@ -5,14 +5,11 @@ import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,15 +19,16 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import ticketable.Ticketable;
+
 @Entity
 @Access(AccessType.PROPERTY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(indexes = {
 	@Index(columnList = "ticker, title, description, deadline, profileRequired,skillsRequired,technologies")
 })
-public class Position extends DomainEntity {
+public class Position extends Ticketable {
 
-	private Ticker	ticker;
 	private String	title;
 	private String	description;
 	private Date	deadline;
@@ -41,20 +39,7 @@ public class Position extends DomainEntity {
 	private boolean	finalMode;
 	private boolean	cancel;
 	private Company	company;
-	private Auditor	auditor;
 
-
-	@OneToOne(cascade = {
-		CascadeType.ALL
-	}, optional = false)
-	@JoinColumn(name = "ticker")
-	public Ticker getTicker() {
-		return this.ticker;
-	}
-
-	public void setTicker(final Ticker ticker) {
-		this.ticker = ticker;
-	}
 
 	@SafeHtml
 	@NotBlank

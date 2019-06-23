@@ -8,7 +8,6 @@ import javax.validation.ValidationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
-import domain.Position;
 import forms.ActorForm;
 
 public abstract class BasicController extends AbstractController {
@@ -73,8 +72,7 @@ public abstract class BasicController extends AbstractController {
 		} catch (final Throwable oops) {
 			result = this.createAndEditModelAndView(e, error, nameView, requestURI, requestCancel);
 			result.addObject("view", false);
-			if (e instanceof Position)
-				result.addObject("duplicate", true);
+
 			if (e instanceof ActorForm)
 				result.addObject("makes", super.creditCardMakes());
 

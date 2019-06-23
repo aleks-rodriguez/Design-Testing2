@@ -33,6 +33,31 @@
 			</jstl:if>
 		</display:column>
 	</security:authorize>
+
+	<security:authorize access="hasRole('AUDITOR')">
+		<display:column titleKey="aolet.list">
+			<jstl:if test="${row.finalMode}">
+				<a href="aolet/auditor/list.do?audit=${row.id}"><spring:message
+						code="aolet.list" /></a>
+			</jstl:if>
+		</display:column>
+	</security:authorize>
+
+	<display:column titleKey="aolet.list">
+		<jstl:if test="${row.finalMode}">
+			<a href="aolet/external.do?audit=${row.id}"><spring:message
+					code="aolet.list.external" /></a>
+		</jstl:if>
+	</display:column>
+
+	<security:authorize access="hasRole('AUDITOR')">
+		<display:column titleKey="aolet.create">
+			<jstl:if test="${row.finalMode}">
+				<a href="aolet/auditor/create.do?audit=${row.id}"><spring:message
+						code="aolet.create" /></a>
+			</jstl:if>
+		</display:column>
+	</security:authorize>
 </display:table>
 <security:authorize access="hasRole('AUDITOR')">
 	<a href="audit/auditor/create.do?position=${param['position']}"><spring:message

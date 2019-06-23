@@ -654,19 +654,19 @@
 
 	<!-- Positions -->
 
-	<bean id="ticker1" class="domain.Ticker">
+	<bean id="ticker1" class="ticketable.Ticker">
 		<property name="ticker" value="COMM-1234" />
 	</bean>
 
-	<bean id="ticker2" class="domain.Ticker">
+	<bean id="ticker2" class="ticketable.Ticker">
 		<property name="ticker" value="COMM-1235" />
 	</bean>
 
-	<bean id="ticker3" class="domain.Ticker">
+	<bean id="ticker3" class="ticketable.Ticker">
 		<property name="ticker" value="COMM-1236" />
 	</bean>
 
-	<bean id="ticker4" class="domain.Ticker">
+	<bean id="ticker4" class="ticketable.Ticker">
 		<property name="ticker" value="COMM-1237" />
 	</bean>
 
@@ -823,7 +823,7 @@
 		</property>
 	</bean>
 	<!-- Applications -->
- 	<bean id="application1" class="domain.Application">
+	<bean id="application1" class="domain.Application">
 		<property name="applicationMoment">
 			<bean factory-bean="dateFormat" factory-method="parse">
 				<constructor-arg value="2017/12/15" />
@@ -881,7 +881,7 @@
 		</property>
 
 	</bean>
-	
+
 	<bean id="curricula2" class="domain.Curricula">
 
 		<property name="fullName" value="Rookie1 Rookie1" />
@@ -1168,12 +1168,12 @@
 		<property name="description" value="item1" />
 		<property name="urls">
 			<list>
-			<value>http://www.url.com</value>
+				<value>http://www.url.com</value>
 			</list>
 		</property>
 		<property name="pictures">
 			<list>
-			<value>http://www.pictures.com</value>
+				<value>http://www.pictures.com</value>
 			</list>
 		</property>
 		<property name="provider" ref="provider1" />
@@ -1183,12 +1183,12 @@
 		<property name="description" value="item2" />
 		<property name="urls">
 			<list>
-			<value>http://www.url.com</value>
+				<value>http://www.url.com</value>
 			</list>
 		</property>
 		<property name="pictures">
 			<list>
-			<value>http://www.pictures.com</value>
+				<value>http://www.pictures.com</value>
 			</list>
 		</property>
 		<property name="provider" ref="provider1" />
@@ -1269,7 +1269,7 @@
 			<ref bean="provider1" />
 		</property>
 		<property name="flat_rate" value="0.20" />
-		<property name="isActive" value = "true"/>
+		<property name="isActive" value="true" />
 	</bean>
 	<bean id="sponsorship2" class="domain.Sponsorship">
 		<property name="creditCard" ref="creditcard5" />
@@ -1524,5 +1524,24 @@
 			<list>
 			</list>
 		</property>
+	</bean>
+
+	<!-- Control check -->
+
+	<bean id="aolet1" class="domain.Aolet">
+		<property name="ticker" ref="ticker22" />
+		<property name="title" value="TEST" />
+		<property name="description" value="TEST - Description" />
+		<property name="finalMode" value="false" />
+		<property name="image" value="http://www.google.es" />
+		<property name="moment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/12/15" />
+			</bean>
+		</property>
+		<property name="audit" ref="audit1" />
+	</bean>
+	<bean id="ticker22" class="ticketable.Ticker">
+		<property name="ticker" value="COMM-3335" />
 	</bean>
 </beans>

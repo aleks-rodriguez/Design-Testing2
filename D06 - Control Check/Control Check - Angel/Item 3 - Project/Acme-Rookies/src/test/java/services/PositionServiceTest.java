@@ -94,11 +94,9 @@ public class PositionServiceTest extends AbstractTest {
 			c = (Company) this.service.findByUserAccount(LoginService.getPrincipal().getId());
 
 			Position position;
-			position = new Position();
+			position = this.service.create();
 
-			position.setTicker(this.service.createTicker(c.getCommercialName()));
-
-			position.setDeadline(new SimpleDateFormat("yyyy/MM/dd").parse("2019/05/19"));
+			position.setDeadline(new SimpleDateFormat("yyyy/MM/dd").parse("2019/06/19"));
 			position.setFinalMode((String) param == "nonSave" ? true : false);
 			position.setDescription("hola1");
 
@@ -113,7 +111,7 @@ public class PositionServiceTest extends AbstractTest {
 			position.setProfileRequired("hola1");
 			position.setCancel(false);
 
-			this.service.save(position, false);
+			this.service.save(position);
 			this.service.flush();
 
 			super.unauthenticate();
@@ -165,7 +163,7 @@ public class PositionServiceTest extends AbstractTest {
 			if (param.equals("two"))
 				p.setFinalMode(true);
 
-			this.service.save(p, false);
+			this.service.save(p);
 
 			this.service.flush();
 

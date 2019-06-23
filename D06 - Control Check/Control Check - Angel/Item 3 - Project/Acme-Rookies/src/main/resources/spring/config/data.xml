@@ -18,19 +18,27 @@
 
 	<jpa:repositories base-package="repositories" />
 	<jpa:repositories base-package="security" />
+	<jpa:repositories base-package="ticketable" />
 
 	<!-- Data source -->
 
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
-		<!--CleverCloud	<property name="jdbcUrl" value="jdbc:mysql://bw5xogdz764caqglao9g-mysql.services.clever-cloud.com:3306/bw5xogdz764caqglao9g" />
-		<property name="user" value="uypk61kud7rvp2rx" />
-		<property name="password" value="tjvx5xszFmiqQ2XJQNSr" />
-		-->
+		<!--CleverCloud -->
+
+		<!--<property name="jdbcUrl"
+			value="jdbc:mysql://bd984ucsavwjstqzgxpc-mysql.services.clever-cloud.com:3306/bd984ucsavwjstqzgxpc" />
+		<property name="user" value="ubenhvecxnicj6uf" />
+		<property name="password" value="cm8gzD83hmnhgshUpmA3" />-->
+
+		<!-- Localhost - Tomcat -->
+
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/acme-rookies" 
+			/> <property name="user" value="acme-user" /> <property name="password" value="ACME-Us3r-P@ssw0rd" 
+			/> 
+
+		<!-- No tocar -->
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/acme-rookies"/>
-		<property name="user" value="acme-user" />
-		<property name="password" value="ACME-Us3r-P@ssw0rd"/>
 		<property name="minPoolSize" value="1" />
 		<property name="maxPoolSize" value="5" />
 	</bean>

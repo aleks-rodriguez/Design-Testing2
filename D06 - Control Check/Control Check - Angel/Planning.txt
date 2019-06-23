@@ -1,0 +1,14 @@
+0. UML (5 min)
+1. Entidad
+2. Repository 
+3. Servicio
+4. Controlador
+5. Vista
+6. Export Data and Anonymous
+(40 min)
+7. Testing Unitario y Usuario
+(15 min)
+8. War pre production y War production. Junto con Scripts (Pre y Production) de dump a partir de Initialize.
+(30 min)
+9. Testing de Rendimiento.
+(30 min)

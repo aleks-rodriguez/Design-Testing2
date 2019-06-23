@@ -97,6 +97,10 @@
 		<!-- Sponsorship -->
 		<bean class="converters.SponsorshipToStringConverter" />
 		<bean class="converters.StringToSponsorshipConverter" />
+		
+		<!-- Aolet -->
+		<bean class="converters.AoletToStringConverter" />
+		<bean class="converters.StringToAoletConverter" />
 	</util:list>
 
 </beans>

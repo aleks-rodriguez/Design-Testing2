@@ -1,7 +1,6 @@
 
 package services;
 
-import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Date;
 
@@ -15,14 +14,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.PositionRepository;
-import repositories.TickerRepository;
 import security.Authority;
 import security.LoginService;
+import ticketable.TickerServiceInter;
 import domain.Actor;
 import domain.Company;
 import domain.Position;
 import domain.Problem;
-import domain.Ticker;
 
 @Service
 @Transactional
@@ -32,12 +30,12 @@ public class PositionService extends AbstractService {
 	private PositionRepository	repository;
 
 	@Autowired
-	private TickerRepository	repositoryTicker;
-
-	@Autowired
 	private Validator			validator;
 
 	private boolean				statusPrevious;
+
+	@Autowired
+	private TickerServiceInter	interm;
 
 
 	public Company showCompanyByPosition(final int id) {
@@ -82,15 +80,10 @@ public class PositionService extends AbstractService {
 		this.statusPrevious = p.isFinalMode();
 		return p;
 	}
-	public Ticker createTicker(final String commercialName) {
-		Ticker ticker;
-		ticker = new Ticker();
-		ticker.setTicker(this.generateTicker(commercialName));
-		return ticker;
-	}
+
 	public Position create() {
 
-		super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COMPANY);
+		Assert.isTrue(super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.COMPANY));
 
 		Company c;
 		c = (Company) this.repository.findActorByUserAccountId(LoginService.getPrincipal().getId());
@@ -99,7 +92,7 @@ public class PositionService extends AbstractService {
 		position = new Position();
 		//Tocar aqui
 
-		position.setTicker(this.createTicker(c.getCommercialName()));
+		position.setTicker(this.interm.create(c.getCommercialName().substring(0, 4), "[0-9]{4}"));
 		position.setDeadline(new Date());
 		position.setFinalMode(false);
 		position.setDescription("");
@@ -112,18 +105,11 @@ public class PositionService extends AbstractService {
 
 		return position;
 	}
-	public Position save(final Position arg, final boolean duplicate) {
+	public Position save(final Position arg) {
 		Position saved = null;
 
 		Company c;
 		c = (Company) this.repository.findActorByUserAccountId(LoginService.getPrincipal().getId());
-
-		Ticker ticker;
-
-		if (duplicate == false)
-			ticker = arg.getTicker();
-		else
-			ticker = this.createTicker(c.getCommercialName());
 
 		if (arg.getId() == 0)
 			arg.setCompany(c);
@@ -140,12 +126,7 @@ public class PositionService extends AbstractService {
 
 		Assert.isTrue(arg.getDeadline().after(new Date()));
 
-		Ticker saveT;
-		saveT = this.repositoryTicker.saveAndFlush(ticker);
-
-		arg.setTicker(saveT);
-
-		saved = this.repository.saveAndFlush(arg);
+		saved = this.interm.withTicker(arg, this.repository, c.getCommercialName(), "[0-9]{4}");
 
 		return saved;
 	}
@@ -203,11 +184,6 @@ public class PositionService extends AbstractService {
 		Assert.isTrue(aux.getCompany().equals(c), "You don't have permission to do this");
 
 		aux.setCancel(true);
-	}
-
-	public String generateTicker(String commercialName) {
-		commercialName = super.limpiaCadena(commercialName).substring(0, 4);
-		return commercialName + "-" + new SecureRandom().nextInt(10000);
 	}
 
 	public void flush() {

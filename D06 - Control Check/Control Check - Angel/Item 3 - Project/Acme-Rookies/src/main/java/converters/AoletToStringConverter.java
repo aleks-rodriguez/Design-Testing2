@@ -5,20 +5,20 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import ticketable.Ticker;
+import domain.Aolet;
 
 @Component
 @Transactional
-public class TickerToStringConverter implements Converter<Ticker, String> {
+public class AoletToStringConverter implements Converter<Aolet, String> {
 
 	@Override
-	public String convert(final Ticker ticker) {
+	public String convert(final Aolet aolet) {
 		String result;
 
-		if (ticker == null)
+		if (aolet == null)
 			result = null;
 		else
-			result = ticker.getTicker();
+			result = String.valueOf(aolet.getId());
 
 		return result;
 	}
