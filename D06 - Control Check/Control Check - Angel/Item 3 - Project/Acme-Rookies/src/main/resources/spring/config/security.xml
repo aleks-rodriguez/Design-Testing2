@@ -37,7 +37,7 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/item/**"
 			access="permitAll" />
-		<security:intercept-url pattern="/aolet/**"
+		<security:intercept-url pattern="/omamek/**"
 			access="permitAll" />
 		<security:intercept-url pattern="/views/misc/index.jsp"
 			access="permitAll" />
@@ -91,11 +91,12 @@
 			access="hasRole('COMPANY')" />
 		<security:intercept-url pattern="/educationData/company/**"
 			access="hasRole('COMPANY')" />
+		<security:intercept-url pattern="/omamek/company/**"
+			access="hasRole('COMPANY')" />
 		<!-- Auditor -->
 		<security:intercept-url pattern="/audit/auditor/**"
 			access="hasRole('AUDITOR')" />
-		<security:intercept-url pattern="/aolet/auditor/**"
-			access="hasRole('AUDITOR')" />
+
 		<!-- Provider -->
 		<security:intercept-url pattern="/sponsorship/provider/**"
 			access="hasRole('PROVIDER')" />

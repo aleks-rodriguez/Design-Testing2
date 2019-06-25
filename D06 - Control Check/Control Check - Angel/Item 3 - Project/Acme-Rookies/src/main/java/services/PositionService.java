@@ -126,7 +126,7 @@ public class PositionService extends AbstractService {
 
 		Assert.isTrue(arg.getDeadline().after(new Date()));
 
-		saved = this.interm.withTicker(arg, this.repository, c.getCommercialName(), "[0-9]{4}");
+		saved = this.interm.withTicker(arg, this.repository, c.getCommercialName(), "[0-9]{4}", true);
 
 		return saved;
 	}

@@ -35,7 +35,7 @@
 		<value>/views/item/messages</value>
 		<value>/views/sponsorship/messages</value>
 		<value>/views/provider/messages</value>
-		<value>/views/aolet/messages</value>
+		<value>/views/omamek/messages</value>
 	</util:list>
 
 </beans>

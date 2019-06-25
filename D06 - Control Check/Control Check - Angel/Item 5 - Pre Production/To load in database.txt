@@ -1,0 +1,2 @@
+mysql -uroot -pV3rY=$tR0nG=P@$$w0rd$ < "C:\Documents and Settings\Boss\Desktop\ControlCheck-PreProduction\Create-Acme-Rookies-Pre-Initialize.sql"
+mysql -uroot -pV3rY=$tR0nG=P@$$w0rd$ < "C:\Documents and Settings\Boss\Desktop\ControlCheck-PreProduction\Create-Acme-Rookies-Pre-Populate.sql"

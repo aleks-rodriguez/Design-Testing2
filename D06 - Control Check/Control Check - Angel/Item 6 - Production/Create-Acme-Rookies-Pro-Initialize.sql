@@ -1,12 +1,7 @@
 ﻿start transaction;
-drop database if exists `Acme-Rookies`;
-create database `Acme-Rookies`;
-use `Acme-Rookies`;
-create user 'acme-user'@'%'identified by 'ACME-Us3r-P@ssw0rd';
-create user 'acme-manager'@'%' identified by 'ACME-M@n@ger-6874';
-grant select, insert, update, delete on `Acme-Rookies`.* to 'acme-user'@'%';
-grant select, insert, update, delete, create, drop, references, index, alter, create temporary tables,
-lock tables, create view, create routine, alter routine, execute, trigger, show view on `Acme-Rookies`.* to 'acme-manager'@'%';
+drop database if exists `bd984ucsavwjstqzgxpc`;
+create database `bd984ucsavwjstqzgxpc`;
+use `bd984ucsavwjstqzgxpc`;
 
 -- MySQL dump 10.13  Distrib 5.5.29, for Win64 (x86)
 --
@@ -46,7 +41,7 @@ CREATE TABLE `actor_boxes` (
 
 LOCK TABLES `actor_boxes` WRITE;
 /*!40000 ALTER TABLE `actor_boxes` DISABLE KEYS */;
-INSERT INTO `actor_boxes` VALUES (271,240),(271,241),(271,242),(271,243),(271,244),(272,245),(272,246),(272,247),(272,248),(272,249),(273,250),(273,251),(273,252),(273,253),(273,254),(288,255),(288,256),(288,257),(288,258),(288,259),(289,260),(289,261),(289,262),(289,263),(289,264),(272,265),(299,312),(299,313),(299,314),(299,315),(299,316),(300,317),(300,318),(300,319),(300,320),(300,321),(301,322),(301,323),(301,324),(301,325),(301,326),(302,327),(302,328),(302,329),(302,330),(302,331);
+INSERT INTO `actor_boxes` VALUES (15,16),(15,17),(15,18),(15,19),(15,20);
 /*!40000 ALTER TABLE `actor_boxes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -71,7 +66,7 @@ CREATE TABLE `actor_profiles` (
 
 LOCK TABLES `actor_profiles` WRITE;
 /*!40000 ALTER TABLE `actor_profiles` DISABLE KEYS */;
-INSERT INTO `actor_profiles` VALUES (271,274),(271,275);
+INSERT INTO `actor_profiles` VALUES (15,12),(15,13);
 /*!40000 ALTER TABLE `actor_profiles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,7 +106,7 @@ CREATE TABLE `administrator` (
 
 LOCK TABLES `administrator` WRITE;
 /*!40000 ALTER TABLE `administrator` DISABLE KEYS */;
-INSERT INTO `administrator` VALUES (271,0,'',134,'2018-12-15','John Doe','VISA','1111222233334444','admin<admin@gmail.com>','Admin1','955582516','','\0','Admin1','0.21',266);
+INSERT INTO `administrator` VALUES (15,0,'',134,'2018-12-15','John Doe','VISA','1111222233334444','admin<admin@gmail.com>','Admin1','955582516','','\0','Admin1','0.21',11);
 /*!40000 ALTER TABLE `administrator` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -137,43 +132,7 @@ CREATE TABLE `answer` (
 
 LOCK TABLES `answer` WRITE;
 /*!40000 ALTER TABLE `answer` DISABLE KEYS */;
-INSERT INTO `answer` VALUES (290,0,'explanation','http://www.us.es');
 /*!40000 ALTER TABLE `answer` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `aolet`
---
-
-DROP TABLE IF EXISTS `aolet`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `aolet` (
-  `id` int(11) NOT NULL,
-  `version` int(11) NOT NULL,
-  `ticker` int(11) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `final_mode` bit(1) NOT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  `moment` date DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
-  `audit` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UK_i93670vys80kwnis72obsyx5x` (`ticker`),
-  KEY `FK_4ft89dl2nf23eqrw6dwkxv40l` (`audit`),
-  CONSTRAINT `FK_i93670vys80kwnis72obsyx5x` FOREIGN KEY (`ticker`) REFERENCES `ticker` (`id`),
-  CONSTRAINT `FK_4ft89dl2nf23eqrw6dwkxv40l` FOREIGN KEY (`audit`) REFERENCES `audit` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `aolet`
---
-
-LOCK TABLES `aolet` WRITE;
-/*!40000 ALTER TABLE `aolet` DISABLE KEYS */;
-INSERT INTO `aolet` VALUES (334,0,332,'TEST - Description','\0','http://www.google.es','2019-12-15','TEST',306),(32769,0,32768,'title1','','','2019-06-22','title1',307),(98305,1,98304,'titleAQUI','','','2019-06-22','titleAQUI',307);
-/*!40000 ALTER TABLE `aolet` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -214,7 +173,6 @@ CREATE TABLE `application` (
 
 LOCK TABLES `application` WRITE;
 /*!40000 ALTER TABLE `application` DISABLE KEYS */;
-INSERT INTO `application` VALUES (333,0,'2017-12-15','2017-12-15','SUBMITTED',290,292,284,277,288);
 /*!40000 ALTER TABLE `application` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,7 +206,6 @@ CREATE TABLE `audit` (
 
 LOCK TABLES `audit` WRITE;
 /*!40000 ALTER TABLE `audit` DISABLE KEYS */;
-INSERT INTO `audit` VALUES (306,0,'\0','2019-12-15',5,'testingText',299,284),(307,0,'','2018-12-15',7,'testingText2',299,284),(308,0,'','2018-12-15',8,'testingText3',300,286),(309,0,'','2018-12-15',8,'testingText4',299,284);
 /*!40000 ALTER TABLE `audit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,7 +245,6 @@ CREATE TABLE `auditor` (
 
 LOCK TABLES `auditor` WRITE;
 /*!40000 ALTER TABLE `auditor` DISABLE KEYS */;
-INSERT INTO `auditor` VALUES (299,0,'',182,'2017-12-15','John Doe','MASTERCARD','1111222233334444','auditor1@us.es','auditor1','955582516','','\0','auditor1','12345678Z',295),(300,0,'',182,'2017-12-15','John Doe','MASTERCARD','1111222233334444','auditor2@us.es','auditor2','955582516','','\0','auditor2','12345678Z',296);
 /*!40000 ALTER TABLE `auditor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -314,7 +270,7 @@ CREATE TABLE `box` (
 
 LOCK TABLES `box` WRITE;
 /*!40000 ALTER TABLE `box` DISABLE KEYS */;
-INSERT INTO `box` VALUES (240,0,'','In Box'),(241,0,'','Out Box'),(242,0,'','Spam Box'),(243,0,'','Trash Box'),(244,0,'','Notification Box'),(245,0,'','In Box'),(246,0,'','Out Box'),(247,0,'','Spam Box'),(248,0,'','Trash Box'),(249,0,'','Notification Box'),(250,0,'','In Box'),(251,0,'','Out Box'),(252,0,'','Spam Box'),(253,0,'','Trash Box'),(254,0,'','Notification Box'),(255,0,'','In Box'),(256,0,'','Out Box'),(257,0,'','Spam Box'),(258,0,'','Trash Box'),(259,0,'','Notification Box'),(260,0,'','In Box'),(261,0,'','Out Box'),(262,0,'','Spam Box'),(263,0,'','Trash Box'),(264,0,'','Notification Box'),(265,0,'\0','Box'),(312,0,'','In Box'),(313,0,'','Out Box'),(314,0,'','Spam Box'),(315,0,'','Trash Box'),(316,0,'','Notification Box'),(317,0,'','In Box'),(318,0,'','Out Box'),(319,0,'','Spam Box'),(320,0,'','Trash Box'),(321,0,'','Notification Box'),(322,0,'','In Box'),(323,0,'','Out Box'),(324,0,'','Spam Box'),(325,0,'','Trash Box'),(326,0,'','Notification Box'),(327,0,'','In Box'),(328,0,'','Out Box'),(329,0,'','Spam Box'),(330,0,'','Trash Box'),(331,0,'','Notification Box');
+INSERT INTO `box` VALUES (16,0,'','In Box'),(17,0,'','Out Box'),(18,0,'','Spam Box'),(19,0,'','Trash Box'),(20,0,'','Notification Box');
 /*!40000 ALTER TABLE `box` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -382,7 +338,6 @@ CREATE TABLE `company` (
 
 LOCK TABLES `company` WRITE;
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
-INSERT INTO `company` VALUES (272,0,'',138,'2017-12-15','John Doe','MASTERCARD','1111222233334444','company@us.es','Company1','955582516','','\0','Company1','12345678Z',267,'CommercialName',0),(273,0,'',182,'2017-12-15','John Doe','FLY','1111222233334444','company@us.es','Company2','955875516','','\0','Company2','12345678Z',268,'CommercialName',0);
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -415,7 +370,6 @@ CREATE TABLE `curricula` (
 
 LOCK TABLES `curricula` WRITE;
 /*!40000 ALTER TABLE `curricula` DISABLE KEYS */;
-INSERT INTO `curricula` VALUES (291,0,'\0','rookie1 rookie1','http://www.github.com','http://www.linkedin.com','955251415','statement',288),(292,0,'','Rookie1 Rookie1','http://www.github.com','http://www.linkedin.com','955251415','statement',288);
 /*!40000 ALTER TABLE `curricula` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -525,7 +479,7 @@ CREATE TABLE `customisation_system` (
 
 LOCK TABLES `customisation_system` WRITE;
 /*!40000 ALTER TABLE `customisation_system` DISABLE KEYS */;
-INSERT INTO `customisation_system` VALUES (276,0,'https://i.imgur.com/RyOrQZ7.jpg',0.6,24,'Welcome to Acme-Rookies! We\'re IT rookie\'s favourite job marketplace!.  ¡Bienvenidos a Acme-Rookies! ¡Somos el mercado de trabajo favorito de los profesionales de las TICs!',34,10,'Acme-Rookies',0.21);
+INSERT INTO `customisation_system` VALUES (14,0,'https://i.imgur.com/RyOrQZ7.jpg',0.2,24,'Welcome to Acme-Rookies! We\'re IT rookies\' favourite job marketplace!.  ¡Bienvenidos a Acme-Rookies! ¡Somos el mercado de trabajo favorito de los profesionales de las TICs!',34,10,'Acme-Rookies',0.21);
 /*!40000 ALTER TABLE `customisation_system` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -551,7 +505,7 @@ CREATE TABLE `customisation_system_spamwords` (
 
 LOCK TABLES `customisation_system_spamwords` WRITE;
 /*!40000 ALTER TABLE `customisation_system_spamwords` DISABLE KEYS */;
-INSERT INTO `customisation_system_spamwords` VALUES (276,'sex, cialis, one millon, you´ve been selected, Nigeria\n					','en'),(276,'sexo, un millon, ha sido seleccionado, viagra','es');
+INSERT INTO `customisation_system_spamwords` VALUES (14,'sex, cialis, one millon, you´ve been selected, Nigeria\n					','en'),(14,'sexo, un millon, ha sido seleccionado, viagra','es');
 /*!40000 ALTER TABLE `customisation_system_spamwords` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -608,7 +562,6 @@ CREATE TABLE `finder` (
 
 LOCK TABLES `finder` WRITE;
 /*!40000 ALTER TABLE `finder` DISABLE KEYS */;
-INSERT INTO `finder` VALUES (293,0,'2019-04-21 23:40:00','2019-04-01',100,0,''),(294,0,'2019-04-10 10:18:00','2019-03-01',100,0,'');
 /*!40000 ALTER TABLE `finder` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -657,7 +610,7 @@ CREATE TABLE `hibernate_sequences` (
 
 LOCK TABLES `hibernate_sequences` WRITE;
 /*!40000 ALTER TABLE `hibernate_sequences` DISABLE KEYS */;
-INSERT INTO `hibernate_sequences` VALUES ('domain_entity',5);
+INSERT INTO `hibernate_sequences` VALUES ('domain_entity',1);
 /*!40000 ALTER TABLE `hibernate_sequences` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -686,7 +639,6 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (303,0,'item1','item1',301),(304,0,'item2','item2',301),(305,0,'item3','item3',302);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -711,7 +663,6 @@ CREATE TABLE `item_pictures` (
 
 LOCK TABLES `item_pictures` WRITE;
 /*!40000 ALTER TABLE `item_pictures` DISABLE KEYS */;
-INSERT INTO `item_pictures` VALUES (303,'http://www.pictures.com'),(304,'http://www.pictures.com');
 /*!40000 ALTER TABLE `item_pictures` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -736,7 +687,6 @@ CREATE TABLE `item_urls` (
 
 LOCK TABLES `item_urls` WRITE;
 /*!40000 ALTER TABLE `item_urls` DISABLE KEYS */;
-INSERT INTO `item_urls` VALUES (303,'http://www.url.com'),(304,'http://www.url.com');
 /*!40000 ALTER TABLE `item_urls` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -765,7 +715,6 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (65539,1,'Un nuevo puesto de trabajo se ha publicado. A new position has been published by the company. AQUI AQUI','2019-06-22','NEUTRAL','New Position Published - Nuevo puesto de trabajo publicado',272);
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -792,7 +741,6 @@ CREATE TABLE `message_box` (
 
 LOCK TABLES `message_box` WRITE;
 /*!40000 ALTER TABLE `message_box` DISABLE KEYS */;
-INSERT INTO `message_box` VALUES (65539,249),(65539,246),(65539,259),(65539,264);
 /*!40000 ALTER TABLE `message_box` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -817,7 +765,6 @@ CREATE TABLE `message_entity_tags` (
 
 LOCK TABLES `message_entity_tags` WRITE;
 /*!40000 ALTER TABLE `message_entity_tags` DISABLE KEYS */;
-INSERT INTO `message_entity_tags` VALUES (65539,'Notification');
 /*!40000 ALTER TABLE `message_entity_tags` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -842,7 +789,6 @@ CREATE TABLE `message_receiver` (
 
 LOCK TABLES `message_receiver` WRITE;
 /*!40000 ALTER TABLE `message_receiver` DISABLE KEYS */;
-INSERT INTO `message_receiver` VALUES (65539,288),(65539,289);
 /*!40000 ALTER TABLE `message_receiver` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -895,6 +841,40 @@ LOCK TABLES `miscellaneous_data_urls` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `omamek`
+--
+
+DROP TABLE IF EXISTS `omamek`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `omamek` (
+  `id` int(11) NOT NULL,
+  `version` int(11) NOT NULL,
+  `ticker` int(11) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `final_mode` bit(1) NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `moment` date DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `audit` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_c7wjdtdj1jiuitb8qjrllvdr6` (`ticker`),
+  KEY `FK_hntk3pka38v8xj5jat5cq09ig` (`audit`),
+  CONSTRAINT `FK_c7wjdtdj1jiuitb8qjrllvdr6` FOREIGN KEY (`ticker`) REFERENCES `ticker` (`id`),
+  CONSTRAINT `FK_hntk3pka38v8xj5jat5cq09ig` FOREIGN KEY (`audit`) REFERENCES `audit` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `omamek`
+--
+
+LOCK TABLES `omamek` WRITE;
+/*!40000 ALTER TABLE `omamek` DISABLE KEYS */;
+/*!40000 ALTER TABLE `omamek` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `position`
 --
 
@@ -930,7 +910,6 @@ CREATE TABLE `position` (
 
 LOCK TABLES `position` WRITE;
 /*!40000 ALTER TABLE `position` DISABLE KEYS */;
-INSERT INTO `position` VALUES (284,0,280,'\0','2019-12-15','ingeniero de software','','lsi',120,'developer','spring','ingeniero de software',272),(285,0,281,'\0','2019-12-15','ingeniero computadores','\0','dte',120,'developer','spring','ingeniero computadores',272),(286,0,282,'\0','2019-12-15','encargado de las redes','\0','atc',150,'developer','spring','redes',273),(287,0,283,'\0','2019-12-20','ingeniero de ti','','lsi',140,'developer','spring','ingeniero de ti',272),(65537,1,65536,'\0','2019-06-30','AQUI','','AQUI',20,'AQUI','AQUI','AQUI',272);
 /*!40000 ALTER TABLE `position` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -988,7 +967,6 @@ CREATE TABLE `problem` (
 
 LOCK TABLES `problem` WRITE;
 /*!40000 ALTER TABLE `problem` DISABLE KEYS */;
-INSERT INTO `problem` VALUES (277,0,'','hint','difficult','problem1',272),(278,1,'','hint','difficult','problem2',272),(279,0,'','hint','difficult','problem3',273),(65538,1,'','poblemita','poblemita','poblemita',272);
 /*!40000 ALTER TABLE `problem` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1039,7 +1017,6 @@ CREATE TABLE `problem_position` (
 
 LOCK TABLES `problem_position` WRITE;
 /*!40000 ALTER TABLE `problem_position` DISABLE KEYS */;
-INSERT INTO `problem_position` VALUES (277,286),(277,287),(277,284),(278,285),(278,65537),(65538,285),(65538,65537);
 /*!40000 ALTER TABLE `problem_position` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1066,7 +1043,7 @@ CREATE TABLE `profile` (
 
 LOCK TABLES `profile` WRITE;
 /*!40000 ALTER TABLE `profile` DISABLE KEYS */;
-INSERT INTO `profile` VALUES (274,0,'https://www.linkedin/DP1010','DP1010','LinkedIn'),(275,0,'https://www.tuenti/DP1011','DP1011','Tuenti');
+INSERT INTO `profile` VALUES (12,0,'https://www.linkedin/DP1010','DP1010','LinkedIn'),(13,0,'https://www.tuenti/DP1011','DP1011','Tuenti');
 /*!40000 ALTER TABLE `profile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1107,7 +1084,6 @@ CREATE TABLE `provider` (
 
 LOCK TABLES `provider` WRITE;
 /*!40000 ALTER TABLE `provider` DISABLE KEYS */;
-INSERT INTO `provider` VALUES (301,0,'',182,'2017-12-15','John Doe','MASTERCARD','1111222233334444','provider1@us.es','provider1','955582516','','\0','provider1','12345678Z',297,'provider1'),(302,0,'',182,'2017-12-15','John Doe','MASTERCARD','1111222233334444','provider2@us.es','provider2','955582519','','\0','provider2','12345678Z',298,'provider2');
 /*!40000 ALTER TABLE `provider` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1150,7 +1126,6 @@ CREATE TABLE `rookie` (
 
 LOCK TABLES `rookie` WRITE;
 /*!40000 ALTER TABLE `rookie` DISABLE KEYS */;
-INSERT INTO `rookie` VALUES (288,1,'',138,'2017-12-15','John Doe','MASTERCARD','1111222233334444','crookie@us.es','Rookie1','955582516','','\0','Rookie1','12345678Z',269,293),(289,1,'',138,'2017-12-15','John Doe','MASTERCARD','1111222233334444','crookie@us.es','rookie2','955582516','','','rookie2','12345678Z',270,294);
 /*!40000 ALTER TABLE `rookie` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1189,7 +1164,6 @@ CREATE TABLE `sponsorship` (
 
 LOCK TABLES `sponsorship` WRITE;
 /*!40000 ALTER TABLE `sponsorship` DISABLE KEYS */;
-INSERT INTO `sponsorship` VALUES (310,1,'https://i.imgur.com/VrQpD0U.png',182,'2017-12-15','John Doe','FLY','1111222233334444',0.8,'','https://www.google.com',284,301),(311,0,'https://i.imgur.com/BrAw5PK.png',182,'2017-12-15','John Doe','MASTERCARD','1111222233334444',0.2,'\0','https://www.prueba.com',287,301);
 /*!40000 ALTER TABLE `sponsorship` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1215,7 +1189,6 @@ CREATE TABLE `ticker` (
 
 LOCK TABLES `ticker` WRITE;
 /*!40000 ALTER TABLE `ticker` DISABLE KEYS */;
-INSERT INTO `ticker` VALUES (280,0,'COMM-1234'),(281,0,'COMM-1235'),(282,0,'COMM-1236'),(283,0,'COMM-1237'),(332,0,'COMM-3335'),(32768,0,'2019/06/22-6353'),(65536,0,'Comm-7022'),(98304,0,'2019/06/22-8000'),(131072,0,'2019/06/22-5524');
 /*!40000 ALTER TABLE `ticker` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1243,7 +1216,7 @@ CREATE TABLE `user_account` (
 
 LOCK TABLES `user_account` WRITE;
 /*!40000 ALTER TABLE `user_account` DISABLE KEYS */;
-INSERT INTO `user_account` VALUES (266,0,'','e00cf25ad42683b3df678c61f42c6bda','admin1'),(267,0,'','df655f976f7c9d3263815bd981225cd9','company1'),(268,0,'','d196a28097115067fefd73d25b0c0be8','company2'),(269,0,'','9701eb1802a4c63f51e1501512fbdd30','rookie1'),(270,0,'','124be4fa2a59341a1d7e965ac49b2923','rookie2'),(295,0,'','175d2e7a63f386554a4dd66e865c3e14','auditor1'),(296,0,'','04dd94ba3212ac52ad3a1f4cbfb52d4f','auditor2'),(297,0,'','cdb82d56473901641525fbbd1d5dab56','provider1'),(298,0,'','ebfc815ee2cc6a16225105bb7b3e1e53','provider2');
+INSERT INTO `user_account` VALUES (11,0,'','e00cf25ad42683b3df678c61f42c6bda','admin1');
 /*!40000 ALTER TABLE `user_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1268,7 +1241,7 @@ CREATE TABLE `user_account_authorities` (
 
 LOCK TABLES `user_account_authorities` WRITE;
 /*!40000 ALTER TABLE `user_account_authorities` DISABLE KEYS */;
-INSERT INTO `user_account_authorities` VALUES (266,'ADMIN'),(267,'COMPANY'),(268,'COMPANY'),(269,'ROOKIE'),(270,'ROOKIE'),(295,'AUDITOR'),(296,'AUDITOR'),(297,'PROVIDER'),(298,'PROVIDER');
+INSERT INTO `user_account_authorities` VALUES (11,'ADMIN');
 /*!40000 ALTER TABLE `user_account_authorities` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1281,5 +1254,5 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-06-22 23:07:48
+-- Dump completed on 2019-06-24 16:59:59
 commit;

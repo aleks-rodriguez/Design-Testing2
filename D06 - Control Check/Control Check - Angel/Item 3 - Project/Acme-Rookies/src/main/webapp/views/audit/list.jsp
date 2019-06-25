@@ -34,27 +34,27 @@
 		</display:column>
 	</security:authorize>
 
-	<security:authorize access="hasRole('AUDITOR')">
-		<display:column titleKey="aolet.list">
+	<security:authorize access="hasRole('COMPANY')">
+		<display:column titleKey="omamek.list">
 			<jstl:if test="${row.finalMode}">
-				<a href="aolet/auditor/list.do?audit=${row.id}"><spring:message
-						code="aolet.list" /></a>
+				<a href="omamek/company/list.do?audit=${row.id}"><spring:message
+						code="omamek.list" /></a>
 			</jstl:if>
 		</display:column>
 	</security:authorize>
 
-	<display:column titleKey="aolet.list">
+	<display:column titleKey="omamek.list">
 		<jstl:if test="${row.finalMode}">
-			<a href="aolet/external.do?audit=${row.id}"><spring:message
-					code="aolet.list.external" /></a>
+			<a href="omamek/external.do?audit=${row.id}"><spring:message
+					code="omamek.list.external" /></a>
 		</jstl:if>
 	</display:column>
 
-	<security:authorize access="hasRole('AUDITOR')">
-		<display:column titleKey="aolet.create">
+	<security:authorize access="hasRole('COMPANY')">
+		<display:column titleKey="omamek.create">
 			<jstl:if test="${row.finalMode}">
-				<a href="aolet/auditor/create.do?audit=${row.id}"><spring:message
-						code="aolet.create" /></a>
+				<a href="omamek/company/create.do?audit=${row.id}"><spring:message
+						code="omamek.create" /></a>
 			</jstl:if>
 		</display:column>
 	</security:authorize>

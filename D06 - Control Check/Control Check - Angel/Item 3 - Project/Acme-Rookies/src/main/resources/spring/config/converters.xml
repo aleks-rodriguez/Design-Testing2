@@ -98,9 +98,9 @@
 		<bean class="converters.SponsorshipToStringConverter" />
 		<bean class="converters.StringToSponsorshipConverter" />
 		
-		<!-- Aolet -->
-		<bean class="converters.AoletToStringConverter" />
-		<bean class="converters.StringToAoletConverter" />
+		<!-- Omamek -->
+		<bean class="converters.OmamekToStringConverter" />
+		<bean class="converters.StringToOmamekConverter" />
 	</util:list>
 
 </beans>

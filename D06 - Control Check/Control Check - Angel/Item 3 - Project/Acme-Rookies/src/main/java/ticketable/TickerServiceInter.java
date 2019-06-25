@@ -20,8 +20,14 @@ public class TickerServiceInter {
 		ticker.setTicker(first + "-" + new Generex(pattern).random().toUpperCase());
 		return ticker;
 	}
+	public Ticker create(final String pattern, final String delimiter, final String second) {
 
-	public <K extends Ticketable> K withTicker(final K without, final GenericRepository repository, final String first, final String pattern) {
+		Ticker ticker;
+		ticker = new Ticker();
+		ticker.setTicker(new Generex(pattern).random().toUpperCase() + delimiter + second);
+		return ticker;
+	}
+	public <K extends Ticketable> K withTicker(final K without, final GenericRepository repository, final String first, final String pattern, final boolean firstOrSecond) {
 
 		K result = null;
 
@@ -61,7 +67,10 @@ public class TickerServiceInter {
 				value = true;
 			} catch (final Throwable oops) {
 				value = false;
-				aux = this.create(first, pattern);
+				if (firstOrSecond)
+					aux = this.create(first, pattern);
+				else
+					aux = this.create(pattern, ":", first);
 				without.setTicker(aux);
 			}
 		while (value == false);

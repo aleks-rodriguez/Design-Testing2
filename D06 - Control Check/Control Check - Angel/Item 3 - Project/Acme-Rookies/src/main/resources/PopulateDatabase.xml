@@ -1528,7 +1528,7 @@
 
 	<!-- Control check -->
 
-	<bean id="aolet1" class="domain.Aolet">
+	<bean id="omamek1" class="domain.Omamek">
 		<property name="ticker" ref="ticker22" />
 		<property name="title" value="TEST" />
 		<property name="description" value="TEST - Description" />
@@ -1536,12 +1536,65 @@
 		<property name="image" value="http://www.google.es" />
 		<property name="moment">
 			<bean factory-bean="dateFormat" factory-method="parse">
-				<constructor-arg value="2019/12/15" />
+				<constructor-arg value="2019/05/23" />
 			</bean>
 		</property>
 		<property name="audit" ref="audit1" />
 	</bean>
+
 	<bean id="ticker22" class="ticketable.Ticker">
-		<property name="ticker" value="COMM-3335" />
+		<property name="ticker" value="123467:2019:05:23" />
+	</bean>
+	<bean id="omamek2" class="domain.Omamek">
+		<property name="ticker" ref="ticker23" />
+		<property name="title" value="TEST" />
+		<property name="description" value="TEST - Description" />
+		<property name="finalMode" value="false" />
+		<property name="image" value="http://www.google.es" />
+		<property name="moment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/05/15" />
+			</bean>
+		</property>
+		<property name="audit" ref="audit1" />
+	</bean>
+
+	<bean id="ticker23" class="ticketable.Ticker">
+		<property name="ticker" value="123467:2019:05:15" />
+	</bean>
+
+	<bean id="omamek3" class="domain.Omamek">
+		<property name="ticker" ref="ticker24" />
+		<property name="title" value="TEST" />
+		<property name="description" value="TEST - Description" />
+		<property name="finalMode" value="false" />
+		<property name="image" value="http://www.google.es" />
+		<property name="moment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/03/15" />
+			</bean>
+		</property>
+		<property name="audit" ref="audit3" />
+	</bean>
+
+	<bean id="ticker24" class="ticketable.Ticker">
+		<property name="ticker" value="123467:2019:03:15" />
+	</bean>
+	<bean id="omamek4" class="domain.Omamek">
+		<property name="ticker" ref="ticker25" />
+		<property name="title" value="TEST" />
+		<property name="description" value="TEST - Description" />
+		<property name="finalMode" value="false" />
+		<property name="image" value="http://www.google.es" />
+		<property name="moment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/03/14" />
+			</bean>
+		</property>
+		<property name="audit" ref="audit3" />
+	</bean>
+
+	<bean id="ticker25" class="ticketable.Ticker">
+		<property name="ticker" value="123467:2019:03:14" />
 	</bean>
 </beans>

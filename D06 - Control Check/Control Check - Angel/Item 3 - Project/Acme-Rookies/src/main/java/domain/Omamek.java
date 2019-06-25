@@ -23,7 +23,7 @@ import ticketable.Ticketable;
 @Entity
 @Access(AccessType.PROPERTY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Aolet extends Ticketable {
+public class Omamek extends Ticketable {
 
 	private String	title;
 	private String	description;

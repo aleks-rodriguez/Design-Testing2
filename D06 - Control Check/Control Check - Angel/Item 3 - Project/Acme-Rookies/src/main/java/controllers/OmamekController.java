@@ -10,20 +10,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.AoletService;
 import services.AuditService;
-import domain.Aolet;
+import services.OmamekService;
 import domain.Audit;
-import domain.Auditor;
+import domain.Company;
+import domain.Omamek;
 
 @Controller
 @RequestMapping(value = {
-	"/aolet/auditor", "/aolet"
+	"/omamek/company", "/omamek"
 })
-public class AoletController extends BasicController {
+public class OmamekController extends BasicController {
 
 	@Autowired
-	private AoletService	service;
+	private OmamekService	service;
 
 	@Autowired
 	private AuditService	auditService;
@@ -33,7 +33,7 @@ public class AoletController extends BasicController {
 	public ModelAndView listExternal(@RequestParam final int audit) {
 		ModelAndView result;
 
-		result = super.listModelAndView("aolets", "aolet/list", this.service.findAoletsByAuditFM(audit), "aolet/external.do?audit=" + audit);
+		result = super.listModelAndView("omameks", "omamek/list", this.service.findOmameksByAuditFM(audit), "omamek/external.do?audit=" + audit);
 
 		String lang;
 		lang = super.getLanguageSystem();
@@ -47,7 +47,7 @@ public class AoletController extends BasicController {
 	public ModelAndView list(@RequestParam final int audit) {
 		ModelAndView result;
 
-		result = super.listModelAndView("aolets", "aolet/list", this.service.findAoletsByAuditDraftMode(audit), "aolet/auditor/list.do?audit=" + audit);
+		result = super.listModelAndView("omameks", "omamek/list", this.service.findOmameksByAuditDraftMode(audit), "omamek/company/list.do?audit=" + audit);
 
 		String lang;
 		lang = super.getLanguageSystem();
@@ -59,14 +59,14 @@ public class AoletController extends BasicController {
 	public ModelAndView create(@RequestParam final int audit) {
 		ModelAndView result;
 
-		Auditor c;
-		c = (Auditor) this.service.findActorByUA();
+		Company c;
+		c = (Company) this.service.findActorByUA();
 
 		Audit au;
 		au = this.auditService.findOne(audit);
 
-		if (c.getId() == au.getAuditor().getId())
-			result = super.create(this.service.create(audit), "aolet/edit", "aolet/auditor/edit.do", "/aolet/auditor/list.do?audit=" + audit);
+		if (c.getId() == au.getPosition().getCompany().getId())
+			result = super.create(this.service.create(audit), "omamek/edit", "omamek/company/edit.do", "/omamek/company/list.do?audit=" + audit);
 		else
 			result = super.custom(new ModelAndView("403"));
 
@@ -76,51 +76,53 @@ public class AoletController extends BasicController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int id) {
 
-		Aolet aolet;
-		aolet = this.service.findOne(id);
+		Omamek omamek;
+		omamek = this.service.findOne(id);
 
-		Auditor c;
-		c = (Auditor) this.service.findActorByUA();
+		Company c;
+		c = (Company) this.service.findActorByUA();
 
 		Audit au;
-		au = aolet.getAudit();
+		au = omamek.getAudit();
 
-		Assert.isTrue(c.getId() == au.getAuditor().getId());
+		Assert.isTrue(c.getId() == au.getPosition().getCompany().getId());
 
 		String nameView;
-		nameView = "aolet/edit";
+		nameView = "omamek/edit";
 		String requestURI;
 		String requestCancel;
-		requestCancel = "/aolet/auditor/list.do?audit=" + aolet.getAudit().getId();
+		requestCancel = "/omamek/company/list.do?audit=" + omamek.getAudit().getId();
 
-		if (aolet.isFinalMode()) {
-			requestURI = "aolet/auditor/show.do?id=" + id;
-			return super.show(aolet, nameView, requestURI, requestCancel);
+		if (omamek.isFinalMode()) {
+			requestURI = "omamek/company/show.do?id=" + id;
+			return super.show(omamek, nameView, requestURI, requestCancel);
 		} else {
-			requestURI = "aolet/auditor/edit.do";
-			return super.edit(aolet, nameView, requestURI, requestCancel);
+			requestURI = "omamek/company/edit.do?id=" + id;
+			return super.edit(omamek, nameView, requestURI, requestCancel);
 		}
 	}
 	@RequestMapping(value = "/show", method = RequestMethod.GET)
 	public ModelAndView show(@RequestParam final int id) {
-		Aolet aolet;
-		aolet = this.service.findOne(id);
+		Omamek omamek;
+		omamek = this.service.findOne(id);
 
 		String requestCancel;
 
 		try {
-			Auditor c;
-			c = (Auditor) this.service.findActorByUA();
-			requestCancel = "/aolet/list.do?audit=" + aolet.getAudit().getId();
+			Company c;
+			c = (Company) this.service.findActorByUA();
+			requestCancel = "/omamek/list.do?audit=" + omamek.getAudit().getId();
 		} catch (final Throwable oops) {
-			requestCancel = "/aolet/external.do?audit=" + aolet.getAudit().getId();
+			requestCancel = "/omamek/external.do?audit=" + omamek.getAudit().getId();
 		}
-
-		return super.show(aolet, "aolet/edit", "aolet/show.do?id=" + id, requestCancel);
+		if (omamek.isFinalMode())
+			return super.show(omamek, "omamek/edit", "omamek/show.do?id=" + id, requestCancel);
+		else
+			return super.custom(new ModelAndView("403"));
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(final Aolet saved, final BindingResult binding) {
+	public ModelAndView save(final Omamek saved, final BindingResult binding) {
 
 		ModelAndView result;
 
@@ -131,7 +133,7 @@ public class AoletController extends BasicController {
 		else
 			audit = saved.getAudit().getId();
 
-		result = super.save(saved, binding, "aolet.error", "aolet/edit", "aolet/auditor/save.do", "/aolet/auditor/list.do?audit=" + audit, "redirect:/aolet/auditor/list.do?audit=" + audit);
+		result = super.save(saved, binding, "omamek.error", "omamek/edit", "omamek/company/save.do", "/omamek/company/list.do?audit=" + audit, "redirect:/omamek/company/list.do?audit=" + audit);
 
 		return result;
 
@@ -139,30 +141,30 @@ public class AoletController extends BasicController {
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int id) {
-		Aolet aolet;
-		aolet = this.service.findOne(id);
-		return super.delete(aolet, "aolet.error", "aolet/edit", "aolet/auditor/edit.do?id=" + aolet.getId(), "/aolet/auditor/list.do?audit=" + aolet.getAudit().getId(), "redirect:/aolet/auditor/list.do?audit=" + aolet.getAudit().getId());
+		Omamek omamek;
+		omamek = this.service.findOne(id);
+		return super.delete(omamek, "omamek.error", "omamek/edit", "omamek/company/edit.do?id=" + omamek.getId(), "/omamek/company/list.do?audit=" + omamek.getAudit().getId(), "redirect:/omamek/company/list.do?audit=" + omamek.getAudit().getId());
 	}
 
 	@Override
 	public <T> ModelAndView saveAction(final T e, final BindingResult binding, final String nameResolver) {
 
-		Aolet aolet;
-		aolet = (Aolet) e;
+		Omamek omamek;
+		omamek = (Omamek) e;
 
-		aolet = this.service.reconstruct(aolet, binding);
+		omamek = this.service.reconstruct(omamek, binding);
 
-		this.service.save(aolet);
+		this.service.save(omamek);
 
 		return new ModelAndView(nameResolver);
 	}
 
 	@Override
 	public <T> ModelAndView deleteAction(final T e, final String nameResolver) {
-		Aolet aolet;
-		aolet = (Aolet) e;
+		Omamek omamek;
+		omamek = (Omamek) e;
 
-		this.service.delete(aolet.getId());
+		this.service.delete(omamek.getId());
 
 		return new ModelAndView(nameResolver);
 	}

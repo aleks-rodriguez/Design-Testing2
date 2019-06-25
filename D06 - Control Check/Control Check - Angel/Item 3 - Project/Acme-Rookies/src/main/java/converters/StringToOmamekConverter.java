@@ -7,20 +7,20 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import repositories.AoletRepository;
-import domain.Aolet;
+import repositories.OmamekRepository;
+import domain.Omamek;
 
 @Component
 @Transactional
-public class StringToAoletConverter implements Converter<String, Aolet> {
+public class StringToOmamekConverter implements Converter<String, Omamek> {
 
 	@Autowired
-	AoletRepository	repository;
+	OmamekRepository	repository;
 
 
 	@Override
-	public Aolet convert(final String text) {
-		Aolet result;
+	public Omamek convert(final String text) {
+		Omamek result;
 		int id;
 
 		try {

@@ -7,3 +7,6 @@
 7. Generex library has been implemented in this project. It allows us to generate a random string from a given pattern.
 8. Scripts folder contains a javascript file. This file, whose name is "table.js", solves the second point 
 from Maintentance Requirement Control Checked requested.
+9. From my point of view, there is no need to make a relation bewteen Omamek and Company. Due to this is being done about an audit 
+related to a position which
+contains the company data.

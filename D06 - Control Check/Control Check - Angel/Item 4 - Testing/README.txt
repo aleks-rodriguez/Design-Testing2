@@ -1,3 +1,10 @@
+JUnit4 Testing
+===============================================
+
+OmamekServiceTest contains the two tests done during this control check.
+
+Performance Testing
+===============================================
 My laptop characteristics:
 
 CPU: Intel Core i5 - 5200U
@@ -13,7 +20,8 @@ Graphics:
 
 ================================================
 
-Users:
+The test has not been properly executed due to the mentioned characteristics.
 
-Loops:
+Users: 50
 
+Loops: 20
