@@ -40,8 +40,8 @@
   ---
   ## Componentes del grupo - Members Team
   
-  * Ángel Delgado Luna (Coordina D05)
-  * Belén Garrido López (Coordina D04)
-  * Ezequiel Portillo Jurado (Coordina D02)
-  * Alejandro Rodríguez Díaz (Coordina D01)
-  * María de Gracia Piñero Pastor (Coordina D03)
+  * Ángel Delgado Luna (Coordinates - Coordina D05)
+  * Belén Garrido López (Coordinates - Coordina D04)
+  * Ezequiel Portillo Jurado (Coordinates - Coordina D02)
+  * Alejandro Rodríguez Díaz (Coordinates - Coordina D01)
+  * María de Gracia Piñero Pastor (Coordinates - Coordina D03)
