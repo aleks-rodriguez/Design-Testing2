@@ -1,5 +1,17 @@
 # Design and Testing 2 - Diseño y Pruebas 2
   
+  # Warning - Aviso
+  
+  ```
+  Todo el contenido de este repositorio es autoría única de los abajo mencionados como miembros del equipo.
+  Cualquier uso,sin previa autorización del conjunto del grupo, no será valido. 
+  Este repositorio esta como exposición del trabajo realizado por sus miembros.
+  
+  Everything contained on this repository is owned by the team member mentioned in the item.
+  Any use, without the previous team members permission, will not allowed. 
+  This repository is shown as an exposition of the job done by its members. 
+  ```
+  
   ## Fecha de entregas - Deliverables Submission
   
   * D01 - Mar 7, 2019 (Terminado - Finished) - Acme Madruga
