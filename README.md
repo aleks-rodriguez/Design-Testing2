@@ -5,7 +5,7 @@
   * D01 - Mar 7, 2019 (Terminado - Finished) - Acme Madruga
   * D02 - Mar 28, 2019 (Terminado - Finished) - Acme Parade
   * D03 - Apr 25, 2019 (Terminado - Finished) - Acme HackerRank
-  * D04 - May 16, 2019 (Terminado) - Acme Rookies
+  * D04 - May 16, 2019 (Terminado - Finished) - Acme Rookies
   * D05 - Hackathon (Terminado - Finished) - DEL 5
   
     * Ideas must be delivered before Apr 22, 2019 (Hecho)
