@@ -37,6 +37,7 @@ import domain.Curricula;
 import domain.Finder;
 import domain.Item;
 import domain.MessageEntity;
+import domain.Pelf;
 import domain.Position;
 import domain.Profile;
 import domain.Provider;
@@ -89,6 +90,8 @@ public class ActorService extends AbstractService {
 	private SponsorshipService			sponsorshipService;
 	@Autowired
 	private AuditService				auditService;
+	@Autowired
+	private PelfService					pelfService;
 
 
 	public Collection<Actor> getActorSpammer() {
@@ -497,9 +500,9 @@ public class ActorService extends AbstractService {
 			company = this.companyRepository.findCompanyByUserAccount(actorId);
 			Assert.isTrue(LoginService.getPrincipal().getId() == actorId, "Delete not allowed");
 			this.anonimicePosition(company);
+			this.deletePelf(company.getId());
 			company = (Company) this.deleteCommon(company);
 			company.setCommercialName("loremipsum");
-			;
 			this.companyRepository.save(company);
 		} else if (super.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ROOKIE)) {
 			rookie = this.rookieRepository.findRookieByUserAccount(actorId);
@@ -524,6 +527,12 @@ public class ActorService extends AbstractService {
 			this.deleteCommon(auditor);
 			this.auditorRepository.save(auditor);
 		}
+	}
+
+	private void deletePelf(final int id) {
+		Collection<Pelf> pelfs;
+		pelfs = this.pelfService.findAllByCompanyId(id);
+		this.pelfService.delete(pelfs);
 	}
 	private void deleteProfile(final Actor a) {
 		this.profileService.delete(a.getProfiles());
@@ -570,7 +579,7 @@ public class ActorService extends AbstractService {
 		for (final Position p : positions) {
 			p.setCancel(true);
 			p.setCompany(c);
-			p.setDeadline(new Date());
+			//			p.setDeadline(new Date());
 			p.setDescription("loremIpsum");
 			p.setFinalMode(false);
 			p.setProfileRequired("loremIpsum");

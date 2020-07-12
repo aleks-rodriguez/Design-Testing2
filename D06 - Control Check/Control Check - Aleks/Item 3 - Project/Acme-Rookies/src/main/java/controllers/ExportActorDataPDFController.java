@@ -32,6 +32,7 @@ import domain.EducationData;
 import domain.Item;
 import domain.MessageEntity;
 import domain.MiscellaneousData;
+import domain.Pelf;
 import domain.Position;
 import domain.PositionData;
 import domain.Problem;
@@ -84,6 +85,15 @@ public class ExportActorDataPDFController extends AbstractPdfView {
 				g += "\n" + " Title: " + p.getTitle() + ",\n Attachments: " + p.getAttachments() + ",\n Hint: " + p.getHint() + ",\n Statement: " + p.getStatement() + ",\n FinalMode: " + p.getFinalMode() + "\n";
 
 			table.addCell("Problems: " + g + "\n");
+
+			final Collection<Pelf> qs = (Collection<Pelf>) model.get("pelfs");
+			String e;
+			e = "";
+			for (final Pelf q : qs)
+				e += "\n" + " Ticker: " + q.getTicker().getTicker() + ",\n Publication Moment: " + q.getPublicationMoment() + ",\n Body: " + q.getBody() + ",\n Picture: " + q.getPicture() + ",\n Associated Audit: " + q.getAudit().getId() + "\n";
+
+			table.addCell("Pelfs: " + e + "\n");
+
 		} else if (this.findAuthority(LoginService.getPrincipal().getAuthorities(), Authority.ROOKIE)) {
 			Rookie h;
 			h = (Rookie) a;

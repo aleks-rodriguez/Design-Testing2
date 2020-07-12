@@ -26,7 +26,7 @@
 		<value>/views/educationData/messages</value>
 		<value>/views/positionData/messages</value>
 		<value>/views/miscellaneousData/messages</value>
-			<value>/views/application/messages</value>
+		<value>/views/application/messages</value>
 		<value>/views/answer/messages</value>
 		<value>/views/box/messages</value>
 		<value>/views/message/messages</value>
@@ -35,6 +35,7 @@
 		<value>/views/item/messages</value>
 		<value>/views/sponsorship/messages</value>
 		<value>/views/provider/messages</value>
+		<value>/views/pelf/messages</value>
 	</util:list>
 
 </beans>

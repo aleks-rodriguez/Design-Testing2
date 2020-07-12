@@ -51,7 +51,11 @@ public class AuditController extends BasicController {
 		} catch (final Throwable oops) {
 			result = super.listModelAndView(this.audits, "audit/list", this.service.findAuditsByPositionPublic(position), "audit/auditor/list.do?position=" + position);
 		}
+		try {
+			result.addObject("idActor", LoginService.getPrincipal().getId());
+		} catch (final IllegalArgumentException oops) {
 
+		}
 		return result;
 	}
 	@RequestMapping(value = "/create", method = RequestMethod.GET)

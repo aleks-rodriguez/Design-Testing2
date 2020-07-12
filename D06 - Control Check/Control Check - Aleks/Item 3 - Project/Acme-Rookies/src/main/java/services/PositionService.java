@@ -132,7 +132,7 @@ public class PositionService extends AbstractService {
 			Assert.isTrue(this.statusPrevious == false);
 		}
 
-		if (arg.isCancel())
+		if (arg.isCancel() && !arg.getDescription().equals("loremIpsum"))
 			Assert.isTrue(arg.isFinalMode() == true);
 
 		if (arg.isFinalMode())

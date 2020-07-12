@@ -54,6 +54,7 @@
 			access="isAuthenticated()" />
 		<security:intercept-url pattern="/message/**"
 			access="isAuthenticated()" />
+			
 		<!-- Administrator -->
 		<security:intercept-url pattern="/customisation/administrator/**"
 			access="hasRole('ADMIN')" />
@@ -89,8 +90,12 @@
 			access="hasRole('COMPANY')" />
 		<security:intercept-url pattern="/educationData/company/**"
 			access="hasRole('COMPANY')" />
+			<security:intercept-url pattern="/pelf/company/**"
+			access="hasRole('COMPANY')" />
 		<!-- Auditor -->
 		<security:intercept-url pattern="/audit/auditor/**"
+			access="hasRole('AUDITOR')" />
+			<security:intercept-url pattern="/pelf/list.do"
 			access="hasRole('AUDITOR')" />
 		<!-- Provider -->
 		<security:intercept-url pattern="/sponsorship/provider/**"

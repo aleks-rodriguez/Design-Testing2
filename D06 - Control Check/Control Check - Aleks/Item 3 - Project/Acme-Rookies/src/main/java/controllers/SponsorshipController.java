@@ -165,7 +165,6 @@ public class SponsorshipController extends BasicController {
 
 	@Override
 	public <T> ModelAndView deleteAction(final T e, final String nameResolver) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

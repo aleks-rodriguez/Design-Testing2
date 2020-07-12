@@ -75,6 +75,8 @@
 					<li><a href="problem/company/list.do"><spring:message
 								code="master.page.company.problem.list" /></a></li>
 				</ul></li>
+				<li><a class="fNiv" href="pelf/company/listOwn.do"><spring:message
+						code="master.page.company.pelf" /></a></li>
 		</security:authorize>
 
 		<!-- Rookie -->

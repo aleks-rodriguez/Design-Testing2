@@ -33,6 +33,32 @@
 			</jstl:if>
 		</display:column>
 	</security:authorize>
+
+	<security:authorize access="hasRole('COMPANY')">
+	<jstl:if test="${row.position.company.account.id == idActor}">
+		<display:column titleKey="audit.listPelfs">
+			<a href="pelf/company/listOwn.do?id=${row.id}"><spring:message
+					code="audit.pelfs"></spring:message> </a>
+		</display:column>
+	</jstl:if>	
+	</security:authorize>
+
+ 	<security:authorize access="hasRole('AUDITOR')">
+		<display:column titleKey="audit.listPelfs">
+			<a href="pelf/list.do?id=${row.id}"><spring:message
+					code="audit.pelfs"></spring:message> </a>
+		</display:column>
+  	</security:authorize>
+
+	<security:authorize access="hasRole('COMPANY')">
+	<jstl:if test="${row.position.company.account.id == idActor}">
+		<display:column titleKey="audit.createPelf">
+			<a href="pelf/company/create.do?id=${row.id}"><spring:message
+					code="audit.pelf"></spring:message> </a>
+		</display:column>
+		</jstl:if>
+	</security:authorize>
+	
 </display:table>
 <security:authorize access="hasRole('AUDITOR')">
 	<a href="audit/auditor/create.do?position=${param['position']}"><spring:message

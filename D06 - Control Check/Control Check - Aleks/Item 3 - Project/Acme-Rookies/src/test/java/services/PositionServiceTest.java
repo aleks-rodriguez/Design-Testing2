@@ -98,7 +98,7 @@ public class PositionServiceTest extends AbstractTest {
 
 			position.setTicker(this.service.createTicker(c.getCommercialName()));
 
-			position.setDeadline(new SimpleDateFormat("yyyy/MM/dd").parse("2019/05/19"));
+			position.setDeadline(new SimpleDateFormat("yyyy/MM/dd").parse("2030/05/19"));
 			position.setFinalMode((String) param == "nonSave" ? true : false);
 			position.setDescription("hola1");
 

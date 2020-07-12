@@ -97,6 +97,10 @@
 		<!-- Sponsorship -->
 		<bean class="converters.SponsorshipToStringConverter" />
 		<bean class="converters.StringToSponsorshipConverter" />
+		
+		<!-- Pelfs -->
+		<bean class="converters.PelfToStringConverter" />
+		<bean class="converters.StringToPelfConverter" />
 	</util:list>
 
 </beans>

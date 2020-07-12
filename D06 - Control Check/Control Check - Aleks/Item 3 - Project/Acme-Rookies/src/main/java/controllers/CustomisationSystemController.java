@@ -93,7 +93,6 @@ public class CustomisationSystemController extends BasicController {
 	//Delete method is not neccesary
 	@Override
 	public <T> ModelAndView deleteAction(final T e, final String nameResolver) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

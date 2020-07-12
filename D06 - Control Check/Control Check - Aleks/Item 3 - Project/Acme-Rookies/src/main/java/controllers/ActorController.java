@@ -22,6 +22,7 @@ import services.AuditService;
 import services.CurriculaService;
 import services.CustomisationSystemService;
 import services.ItemService;
+import services.PelfService;
 import services.PositionService;
 import services.ProblemService;
 import services.SponsorshipService;
@@ -56,6 +57,8 @@ public class ActorController extends BasicController {
 	private ItemService					itemService;
 	@Autowired
 	private SponsorshipService			sponsorshipService;
+	@Autowired
+	private PelfService					pelfService;
 
 
 	@RequestMapping(value = "/listSpammers", method = RequestMethod.GET)
@@ -266,6 +269,7 @@ public class ActorController extends BasicController {
 		if (this.curriculumService.findAuthority(actor.getAccount().getAuthorities(), Authority.COMPANY)) {
 			map.put("positions", this.posService.getPositionsByCompany(actor.getId()));
 			map.put("problems", this.problemService.getProblemByCompanyId(actor.getId()));
+			map.put("pelfs", this.pelfService.findAllByCompanyId(actor.getId()));
 		}
 		if (this.curriculumService.findAuthority(actor.getAccount().getAuthorities(), Authority.ROOKIE)) {
 			map.put("curricula", this.curriculumService.findAllByRookie());

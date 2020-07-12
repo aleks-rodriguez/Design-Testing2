@@ -41,8 +41,9 @@ public class Position extends DomainEntity {
 	private boolean	finalMode;
 	private boolean	cancel;
 	private Company	company;
-	private Auditor	auditor;
 
+
+	//	private Auditor	auditor;
 
 	@OneToOne(cascade = {
 		CascadeType.ALL

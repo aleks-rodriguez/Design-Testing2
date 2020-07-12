@@ -669,7 +669,26 @@
 	<bean id="ticker4" class="domain.Ticker">
 		<property name="ticker" value="COMM-1237" />
 	</bean>
-
+	
+	<bean id="ticker5" class="domain.Ticker">
+	<property name="ticker" value="190607:LSNWIV"></property>
+	</bean>
+	
+	<bean id="ticker6" class="domain.Ticker">
+	<property name="ticker" value="190607:NFUD6D"></property>
+	</bean>
+	
+	<bean id="ticker7" class="domain.Ticker">
+	<property name="ticker" value="190607:58D5D8"></property>
+	</bean>
+	
+	<bean id="ticker8" class="domain.Ticker">
+	<property name="ticker" value="190607:F8F8E5"></property>
+	</bean>
+	
+	<bean id="ticker9" class="domain.Ticker">
+	<property name="ticker" value="COMM-1658"></property>
+	</bean>
 
 	<bean id="position1" class="domain.Position">
 		<property name="ticker" ref="ticker1" />
@@ -749,6 +768,26 @@
 		<property name="finalMode" value="true" />
 		<property name="company">
 			<ref bean="company1" />
+		</property>
+		<property name="cancel" value="false" />
+	</bean>
+	
+	<bean id="position5" class="domain.Position">
+		<property name="ticker" ref="ticker9" />
+		<property name="title" value="ingeniero de control check" />
+		<property name="description" value="ingeniero de control check" />
+		<property name="deadline">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/2/20" />
+			</bean>
+		</property>
+		<property name="profileRequired" value="lsi" />
+		<property name="skillsRequired" value="developer" />
+		<property name="technologies" value="spring" />
+		<property name="salary" value="100.0" />
+		<property name="finalMode" value="true" />
+		<property name="company">
+			<ref bean="company2" />
 		</property>
 		<property name="cancel" value="false" />
 	</bean>
@@ -1234,7 +1273,7 @@
 
 	<bean id="audit3" class="domain.Audit">
 		<property name="auditor" ref="auditor2" />
-		<property name="position" ref="position3" />
+		<property name="position" ref="position5" />
 		<property name="moment">
 			<bean factory-bean="dateFormat" factory-method="parse">
 				<constructor-arg value="2018/12/15" />
@@ -1257,7 +1296,45 @@
 		<property name="score" value="8.0" />
 		<property name="text" value="testingText4" />
 		<property name="finalMode" value="true" />
-
+	</bean>
+	
+		<bean id="audit5" class="domain.Audit">
+		<property name="auditor" ref="auditor1" />
+		<property name="position" ref="position5" />
+		<property name="moment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2018/12/15" />
+			</bean>
+		</property>
+		<property name="score" value="5.0" />
+		<property name="text" value="testingText5" />
+		<property name="finalMode" value="true" />
+	</bean>
+	
+	<bean id="audit6" class="domain.Audit">
+		<property name="auditor" ref="auditor1" />
+		<property name="position" ref="position5" />
+		<property name="moment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2018/12/15" />
+			</bean>
+		</property>
+		<property name="score" value="5.0" />
+		<property name="text" value="testingText5" />
+		<property name="finalMode" value="true" />
+	</bean>
+	
+	<bean id="audit7" class="domain.Audit">
+		<property name="auditor" ref="auditor1" />
+		<property name="position" ref="position5" />
+		<property name="moment">
+			<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/03/30" />
+			</bean>
+		</property>
+		<property name="score" value="5.0" />
+		<property name="text" value="testingText6" />
+		<property name="finalMode" value="true" />
 	</bean>
 
 	<bean id="sponsorship1" class="domain.Sponsorship">
@@ -1524,5 +1601,61 @@
 			<list>
 			</list>
 		</property>
+	</bean>
+	
+	<bean id="pelf1" class="domain.Pelf">
+	<property name="ticker" ref="ticker5"></property>
+	<property name="publicationMoment">
+	<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/06/20" />
+			</bean>
+	</property>
+	<property name="body" value="PelfTEST1"></property>
+	<property name="picture" value="http://www.pelf.com"></property>
+	<property name="finalMode" value="true"></property>
+	<property name="audit" ref="audit2"></property>
+	<property name="company" ref="company1"></property>
+	</bean>
+	
+	<bean id="pelf2" class="domain.Pelf">
+	<property name="ticker" ref="ticker6"></property>
+	<property name="publicationMoment">
+	<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/05/10" />
+			</bean>
+	</property>
+	<property name="body" value="PelfTEST2"></property>
+	<property name="picture" value="http://www.pelf.com"></property>
+	<property name="finalMode" value="true"></property>
+	<property name="audit" ref="audit3"></property>
+	<property name="company" ref="company2"></property>
+	</bean>
+	
+	<bean id="pelf3" class="domain.Pelf">
+	<property name="ticker" ref="ticker7"></property>
+	<property name="publicationMoment">
+	<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/03/24" />
+			</bean>
+	</property>
+	<property name="body" value="PelfTEST3"></property>
+	<property name="picture" value="http://www.pelf.com"></property>
+	<property name="finalMode" value="false"></property>
+	<property name="audit" ref="audit2"></property>
+	<property name="company" ref="company1"></property>
+	</bean>
+	
+	<bean id="pelf4" class="domain.Pelf">
+	<property name="ticker" ref="ticker8"></property>
+	<property name="publicationMoment">
+	<bean factory-bean="dateFormat" factory-method="parse">
+				<constructor-arg value="2019/02/28" />
+			</bean>
+	</property>
+	<property name="body" value="PelfTEST4"></property>
+	<property name="picture" value="http://www.pelf.com"></property>
+	<property name="finalMode" value="true"></property>
+	<property name="audit" ref="audit3"></property>
+	<property name="company" ref="company2"></property>
 	</bean>
 </beans>
